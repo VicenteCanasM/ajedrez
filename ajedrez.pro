@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-04-04T08:54:52
+# Project created by QtCreator 2019-04-04T09:31:20
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ajedrez
+TARGET = ejemplo_tablero
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -27,13 +27,14 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
+    tablero.cpp \
     piezas.cpp \
     funciones.cpp
 
 HEADERS += \
         mainwindow.h \
+    tablero.h \
     piezas.h \
-    funciones.h \
     funciones.h
 
 FORMS += \

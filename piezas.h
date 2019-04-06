@@ -2,6 +2,7 @@
 #define PIEZAS_H
 #include <iostream>
 #include <vector>
+#include "tablero.h"
 using namespace  std;
 
 // PIEZAS //
@@ -27,7 +28,7 @@ public:
     peon(int, int, int);
     ~peon();
     void coronar();
-    void movs();
+    void movs(tablero);
 };
 
 // CABALLO //
@@ -35,7 +36,7 @@ class caballo : public piezas {
 public:
     caballo(int, int, int);
     ~caballo();
-    void movs();
+    void movs(tablero);
 };
 
 // ALFIL //
