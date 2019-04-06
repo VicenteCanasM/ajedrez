@@ -17,7 +17,7 @@ public:
 
 class tablero{
 public:
-    unsigned long filas = 8, columnas = 8;
+    int filas = 8, columnas = 8;
     vector <vector <int>> jugadores;
     vector <vector <int>> colores_select;
     vector <vector <escaque>> mat_escaque;

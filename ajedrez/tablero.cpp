@@ -22,8 +22,8 @@ tablero::tablero(vector < vector <int>> jugadores){
     bool color = true;
     mat_escaque.resize(8);
     for(unsigned long i = 0; i < 8; i++) mat_escaque[i].resize(8);
-    for(unsigned long i = 0; i < filas; i++){
-        for (unsigned long j = 0; j < columnas; j++){
+    for(unsigned long i = 0; i < static_cast<unsigned long>(filas); i++){
+        for (unsigned long j = 0; j < static_cast<unsigned long>(columnas); j++){
             escaque mi_escaque(color, jugadores[i][j]);
             mat_escaque[i][j] = mi_escaque;
             color = not color;
