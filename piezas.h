@@ -44,7 +44,7 @@ class alfil : public piezas {
 public:
     alfil(int, int, int);
     ~alfil();
-    void movs();
+    void movs(tablero);
 };
 
 // TORRE //
@@ -52,7 +52,7 @@ class torre : public piezas {
 public:
     torre(int, int, int);
     ~torre();
-    void movs();
+    void movs(tablero);
 };
 
 // REY //
@@ -63,7 +63,7 @@ public:
 public:
     rey(int, int, int);
     ~rey();
-    void movs();
+    void movs(tablero);
 };
 
 
