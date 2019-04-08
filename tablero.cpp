@@ -2,7 +2,6 @@
 #include <iostream>
 #include <QPushButton>
 #include "tablero.h"
-#include <iostream>
 
 using namespace std;
 

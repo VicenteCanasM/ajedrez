@@ -1,5 +1,6 @@
 #ifndef PIEZAS_H
 #define PIEZAS_H
+
 #include <iostream>
 #include <vector>
 #include "tablero.h"
@@ -16,7 +17,6 @@ public:
 public:
     piezas(int, int, int);
     ~piezas();
-    void ataque_set();
     void mover();
 };
 
@@ -50,6 +50,8 @@ public:
 // TORRE //
 class torre : public piezas {
 public:
+    bool first_mov;
+public:
     torre(int, int, int);
     ~torre();
     void movs(tablero);
@@ -60,10 +62,15 @@ class rey : public piezas {
 public:
     bool jaque;
     bool mate;
+    bool first_mov;
 public:
     rey(int, int, int);
     ~rey();
-    void movs(tablero);
+    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+    void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>);
+    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>);
+    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+    pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
 };
 
 
