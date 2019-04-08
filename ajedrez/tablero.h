@@ -21,10 +21,10 @@ public:
     vector <vector <int>> jugadores;
     vector <vector <int>> colores_select;
     vector <vector <escaque>> mat_escaque;
+    tablero();
     tablero(vector <vector <int>>);
     void imprimir_tablero();
 };
-
 
 
 #endif // TABLERO_H

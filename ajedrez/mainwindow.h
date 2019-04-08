@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "tablero.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,11 +15,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    tablero echiquier;//(vector <vector <int>>);
+    QPalette blanco, gris, azul, cian;
 
 private slots:
     void on_a1_clicked();
     void on_a2_clicked();
-    /*void on_a3_clicked();
+    void on_a3_clicked();
     void on_a4_clicked();
     void on_a5_clicked();
     void on_a6_clicked();
@@ -79,7 +82,7 @@ private slots:
     void on_h5_clicked();
     void on_h6_clicked();
     void on_h7_clicked();
-    void on_h8_clicked();*/
+    void on_h8_clicked();
 
 private:
     Ui::MainWindow *ui;
