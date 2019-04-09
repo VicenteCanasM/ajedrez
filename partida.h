@@ -18,7 +18,7 @@ public:
 public:
     partida();
     ~partida();
-    vector<vector<bool>> comprobar_escaque(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+    vector<vector<bool>> comprobar_mov_escaque(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
 };
 
 #endif // PARTIDA_H

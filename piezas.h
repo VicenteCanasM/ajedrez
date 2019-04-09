@@ -14,6 +14,7 @@ public:
     int valor;
     vector<pair<int,int>> mov_set;
     vector<pair<int,int>> atq_set;
+    vector<pair<int,int>> escaque_def;
 public:
     piezas(int, int, int);
     ~piezas();
@@ -24,6 +25,8 @@ public:
 class peon : public piezas {
 public:
     bool first_mov;
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
 public:
     peon(int, int, int);
     ~peon();
@@ -34,6 +37,9 @@ public:
 // CABALLO //
 class caballo : public piezas {
 public:
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
+public:
     caballo(int, int, int);
     ~caballo();
     void movs(tablero);
@@ -41,6 +47,9 @@ public:
 
 // ALFIL //
 class alfil : public piezas {
+public:
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
 public:
     alfil(int, int, int);
     ~alfil();
@@ -51,6 +60,8 @@ public:
 class torre : public piezas {
 public:
     bool first_mov;
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
 public:
     torre(int, int, int);
     ~torre();
@@ -68,7 +79,7 @@ public:
     ~rey();
     vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
     void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>);
-    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>);
+    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
     void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
     pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
 };

@@ -8,7 +8,7 @@ partida::~partida(){
 
 };
 
-vector<vector<bool>> comprobar_mov_escaque(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey){
+vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey){
     vector<vector<bool>> tablero_libre(8);
     for(unsigned long i = 0; i < 8; i++) tablero_libre[i].resize(8, 1);
     for (unsigned long  i = 0; i <= v_peon.size() ; i++){

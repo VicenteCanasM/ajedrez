@@ -20,6 +20,7 @@ void mover(){
 peon::peon(int col, int fil, int jug) : piezas(col, fil, jug){
     first_mov = 1;
     valor = 1;
+    jaque_rey = 0;
 };
 // Destructor
 peon::~peon(){
@@ -30,49 +31,71 @@ void peon::movs(tablero mi_tab){
     int fil_act = pos.second;
     mov_set.clear();
     atq_set.clear();
+    escaque_def.clear();
+    jaque_rey = 0;
     pair<int,int> casilla;
     if (jugador == 0){ // Si juegan blancas
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+1)].ocupado == 2){ // Comprobar escaque inmediato
-            casilla.first = col_act;
-            casilla.second = fil_act+1;
-            mov_set.push_back(casilla);
-            if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+        if (comprobar_limites(pos.first, pos.second+1)){
+            if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+1)].ocupado == 2){ // Comprobar escaque inmediato
                 casilla.first = col_act;
-                casilla.second = fil_act+2;
+                casilla.second = fil_act+1;
                 mov_set.push_back(casilla);
+                if (comprobar_limites(pos.first, pos.second+2)){
+                    if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                        casilla.first = col_act;
+                        casilla.second = fil_act+2;
+                        mov_set.push_back(casilla);
+                    };
+                };
             };
-        };
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal derecha
-            casilla.first = col_act+1;
-            casilla.second = fil_act+1;
-            atq_set.push_back(casilla);
-        };
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal izquierda
-            casilla.first = col_act-1;
-            casilla.second = fil_act+1;
-            atq_set.push_back(casilla);
+            if (comprobar_limites(pos.first+1, pos.second+1)){
+                casilla.first = col_act+1;
+                casilla.second = fil_act+1;
+                escaque_def.push_back(casilla);
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal derecha
+                    atq_set.push_back(casilla);
+                };
+            };
+            if (comprobar_limites(pos.first-1, pos.second+1)){
+                casilla.first = col_act-1;
+                casilla.second = fil_act+1;
+                escaque_def.push_back(casilla);
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal izquierda
+                    atq_set.push_back(casilla);
+                };
+            };
         };
     }
     else if (jugador == 1){ // Si juegan negras
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-1)].ocupado == 2){ // Comprobar escaque inmediato
-            casilla.first = col_act;
-            casilla.second = fil_act-1;
-            mov_set.push_back(casilla);
-            if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+        if (comprobar_limites(pos.first, pos.second-1)){
+            if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-1)].ocupado == 2){ // Comprobar escaque inmediato
                 casilla.first = col_act;
-                casilla.second = fil_act-2;
+                casilla.second = fil_act-1;
                 mov_set.push_back(casilla);
+                if (comprobar_limites(pos.first, pos.second-2)){
+                    if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                        casilla.first = col_act;
+                        casilla.second = fil_act-2;
+                        mov_set.push_back(casilla);
+                    };
+                };
             };
-        };
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal derecha
-            casilla.first = col_act+1;
-            casilla.second = fil_act-1;
-            atq_set.push_back(casilla);
-        };
-        if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal izquierda
-            casilla.first = col_act-1;
-            casilla.second = fil_act-1;
-            atq_set.push_back(casilla);
+            if (comprobar_limites(pos.first+1, pos.second-1)){
+                casilla.first = col_act+1;
+                casilla.second = fil_act-1;
+                escaque_def.push_back(casilla);
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal derecha
+                    atq_set.push_back(casilla);
+                };
+            };
+            if (comprobar_limites(pos.first-1, pos.second-1)){
+                casilla.first = col_act-1;
+                casilla.second = fil_act-1;
+                escaque_def.push_back(casilla);
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal izquierda
+                    atq_set.push_back(casilla);
+                };
+            };
         };
     };
 };
@@ -90,6 +113,7 @@ void peon::coronar(){
 // Constructor
 caballo::caballo(int col, int fil, int jug) : piezas(col, fil, jug){
     valor = 3;
+    jaque_rey = 0;
 };
 // Destructor
 caballo::~caballo(){
@@ -100,102 +124,26 @@ void caballo::movs(tablero mi_tab){
     int fil_act = pos.second;
     mov_set.clear();
     atq_set.clear();
+    escaque_def.clear();
+    jaque_rey = 0;
     pair<int,int> casilla;
-    if (comprobar_limites(col_act+2, fil_act+1)){
-        if (mi_tab.mat_escaque[col_act+2][fil_act+1].ocupado == 2){ //Comprobar escaque superior derecha 1
-            casilla.first = col_act+2;
-            casilla.second = fil_act+1;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act+2][fil_act+1].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act+2;
-            casilla.second = fil_act+1;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act+1, fil_act+2)){
-        if (mi_tab.mat_escaque[col_act+1][fil_act+2].ocupado == 2){ //Comprobar escaque superior derecha 2
-            casilla.first = col_act+1;
-            casilla.second = fil_act+2;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act+1][fil_act+2].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act+1;
-            casilla.second = fil_act+2;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act-1, fil_act+2)){
-        if (mi_tab.mat_escaque[col_act-1][fil_act+2].ocupado == 2){ //Comprobar escaque superior izquierda 1
-            casilla.first = col_act-1;
-            casilla.second = fil_act+2;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act-1][fil_act+2].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act-1;
-            casilla.second = fil_act+2;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act-2, fil_act+1)){
-        if (mi_tab.mat_escaque[col_act-2][fil_act+1].ocupado == 2){ //Comprobar escaque superior izquierda 2
-            casilla.first = col_act-2;
-            casilla.second = fil_act+1;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act-2][fil_act+1].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act-2;
-            casilla.second = fil_act+1;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act-2, fil_act-1)){
-        if (mi_tab.mat_escaque[col_act-2][fil_act-1].ocupado == 2){ //Comprobar escaque inferior izquierda 1
-            casilla.first = col_act-2;
-            casilla.second = fil_act-1;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act-2][fil_act-1].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act-2;
-            casilla.second = fil_act-1;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act-1, fil_act-2)){
-        if (mi_tab.mat_escaque[col_act-1][fil_act-2].ocupado == 2){ //Comprobar escaque inferior izquierda 2
-            casilla.first = col_act-1;
-            casilla.second = fil_act-2;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act-1][fil_act-2].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act-1;
-            casilla.second = fil_act-2;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act+1, fil_act-2)){
-        if (mi_tab.mat_escaque[col_act+1][fil_act-2].ocupado == 2){ //Comprobar escaque inferior derecha 1
-            casilla.first = col_act+1;
-            casilla.second = fil_act-2;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act+1][fil_act-2].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act+1;
-            casilla.second = fil_act-2;
-            atq_set.push_back(casilla);
-        }
-    };
-    if (comprobar_limites(col_act+2, fil_act-1)){
-        if (mi_tab.mat_escaque[col_act+2][fil_act-1].ocupado == 2){ //Comprobar escaque inferior derecha 2
-            casilla.first = col_act+2;
-            casilla.second = fil_act-1;
-            mov_set.push_back(casilla);
-        }
-        else if (mi_tab.mat_escaque[col_act+2][fil_act-1].ocupado != jugador){ // Posible ataque
-            casilla.first = col_act+2;
-            casilla.second = fil_act-1;
-            atq_set.push_back(casilla);
-        }
+    vector<pair<int,int>> escaques_ady;
+    escaques_ady[0].first = 2;  escaques_ady[0].second = 1;   escaques_ady[1].first = 1;  escaques_ady[1].second = 2;
+    escaques_ady[2].first = -1;  escaques_ady[2].second = 2;  escaques_ady[3].first = -2;  escaques_ady[3].second = 1;
+    escaques_ady[4].first = -2;  escaques_ady[4].second = -1;  escaques_ady[5].first = -1;  escaques_ady[5].second = -2;
+    escaques_ady[6].first = 1;  escaques_ady[6].second = -2;   escaques_ady[7].first = 2;  escaques_ady[7].second = -1;
+    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+        if (comprobar_limites(col_act+escaques_ady[i].first, fil_act+escaques_ady[i].second)){
+            casilla.first = col_act+escaques_ady[i].first;
+            casilla.second = fil_act+escaques_ady[i].second;
+            escaque_def.push_back(casilla); // Zona de influencia
+            if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){ //Comprobar escaque superior derecha 1
+                mov_set.push_back(casilla);
+            }
+            else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){ // Posible ataque
+                atq_set.push_back(casilla);
+            };
+        };
     };
 };
 
@@ -203,6 +151,7 @@ void caballo::movs(tablero mi_tab){
 // Constructor
 alfil::alfil(int col, int fil, int jug) : piezas(col, fil, jug){
     valor = 3;
+    jaque_rey = 0;
 };
 // Destructor
 alfil::~alfil(){
@@ -213,87 +162,37 @@ void alfil::movs(tablero mi_tab){
     int fil_act = pos.second;
     mov_set.clear();
     atq_set.clear();
+    escaque_def.clear();
+    jaque_rey;
     pair<int,int> casilla;
     int c = 1;
     bool n = 1;
-    while (n==1){ // Comprobar escaque en diagonal superior derecha
-        if (comprobar_limites(col_act+c, fil_act+c)){
-            if (mi_tab.mat_escaque[col_act+c][fil_act+c].ocupado == 2){ // Posible avance
-                casilla.first = col_act+c;
-                casilla.second = fil_act+c;
-                mov_set.push_back(casilla);
-                c+=c;
+    vector<pair<int,int>> escaques_ady;
+    escaques_ady[0].first = 1;  escaques_ady[0].second = 1;    escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
+    escaques_ady[2].first = -1;  escaques_ady[2].second = -1;  escaques_ady[3].first = 1;  escaques_ady[3].second = -1;
+    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+        while (n==1){ // Comprobar escaque en vertical superior
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+                casilla.first = col_act+escaques_ady[i].first*c;
+                casilla.second = fil_act+escaques_ady[i].second*c;
+                escaque_def.push_back(casilla); // Zona de influencia
+                if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == 2){ // Posible avance
+                    mov_set.push_back(casilla);
+                    c+=c;
+                }
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){ // Posible ataque
+                    atq_set.push_back(casilla);
+                    n = 0;
+                }
+                else {
+                    n = 0;
+                };
             }
-            else if (mi_tab.mat_escaque[col_act+c][fil_act+c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+c;
-                casilla.second = fil_act+c;
-                atq_set.push_back(casilla);
+            else { // Ningún movimiento más
                 n = 0;
-            }
-        }
-        else {
-            n = 0;
+            };
         };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en diagonal superior izquierda
-        if (comprobar_limites(col_act-c, fil_act+c)){
-            if (mi_tab.mat_escaque[col_act-c][fil_act+c].ocupado == 2){ // Posible avance
-                casilla.first = col_act-c;
-                casilla.second = fil_act+c;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act-c][fil_act+c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-c;
-                casilla.second = fil_act+c;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else {
-            n = 0;
-        };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en diagonal inferior izquierda
-        if (comprobar_limites(col_act-c, fil_act-c)){
-            if (mi_tab.mat_escaque[col_act-c][fil_act-c].ocupado == 2){ // Posible avance
-                casilla.first = col_act-c;
-                casilla.second = fil_act-c;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act-c][fil_act-c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-c;
-                casilla.second = fil_act-c;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else {
-            n = 0;
-        };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en diagonal inferior derecha
-        if (comprobar_limites(col_act+c, fil_act-c)){
-            if (mi_tab.mat_escaque[col_act+c][fil_act-c].ocupado == 2){ // Posible avance
-                casilla.first = col_act+c;
-                casilla.second = fil_act-c;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act+c][fil_act-c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+c;
-                casilla.second = fil_act-c;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else {
-            n = 0;
-        };
+        n = 1;  c = 1;
     };
 };
 
@@ -301,6 +200,7 @@ void alfil::movs(tablero mi_tab){
 // Constructor
 torre::torre(int col, int fil, int jug) : piezas(col, fil, jug){
     valor = 5;
+    jaque_rey = 0;
 };
 // Destructor
 torre::~torre(){
@@ -311,87 +211,37 @@ void torre::movs(tablero mi_tab){
     int fil_act = pos.second;
     mov_set.clear();
     atq_set.clear();
+    escaque_def.clear();
+    jaque_rey = 0;
     pair<int,int> casilla;
     int c = 1;
     bool n = 1;
-    while (n==1){ // Comprobar escaque en vertical superior
-        if (comprobar_limites(col_act, fil_act+c)){
-            if (mi_tab.mat_escaque[col_act][fil_act+c].ocupado == 2){ // Posible avance
-                casilla.first = col_act;
-                casilla.second = fil_act+c;
-                mov_set.push_back(casilla);
-                c+=c;
+    vector<pair<int,int>> escaques_ady;
+    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = 0;  escaques_ady[1].second = -1;
+    escaques_ady[2].first = 1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = 0;
+    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+        while (n==1){ // Comprobar escaque en vertical superior
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+                casilla.first = col_act+escaques_ady[i].first*c;
+                casilla.second = fil_act+escaques_ady[i].second*c;
+                escaque_def.push_back(casilla); // Zona de influencia
+                if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == 2){ // Posible avance
+                    mov_set.push_back(casilla);
+                    c+=c;
+                }
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){ // Posible ataque
+                    atq_set.push_back(casilla);
+                    n = 0;
+                }
+                else {
+                    n = 0;
+                };
             }
-            else if (mi_tab.mat_escaque[col_act][fil_act+c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act;
-                casilla.second = fil_act+c;
-                atq_set.push_back(casilla);
+            else { // Ningún movimiento más
                 n = 0;
-            }
-        }
-        else { // Ningún movimiento más
-            n = 0;
+            };
         };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en vertical inferior
-        if (comprobar_limites(col_act, fil_act-c)){
-            if (mi_tab.mat_escaque[col_act][fil_act-c].ocupado == 2){ // Posible avance
-                casilla.first = col_act;
-                casilla.second = fil_act-c;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act][fil_act-c].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act;
-                casilla.second = fil_act-c;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else { // Ningún movimiento más
-            n=0;
-        };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en horizontal derecha
-        if (comprobar_limites(col_act+c, fil_act)){
-            if (mi_tab.mat_escaque[col_act+c][fil_act].ocupado == 2){ // Posible avance
-                casilla.first = col_act+c;
-                casilla.second = fil_act;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act+c][fil_act].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+c;
-                casilla.second = fil_act;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else { // Ningún movimiento más
-            n=0;
-        };
-    };
-    c = 1;  n = 1;
-    while (n==1){ // Comprobar escaque en horizontal izquierda
-        if (comprobar_limites(col_act-c, fil_act)){
-            if (mi_tab.mat_escaque[col_act-c][fil_act].ocupado == 2){ // Posible avance
-                casilla.first = col_act-c;
-                casilla.second = fil_act;
-                mov_set.push_back(casilla);
-                c+=c;
-            }
-            else if (mi_tab.mat_escaque[col_act-c][fil_act].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-c;
-                casilla.second = fil_act;
-                atq_set.push_back(casilla);
-                n = 0;
-            }
-        }
-        else { // Ningún movimiento más
-            n=0;
-        };
+        n = 1;  c = 1;
     };
 };
 
@@ -468,116 +318,24 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
     mov_set.clear();
     atq_set.clear();
     pair<int,int> casilla;
+    vector<pair<int,int>> escaques_ady;
+    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
+    escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
+    escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
+    escaques_ady[6].first = 1;  escaques_ady[6].second = 0;   escaques_ady[7].first = 1;  escaques_ady[7].second = 1;
     vector<vector<bool>> escaques_libres = this->comprobar_mov_rey(mi_tab, this->jugador, v_peon, v_caballo, v_alfil, v_torre, v_rey);
-    if (comprobar_limites(col_act, fil_act+1)){  //Comprobar escaque superior
-        if (escaques_libres[col_act][fil_act+1]){
-            if (mi_tab.mat_escaque[col_act][fil_act+1].ocupado == 2){
-                casilla.first = col_act;
-                casilla.second = fil_act+1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act][fil_act+1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act;
-                casilla.second = fil_act+1;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act-1, fil_act+1)){
-        if (escaques_libres[col_act-1][fil_act+1]){ //Comprobar escaque superior izquierda
-            if (mi_tab.mat_escaque[col_act-1][fil_act+1].ocupado == 2){
-                casilla.first = col_act-1;
-                casilla.second = fil_act+1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act-1][fil_act+1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-1;
-                casilla.second = fil_act+1;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act-1, fil_act)){
-        if (escaques_libres[col_act-1][fil_act]){ //Comprobar escaque izquierda
-            if (mi_tab.mat_escaque[col_act-1][fil_act].ocupado == 2){
-                casilla.first = col_act-1;
-                casilla.second = fil_act;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act-1][fil_act].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-1;
-                casilla.second = fil_act;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act-1, fil_act-1)){
-        if (escaques_libres[col_act-1][fil_act-1]){ //Comprobar escaque inferior izquierda
-            if (mi_tab.mat_escaque[col_act-1][fil_act-1].ocupado == 2){
-                casilla.first = col_act-1;
-                casilla.second = fil_act-1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act-1][fil_act-1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act-1;
-                casilla.second = fil_act-1;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act, fil_act-1)){ //Comprobar escaque inferior
-        if (escaques_libres[col_act][fil_act-1]){
-            if (mi_tab.mat_escaque[col_act][fil_act-1].ocupado == 2){
-                casilla.first = col_act;
-                casilla.second = fil_act-1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act][fil_act-1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act;
-                casilla.second = fil_act-1;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act+1, fil_act-1)){ //Comprobar escaque inferior derecha
-        if (escaques_libres[col_act+1][fil_act-1]){
-            if (mi_tab.mat_escaque[col_act+1][fil_act-1].ocupado == 2){
-                casilla.first = col_act+1;
-                casilla.second = fil_act-1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act+1][fil_act-1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+1;
-                casilla.second = fil_act-1;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act+1, fil_act)){ //Comprobar escaque derecha
-        if (escaques_libres[col_act+1][fil_act]){
-            if (mi_tab.mat_escaque[col_act+1][fil_act].ocupado == 2){
-                casilla.first = col_act+1;
-                casilla.second = fil_act;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act+1][fil_act].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+1;
-                casilla.second = fil_act;
-                atq_set.push_back(casilla);
-            };
-        };
-    };
-    if (comprobar_limites(col_act+1, fil_act+1)){ //Comprobar escaque superior derecha
-        if (escaques_libres[col_act+1][fil_act+1]){
-            if (mi_tab.mat_escaque[col_act+1][fil_act+1].ocupado == 2){
-                casilla.first = col_act+1;
-                casilla.second = fil_act+1;
-                mov_set.push_back(casilla);
-            }
-            else if (mi_tab.mat_escaque[col_act+1][fil_act+1].ocupado != jugador){ // Posible ataque
-                casilla.first = col_act+1;
-                casilla.second = fil_act+1;
-                atq_set.push_back(casilla);
+    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+        if (comprobar_limites(col_act+escaques_ady[i].first, fil_act+escaques_ady[i].second)){  //Comprobar escaque superior
+            if (escaques_libres[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second]){
+                casilla.first = col_act+escaques_ady[i].first;
+                casilla.second = fil_act+escaques_ady[i].second;
+                escaque_def.push_back(casilla);
+                if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){
+                    mov_set.push_back(casilla);
+                }
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){ // Posible ataque
+                    atq_set.push_back(casilla);
+                };
             };
         };
     };
@@ -658,7 +416,19 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
     return habilitar_enroque;
 };
 // Comprobar mate
-void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre){
+void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey){
+    mate = 1;
+    vector<pair<int,int>> escaques_ady;
+    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
+    escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
+    escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
+    escaques_ady[6].first = 1;  escaques_ady[6].second = 0;   escaques_ady[7].first = 1;  escaques_ady[7].second = 1;
+    for (unsigned long i = 0; i <= escaques_ady.size(); i++){ // Se comprueba si el rey se puede salvar moviéndose
+        if (mate)
+            mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_rey);
+    };
+
+
 
 };
 
