@@ -12,7 +12,6 @@ public:
     bool hay_rey;
     bool pulsado;
     int ocupado;
-    vector<pair<int,int>> zona_def; // Indica si la casilla este defendida (1) o no (0) y porque pieza <blanca,negra>
     escaque(bool, int);
     escaque();
 };
