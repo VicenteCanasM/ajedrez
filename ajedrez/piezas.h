@@ -9,14 +9,14 @@ using namespace  std;
 // PIEZAS //
 class piezas {
 public:
-    pair<int,int> pos;
-    int jugador;
-    int valor;
-    vector<pair<int,int>> mov_set;
-    vector<pair<int,int>> atq_set;
-    vector<pair<int,int>> escaque_def;
+    pair<int,int> pos; // Posición de la pieza en el tablero
+    int jugador; // Color de la pieza: 0 -> blancas; 1 -> negras;
+    int valor; // Valor numérico de la pieza
+    vector<pair<int,int>> mov_set; // Posiciones libres a las que puede acceder la pieza
+    vector<pair<int,int>> atq_set; // Posiciones a las que puede atacar la pieza (hay una pieza rival)
+    vector<pair<int,int>> escaque_def; // Posiciones defendidas por la pieza (incluye posiciones en las que hay una pieza aliada, pero no enemiga)
 public:
-    piezas(int, int, int);
+    piezas(int, int, int); // (columna, fila, color[0 -> blancas; 1 -> negras])
     ~piezas();
     void mover();
 };
@@ -24,14 +24,14 @@ public:
 // PEON //
 class peon : public piezas {
 public:
-    bool first_mov;
-    bool jaque_rey;
-    vector<pair<int,int>> atq_rey;
+    bool first_mov; // 1 -> si el peón aún no se ha movido; 0 -> caso contrario
+    bool jaque_rey; // 1 -> si la pieza hace jaque al rey; 0 -> caso contrario
+    vector<pair<int,int>> atq_rey; // Trayectoria a tapar en caso de que esta pieza haga jaque al rey rival
 public:
     peon(int, int, int);
     ~peon();
-    void coronar();
-    void movs(tablero);
+    void coronar(); // Coronar el peón cuando llegue al extremo contrario
+    void movs(tablero); // Genera los movimientos posibles de la pieza
 };
 
 // CABALLO //
@@ -71,8 +71,8 @@ public:
 // REY //
 class rey : public piezas {
 public:
-    bool jaque;
-    bool mate;
+    bool jaque; // 1 -> el rey está en jaque; 0 -> caso contrario
+    bool mate; // 1 -> el rey está en jaque mate; 0 -> caso contrario
     bool first_mov;
 public:
     rey(int, int, int);
