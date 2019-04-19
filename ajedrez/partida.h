@@ -14,11 +14,12 @@ public:
     vector <alfil> v_alfil;
     vector <torre> v_torre;
     vector <rey> v_rey;
+    vector <dama> v_dama;
     int turno;
 public:
     partida();
     ~partida();
-    vector<vector<bool>> comprobar_mov_escaque(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+    vector<vector<bool>> comprobar_mov_escaque(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
 };
 
 #endif // PARTIDA_H

@@ -8,7 +8,7 @@ partida::~partida(){
 
 };
 
-vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey){
+vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector <dama> v_dama){
     vector<vector<bool>> tablero_libre(8);
     for(unsigned long i = 0; i < 8; i++) tablero_libre[i].resize(8, 1);
     for (unsigned long  i = 0; i <= v_peon.size() ; i++){
@@ -32,7 +32,7 @@ vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vec
     };
     for (unsigned long  i = 0; i <= v_alfil.size() ; i++){
         if (v_alfil[i].jugador != jug){
-            v_alfil[i].movs(mi_tab);
+            v_alfil[i].movsA(mi_tab);
             for (unsigned long j = 0; j < v_alfil[i].mov_set.size(); j++){
                 tablero_libre[v_alfil[i].mov_set[j].first][v_alfil[i].mov_set[j].second] = 0;
             };
@@ -40,7 +40,7 @@ vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vec
     };
     for (unsigned long  i = 0; i <= v_torre.size() ; i++){
         if (v_torre[i].jugador != jug){
-            v_torre[i].movs(mi_tab);
+            v_torre[i].movsT(mi_tab);
             for (unsigned long j = 0; j < v_torre[i].mov_set.size(); j++){
                 tablero_libre[v_torre[i].mov_set[j].first][v_torre[i].mov_set[j].second] = 0;
             };
@@ -54,5 +54,15 @@ vector<vector<bool>> partida::comprobar_mov_escaque(tablero mi_tab, int jug, vec
             };
         };
     };
+    for (unsigned long i = 0; i <= v_dama.size(); i++){
+        if(v_dama[i].jugador != jug){
+            v_dama[i].movsT(mi_tab);
+            v_dama[i].movsA(mi_tab);
+            for (unsigned long j = 0; j < v_dama[i].mov_set.size(); j++){
+                 tablero_libre[v_dama[i].mov_set[j].first][v_dama[i].mov_set[j].second] = 0;
+            }
+            };
+        }
+    }
     return tablero_libre;
 };

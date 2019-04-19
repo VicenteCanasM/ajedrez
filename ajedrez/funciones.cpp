@@ -13,7 +13,7 @@ bool comprobar_limites(int col, int fil){
 };
 
 // Comprobar si la casilla elegida está amenazada
-bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey){
+bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
     bool flag = 0;
     for (unsigned long  i = 0; i <= v_peon.size() ; i++){
         if (v_peon[i].jugador != jug){
@@ -35,7 +35,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     for (unsigned long  i = 0; i <= v_alfil.size() ; i++){
         if (v_alfil[i].jugador != jug){
-            v_alfil[i].movs(mi_tab);
+            v_alfil[i].movsA(mi_tab);
             for (unsigned long j = 0; j < v_alfil[i].atq_set.size(); j++){
                 if (columna == v_alfil[i].atq_set[j].first && fila == v_alfil[i].atq_set[j].second)
                     flag = 1;
@@ -44,7 +44,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     for (unsigned long  i = 0; i <= v_torre.size() ; i++){
         if (v_torre[i].jugador != jug){
-            v_torre[i].movs(mi_tab);
+            v_torre[i].movsT(mi_tab);
             for (unsigned long j = 0; j < v_torre[i].atq_set.size(); j++){
                 if (columna == v_torre[i].atq_set[j].first && fila == v_torre[i].atq_set[j].second)
                     flag = 1;
@@ -56,6 +56,16 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
             v_rey[i].movs(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_rey);
             for (unsigned long j = 0; j < v_rey[i].atq_set.size(); j++){
                 if (columna == v_rey[i].atq_set[j].first && fila == v_rey[i].atq_set[j].second)
+                    flag = 1;
+            };
+        };
+    };
+    for (unsigned long  i = 0; i <= v_dama.size() ; i++){
+        if (v_dama[i].jugador != jug){
+            v_dama[i].movsT(mi_tab);
+            v_dama[i].movsA(mi_tab);
+            for (unsigned long j = 0; j < v_dama[i].atq_set.size(); j++){
+                if (columna == v_dama[i].atq_set[j].first && fila == v_dama[i].atq_set[j].second)
                     flag = 1;
             };
         };

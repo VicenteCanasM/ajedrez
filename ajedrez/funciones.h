@@ -4,4 +4,4 @@
 
 bool comprobar_limites(int, int);
 
-bool comprobar_amenaza(tablero, int, int, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+bool comprobar_amenaza(tablero, int, int, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);

@@ -26,6 +26,7 @@ class peon : public piezas {
 public:
     bool first_mov; // 1 -> si el peón aún no se ha movido; 0 -> caso contrario
     bool jaque_rey; // 1 -> si la pieza hace jaque al rey; 0 -> caso contrario
+    bool dos_pasos; // 1 -> si el peón acaba de avanzar dos casillas; 0 -> caso contrario ((HAY QUE HACER UN METODO PARA COMPROBARLO))
     vector<pair<int,int>> atq_rey; // Trayectoria a tapar en caso de que esta pieza haga jaque al rey rival
 public:
     peon(int, int, int);
@@ -46,18 +47,18 @@ public:
 };
 
 // ALFIL //
-class alfil : public piezas {
+class alfil : virtual public piezas {
 public:
     bool jaque_rey;
     vector<pair<int,int>> atq_rey;
 public:
     alfil(int, int, int);
     ~alfil();
-    void movs(tablero);
+    void movsA(tablero);
 };
 
 // TORRE //
-class torre : public piezas {
+class torre : virtual public piezas {
 public:
     bool first_mov;
     bool jaque_rey;
@@ -65,7 +66,7 @@ public:
 public:
     torre(int, int, int);
     ~torre();
-    void movs(tablero);
+    void movsT(tablero);
 };
 
 // REY //
@@ -77,11 +78,15 @@ public:
 public:
     rey(int, int, int);
     ~rey();
-    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
-    void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>);
-    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
-    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
-    pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>);
+    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+    void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
+    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+    pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+};
+
+// DAMA //
+class dama : public torre, public alfil {
 };
 
 
