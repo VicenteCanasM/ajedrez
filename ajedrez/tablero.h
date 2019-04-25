@@ -9,6 +9,7 @@ using namespace std;
 class escaque{
 public:
     bool color;
+    bool hay_rey;
     bool pulsado;
     int ocupado;
     escaque(bool, int);
