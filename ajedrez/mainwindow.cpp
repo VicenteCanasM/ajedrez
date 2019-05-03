@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <vector>
-#include "tablero.h"
+
 using namespace std;
 
 
@@ -18,15 +17,69 @@ MainWindow::MainWindow(QWidget *parent) :
             else if (i > 5) pos_inicial[i][j] = 1;
         }
     }
+    vector < vector < bool >> reyes(8, vector <bool>(8, false));
+    reyes[4][0] = true;
+    reyes[4][7] = true;
 
     gris.setColor(QPalette::Button,QColor(Qt::gray));
     blanco.setColor(QPalette::Button, QColor(Qt::white));
     azul.setColor(QPalette::Button,QColor(Qt::darkCyan));
     cian.setColor(QPalette::Button, QColor(Qt::cyan));
 
+    vector < QIcon > iconos(13);
+    iconos[0] = QIcon("");
+    iconos[1] = QIcon("pieces/merida_new/wp.svg");
+    iconos[2] = QIcon("pieces/merida_new/wn.svg");
+    iconos[3] = QIcon("pieces/merida_new/wb.svg");
+    iconos[4] = QIcon("pieces/merida_new/wr.svg");
+    iconos[5] = QIcon("pieces/merida_new/wq.svg");
+    iconos[6] = QIcon("pieces/merida_new/wk.svg");
+    iconos[7] = QIcon("pieces/merida_new/bp.svg");
+    iconos[8] = QIcon("pieces/merida_new/bn.svg");
+    iconos[9] = QIcon("pieces/merida_new/bb.svg");
+    iconos[10] = QIcon("pieces/merida_new/br.svg");
+    iconos[11] = QIcon("pieces/merida_new/bq.svg");
+    iconos[12] = QIcon("pieces/merida_new/bk.svg");
+
     tablero aux(pos_inicial);
     echiquier = aux;
+    echiquier.mat_escaque[0][0].t_icon = 4;
+    echiquier.mat_escaque[1][0].t_icon = 2;
+    echiquier.mat_escaque[2][0].t_icon = 3;
+    echiquier.mat_escaque[3][0].t_icon = 5;
+    echiquier.mat_escaque[4][0].t_icon = 6;
+    echiquier.mat_escaque[5][0].t_icon = 3;
+    echiquier.mat_escaque[6][0].t_icon = 2;
+    echiquier.mat_escaque[7][0].t_icon = 4;
+    echiquier.mat_escaque[0][1].t_icon = 1;
+    echiquier.mat_escaque[1][1].t_icon = 1;
+    echiquier.mat_escaque[2][1].t_icon = 1;
+    echiquier.mat_escaque[3][1].t_icon = 1;
+    echiquier.mat_escaque[4][1].t_icon = 1;
+    echiquier.mat_escaque[5][1].t_icon = 1;
+    echiquier.mat_escaque[6][1].t_icon = 1;
+    echiquier.mat_escaque[7][1].t_icon = 1;
+    echiquier.mat_escaque[0][7].t_icon = 10;
+    echiquier.mat_escaque[1][7].t_icon = 8;
+    echiquier.mat_escaque[2][7].t_icon = 9;
+    echiquier.mat_escaque[3][7].t_icon = 11;
+    echiquier.mat_escaque[4][7].t_icon = 12;
+    echiquier.mat_escaque[5][7].t_icon = 9;
+    echiquier.mat_escaque[6][7].t_icon = 8;
+    echiquier.mat_escaque[7][7].t_icon = 10;
+    echiquier.mat_escaque[0][6].t_icon = 7;
+    echiquier.mat_escaque[1][6].t_icon = 7;
+    echiquier.mat_escaque[2][6].t_icon = 7;
+    echiquier.mat_escaque[3][6].t_icon = 7;
+    echiquier.mat_escaque[4][6].t_icon = 7;
+    echiquier.mat_escaque[5][6].t_icon = 7;
+    echiquier.mat_escaque[6][6].t_icon = 7;
+    echiquier.mat_escaque[7][6].t_icon = 7;
     //echiquier.imprimir_tablero();
+    /*QIcon caballo("pieces/merida_new/wn.svg");
+    QIcon nada("");
+    ui -> a1 ->setIcon(caballo);
+    ui -> b1 -> setIcon(nada);*/
 
     // Inicialización de los colores de los botones de escaques
     {
@@ -260,6 +313,7 @@ void MainWindow::on_a2_clicked()
     }
 
     ui -> a2 -> update();
+
 }
 
 void MainWindow::on_a3_clicked()

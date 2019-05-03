@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "tablero.h"
+#include <vector>
+#include <QIcon>
 
 namespace Ui {
 class MainWindow;
