@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    tablero.cpp
+    tablero.cpp \
+    funciones.cpp
 
 HEADERS += \
         mainwindow.h \
-    tablero.h
+    tablero.h \
+    funciones.h
 
 FORMS += \
         mainwindow.ui

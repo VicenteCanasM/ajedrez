@@ -5,6 +5,7 @@
 #include "tablero.h"
 #include <vector>
 #include <QIcon>
+#include "funciones.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +20,10 @@ public:
     ~MainWindow();
     tablero echiquier;//(vector <vector <int>>);
     QPalette blanco, gris, azul, cian;
+    bool estado_movimiento;
+    pair <int, int> escaque_origen;
+    vector < QIcon > iconos;
+    QPushButton *boton_origen;
 
 private slots:
     void on_a1_clicked();

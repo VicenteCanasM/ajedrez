@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    estado_movimiento = true;
+
     vector < vector < int >> pos_inicial(8, vector <int>(8,2));
     for (unsigned long i = 0; i < 8; i++){
         for (unsigned long j = 0; j < 8; j++){
@@ -26,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     azul.setColor(QPalette::Button,QColor(Qt::darkCyan));
     cian.setColor(QPalette::Button, QColor(Qt::cyan));
 
-    vector < QIcon > iconos(13);
+    iconos.resize(13);
     iconos[0] = QIcon("");
     iconos[1] = QIcon("pieces/merida_new/wp.svg");
     iconos[2] = QIcon("pieces/merida_new/wn.svg");
@@ -75,7 +77,6 @@ MainWindow::MainWindow(QWidget *parent) :
     echiquier.mat_escaque[5][6].t_icon = 7;
     echiquier.mat_escaque[6][6].t_icon = 7;
     echiquier.mat_escaque[7][6].t_icon = 7;
-    //echiquier.imprimir_tablero();
     /*QIcon caballo("pieces/merida_new/wn.svg");
     QIcon nada("");
     ui -> a1 ->setIcon(caballo);
@@ -278,6 +279,7 @@ MainWindow::MainWindow(QWidget *parent) :
         ui -> h8 -> update();
 
     }
+    //echiquier.imprimir_tablero();
 }
 
 MainWindow::~MainWindow()
@@ -297,6 +299,18 @@ void MainWindow::on_a1_clicked()
         MainWindow::echiquier.mat_escaque[0][0].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> a1;
+    }else{
+        pair<int,int> escaque_destino(0,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a1, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> a1 -> update();
 }
 
@@ -310,6 +324,17 @@ void MainWindow::on_a2_clicked()
     }else{
         ui -> a2 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[0][1].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> a2;
+    }else{
+        pair<int,int> escaque_destino(0,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a2, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> a2 -> update();
@@ -327,6 +352,18 @@ void MainWindow::on_a3_clicked()
         MainWindow::echiquier.mat_escaque[0][2].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> a3;
+    }else{
+        pair<int,int> escaque_destino(0,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a3, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> a3 -> update();
 }
 
@@ -342,6 +379,18 @@ void MainWindow::on_a4_clicked()
         MainWindow::echiquier.mat_escaque[0][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> a4;
+    }else{
+        pair<int,int> escaque_destino(0,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> a4 -> update();
 }
 
@@ -355,6 +404,18 @@ void MainWindow::on_a5_clicked()
         ui -> a5 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[0][4].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> a5;
+    }else{
+        pair<int,int> escaque_destino(0,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a5, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> a5 -> update();
 }
@@ -371,6 +432,18 @@ void MainWindow::on_a6_clicked()
         MainWindow::echiquier.mat_escaque[0][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> a6;
+    }else{
+        pair<int,int> escaque_destino(0,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> a6 -> update();
 }
 
@@ -384,6 +457,18 @@ void MainWindow::on_a7_clicked()
         ui -> a7 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[0][6].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> a7;
+    }else{
+        pair<int,int> escaque_destino(0,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a7, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> a7 -> update();
 }
@@ -400,6 +485,18 @@ void MainWindow::on_a8_clicked()
         MainWindow::echiquier.mat_escaque[0][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 0;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> a8;
+    }else{
+        pair<int,int> escaque_destino(0,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> a8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> a8 -> update();
 }
 
@@ -413,6 +510,18 @@ void MainWindow::on_b1_clicked()
         ui -> b1 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[1][0].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> b1;
+    }else{
+        pair<int,int> escaque_destino(1,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b1, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> b1 -> update();
 }
@@ -429,6 +538,18 @@ void MainWindow::on_b2_clicked()
         MainWindow::echiquier.mat_escaque[1][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> b2;
+    }else{
+        pair<int,int> escaque_destino(1,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> b2 -> update();
 }
 
@@ -442,6 +563,18 @@ void MainWindow::on_b3_clicked()
         ui -> b3 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[1][2].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> b3;
+    }else{
+        pair<int,int> escaque_destino(1,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b3, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> b3 -> update();
 }
@@ -458,6 +591,18 @@ void MainWindow::on_b4_clicked()
         MainWindow::echiquier.mat_escaque[1][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> b3;
+    }else{
+        pair<int,int> escaque_destino(1,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b3, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> b4 -> update();
 }
 
@@ -471,6 +616,18 @@ void MainWindow::on_b5_clicked()
         ui -> b5 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[1][4].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> b5;
+    }else{
+        pair<int,int> escaque_destino(1,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b5, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> b5 -> update();
 }
@@ -487,6 +644,18 @@ void MainWindow::on_b6_clicked()
         MainWindow::echiquier.mat_escaque[1][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> b6;
+    }else{
+        pair<int,int> escaque_destino(1,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> b6 -> update();
 }
 
@@ -500,6 +669,18 @@ void MainWindow::on_b7_clicked()
         ui -> b7 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[1][6].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> b7;
+    }else{
+        pair<int,int> escaque_destino(1,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b7, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> b7 -> update();
 }
@@ -516,6 +697,18 @@ void MainWindow::on_b8_clicked()
         MainWindow::echiquier.mat_escaque[1][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 1;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> b8;
+    }else{
+        pair<int,int> escaque_destino(1,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> b8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> b8 -> update();
 }
 
@@ -529,6 +722,18 @@ void MainWindow::on_c1_clicked()
         ui -> c1 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[2][0].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> c1;
+    }else{
+        pair<int,int> escaque_destino(2,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c1, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> c1 -> update();
 }
@@ -545,6 +750,17 @@ void MainWindow::on_c2_clicked()
         MainWindow::echiquier.mat_escaque[2][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> c2;
+    }else{
+        pair<int,int> escaque_destino(2,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> c2 -> update();
 }
 
@@ -558,6 +774,18 @@ void MainWindow::on_c3_clicked()
         ui -> c3 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[2][2].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> c3;
+    }else{
+        pair<int,int> escaque_destino(2,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c3, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> c3 -> update();
 }
@@ -574,6 +802,18 @@ void MainWindow::on_c4_clicked()
         MainWindow::echiquier.mat_escaque[2][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> c4;
+    }else{
+        pair<int,int> escaque_destino(2,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> c4 -> update();
 }
 
@@ -587,6 +827,18 @@ void MainWindow::on_c5_clicked()
         ui -> c5 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[2][4].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> c5;
+    }else{
+        pair<int,int> escaque_destino(2,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c5, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> c5 -> update();
 }
@@ -603,6 +855,18 @@ void MainWindow::on_c6_clicked()
         MainWindow::echiquier.mat_escaque[2][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> c6;
+    }else{
+        pair<int,int> escaque_destino(2,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> c6 -> update();
 }
 
@@ -616,6 +880,18 @@ void MainWindow::on_c7_clicked()
         ui -> c7 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[2][6].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> c7;
+    }else{
+        pair<int,int> escaque_destino(2,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c7, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> c7 -> update();
 }
@@ -632,6 +908,17 @@ void MainWindow::on_c8_clicked()
         MainWindow::echiquier.mat_escaque[2][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 2;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> c8;
+    }else{
+        pair<int,int> escaque_destino(2,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> c8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> c8 -> update();
 }
 
@@ -645,6 +932,18 @@ void MainWindow::on_d1_clicked()
         ui -> d1 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[3][0].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> d1;
+    }else{
+        pair<int,int> escaque_destino(3,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d1, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> d1 -> update();
 }
@@ -661,6 +960,17 @@ void MainWindow::on_d2_clicked()
         MainWindow::echiquier.mat_escaque[3][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> d2;
+    }else{
+        pair<int,int> escaque_destino(3,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> d2 -> update();
 }
 
@@ -674,6 +984,18 @@ void MainWindow::on_d3_clicked()
         ui -> d3 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[3][2].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> d3;
+    }else{
+        pair<int,int> escaque_destino(3,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d3, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> d3 -> update();
 }
@@ -690,6 +1012,17 @@ void MainWindow::on_d4_clicked()
         MainWindow::echiquier.mat_escaque[3][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> d4;
+    }else{
+        pair<int,int> escaque_destino(0,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> d4 -> update();
 }
 
@@ -703,6 +1036,18 @@ void MainWindow::on_d5_clicked()
         ui -> d5 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[3][4].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> d5;
+    }else{
+        pair<int,int> escaque_destino(3,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d5, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> d5 -> update();
 }
@@ -719,6 +1064,17 @@ void MainWindow::on_d6_clicked()
         MainWindow::echiquier.mat_escaque[3][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> d6;
+    }else{
+        pair<int,int> escaque_destino(3,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> d6 -> update();
 }
 
@@ -731,6 +1087,17 @@ void MainWindow::on_d7_clicked()
     }else{
         ui -> d7 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[3][6].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> d7;
+    }else{
+        pair<int,int> escaque_destino(3,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d7, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> d7 -> update();
@@ -748,6 +1115,17 @@ void MainWindow::on_d8_clicked()
         MainWindow::echiquier.mat_escaque[3][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 3;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> d7;
+    }else{
+        pair<int,int> escaque_destino(3,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> d8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> d8 -> update();
 }
 
@@ -760,6 +1138,17 @@ void MainWindow::on_e1_clicked()
     }else{
         ui -> e1 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[4][0].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> e1;
+    }else{
+        pair<int,int> escaque_destino(4,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e1, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> e1 -> update();
@@ -777,6 +1166,17 @@ void MainWindow::on_e2_clicked()
         MainWindow::echiquier.mat_escaque[4][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> e2;
+    }else{
+        pair<int,int> escaque_destino(4,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> e2 -> update();
 }
 
@@ -789,6 +1189,17 @@ void MainWindow::on_e3_clicked()
     }else{
         ui -> e3 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[4][2].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> e3;
+    }else{
+        pair<int,int> escaque_destino(4,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e3, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> e3 -> update();
@@ -806,6 +1217,17 @@ void MainWindow::on_e4_clicked()
         MainWindow::echiquier.mat_escaque[4][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> e4;
+    }else{
+        pair<int,int> escaque_destino(4,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> e4 -> update();
 }
 
@@ -818,6 +1240,17 @@ void MainWindow::on_e5_clicked()
     }else{
         ui -> e5 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[4][4].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> e5;
+    }else{
+        pair<int,int> escaque_destino(4,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e5, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> e5 -> update();
@@ -835,6 +1268,17 @@ void MainWindow::on_e6_clicked()
         MainWindow::echiquier.mat_escaque[4][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> e6;
+    }else{
+        pair<int,int> escaque_destino(4,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> e6 -> update();
 }
 
@@ -847,6 +1291,17 @@ void MainWindow::on_e7_clicked()
     }else{
         ui -> e7 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[4][6].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> e7;
+    }else{
+        pair<int,int> escaque_destino(4,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e7, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> e7 -> update();
@@ -864,6 +1319,17 @@ void MainWindow::on_e8_clicked()
         MainWindow::echiquier.mat_escaque[4][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 4;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> e8;
+    }else{
+        pair<int,int> escaque_destino(4,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> e8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> e8 -> update();
 }
 
@@ -877,6 +1343,18 @@ void MainWindow::on_f1_clicked()
         ui -> f1 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[5][0].pulsado = 0;
     }
+
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> f1;
+    }else{
+        pair<int,int> escaque_destino(5,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f1, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
 
     ui -> f1 -> update();
 }
@@ -893,6 +1371,18 @@ void MainWindow::on_f2_clicked()
         MainWindow::echiquier.mat_escaque[5][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> f2;
+    }else{
+        pair<int,int> escaque_destino(5,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
+
     ui -> f2 -> update();
 }
 
@@ -905,6 +1395,17 @@ void MainWindow::on_f3_clicked()
     }else{
         ui -> f3 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[5][2].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> f3;
+    }else{
+        pair<int,int> escaque_destino(5,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f3, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> f3 -> update();
@@ -922,6 +1423,17 @@ void MainWindow::on_f4_clicked()
         MainWindow::echiquier.mat_escaque[5][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> f4;
+    }else{
+        pair<int,int> escaque_destino(5,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> f4 -> update();
 }
 
@@ -934,6 +1446,17 @@ void MainWindow::on_f5_clicked()
     }else{
         ui -> f5 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[5][4].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> f5;
+    }else{
+        pair<int,int> escaque_destino(5,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f5, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> f5 -> update();
@@ -951,6 +1474,17 @@ void MainWindow::on_f6_clicked()
         MainWindow::echiquier.mat_escaque[5][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> f6;
+    }else{
+        pair<int,int> escaque_destino(5,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> f6 -> update();
 }
 
@@ -963,6 +1497,17 @@ void MainWindow::on_f7_clicked()
     }else{
         ui -> f7 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[5][6].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> f7;
+    }else{
+        pair<int,int> escaque_destino(5,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f7, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> f7 -> update();
@@ -980,6 +1525,17 @@ void MainWindow::on_f8_clicked()
         MainWindow::echiquier.mat_escaque[5][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 5;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> f8;
+    }else{
+        pair<int,int> escaque_destino(5,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> f8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> f8 -> update();
 }
 
@@ -992,6 +1548,17 @@ void MainWindow::on_g1_clicked()
     }else{
         ui -> g1 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[6][0].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> g1;
+    }else{
+        pair<int,int> escaque_destino(6,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g1, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> g1 -> update();
@@ -1009,6 +1576,17 @@ void MainWindow::on_g2_clicked()
         MainWindow::echiquier.mat_escaque[6][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> g2;
+    }else{
+        pair<int,int> escaque_destino(6,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> g2 -> update();
 }
 
@@ -1021,6 +1599,17 @@ void MainWindow::on_g3_clicked()
     }else{
         ui -> g3 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[6][2].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> g3;
+    }else{
+        pair<int,int> escaque_destino(6,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g3, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> g3 -> update();
@@ -1038,6 +1627,17 @@ void MainWindow::on_g4_clicked()
         MainWindow::echiquier.mat_escaque[6][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> g4;
+    }else{
+        pair<int,int> escaque_destino(6,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> g4 -> update();
 }
 
@@ -1050,6 +1650,17 @@ void MainWindow::on_g5_clicked()
     }else{
         ui -> g5 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[6][4].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> g5;
+    }else{
+        pair<int,int> escaque_destino(6,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g5, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> g5 -> update();
@@ -1067,6 +1678,17 @@ void MainWindow::on_g6_clicked()
         MainWindow::echiquier.mat_escaque[6][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> g6;
+    }else{
+        pair<int,int> escaque_destino(6,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> g6 -> update();
 }
 
@@ -1079,6 +1701,17 @@ void MainWindow::on_g7_clicked()
     }else{
         ui -> g7 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[6][6].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> g7;
+    }else{
+        pair<int,int> escaque_destino(6,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g7, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> g7 -> update();
@@ -1096,6 +1729,17 @@ void MainWindow::on_g8_clicked()
         MainWindow::echiquier.mat_escaque[6][7].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 6;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> g8;
+    }else{
+        pair<int,int> escaque_destino(6,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> g8, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> g8 -> update();
 }
 
@@ -1108,6 +1752,17 @@ void MainWindow::on_h1_clicked()
     }else{
         ui -> h1 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[7][0].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 0;
+        estado_movimiento = false;
+        boton_origen = ui -> h1;
+    }else{
+        pair<int,int> escaque_destino(7,0);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h1, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> h1 -> update();
@@ -1125,6 +1780,17 @@ void MainWindow::on_h2_clicked()
         MainWindow::echiquier.mat_escaque[7][1].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 1;
+        estado_movimiento = false;
+        boton_origen = ui -> h2;
+    }else{
+        pair<int,int> escaque_destino(7,1);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h2, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> h2 -> update();
 }
 
@@ -1137,6 +1803,17 @@ void MainWindow::on_h3_clicked()
     }else{
         ui -> h3 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[7][2].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 2;
+        estado_movimiento = false;
+        boton_origen = ui -> h3;
+    }else{
+        pair<int,int> escaque_destino(7,2);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h3, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> h3 -> update();
@@ -1154,6 +1831,17 @@ void MainWindow::on_h4_clicked()
         MainWindow::echiquier.mat_escaque[7][3].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 3;
+        estado_movimiento = false;
+        boton_origen = ui -> h4;
+    }else{
+        pair<int,int> escaque_destino(7,3);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h4, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> h4 -> update();
 }
 
@@ -1166,6 +1854,17 @@ void MainWindow::on_h5_clicked()
     }else{
         ui -> h5 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[7][4].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 4;
+        estado_movimiento = false;
+        boton_origen = ui -> h5;
+    }else{
+        pair<int,int> escaque_destino(7,4);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h5, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> h5 -> update();
@@ -1183,6 +1882,17 @@ void MainWindow::on_h6_clicked()
         MainWindow::echiquier.mat_escaque[7][5].pulsado = 0;
     }
 
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 5;
+        estado_movimiento = false;
+        boton_origen = ui -> h6;
+    }else{
+        pair<int,int> escaque_destino(7,5);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h6, escaque_origen,escaque_destino,estado_movimiento,iconos);
+    }
+
     ui -> h6 -> update();
 }
 
@@ -1195,6 +1905,17 @@ void MainWindow::on_h7_clicked()
     }else{
         ui -> h7 -> setPalette(MainWindow::blanco);
         MainWindow::echiquier.mat_escaque[7][6].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 6;
+        estado_movimiento = false;
+        boton_origen = ui -> h7;
+    }else{
+        pair<int,int> escaque_destino(7,6);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h7, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> h7 -> update();
@@ -1210,6 +1931,17 @@ void MainWindow::on_h8_clicked()
     }else{
         ui -> h8 -> setPalette(MainWindow::gris);
         MainWindow::echiquier.mat_escaque[7][7].pulsado = 0;
+    }
+
+    if (estado_movimiento){
+        escaque_origen.first = 7;
+        escaque_origen.second = 7;
+        estado_movimiento = false;
+        boton_origen = ui -> h8;
+    }else{
+        pair<int,int> escaque_destino(7,7);
+        boton_origen->setIcon(iconos[0]);
+        estado_movimiento = mueve_icono(&echiquier, ui -> h8, escaque_origen,escaque_destino,estado_movimiento,iconos);
     }
 
     ui -> h8 -> update();
