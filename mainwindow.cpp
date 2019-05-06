@@ -5,10 +5,6 @@
 
 using namespace std;
 
-static bool flagmov;
-static pair<int,int> pos_origen;
-static int pos_o;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -741,7 +737,7 @@ void MainWindow::boton_pulsado(){
     // Identificar pieza elegida y su mov_set (movs_posibles)
     bool mov_realizado = 0;
     vector<pair<int,int>> movs_posibles;
-    /*for (unsigned int i = 0; i < v_peon.size(); i++){
+    for (unsigned int i = 0; i < v_peon.size(); i++){
         if (mov_realizado == 0){
             if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
                 v_peon[i].movs(echiquier);
@@ -794,7 +790,7 @@ void MainWindow::boton_pulsado(){
                 mov_realizado = 1;
             }
         }
-    }*/
+    }
 
 
     if (flagmov == 0){
@@ -805,7 +801,7 @@ void MainWindow::boton_pulsado(){
         else limpia_tablero();
     }
     else {
-       /* for (unsigned int k = 0; k <= movs_posibles.size(); k++){
+        for (unsigned int k = 0; k < movs_posibles.size(); k++){
             if (movs_posibles[k].first == coord.first && movs_posibles[k].second == coord.second){
                 // Cambiar iconos
                 int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
@@ -820,7 +816,7 @@ void MainWindow::boton_pulsado(){
 
                 // Cambiar posicion de la pieza
                 mov_realizado = 0;
-                for (unsigned int i = 0; i <= v_peon.size(); i++){
+                for (unsigned int i = 0; i < v_peon.size(); i++){
                     if (mov_realizado == 0){
                         if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
                             v_peon[i].pos.first = coord.first;
@@ -829,7 +825,7 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_caballo.size(); i++){
+                for (unsigned int i = 0; i < v_caballo.size(); i++){
                     if (mov_realizado == 0){
                         if(v_caballo[i].pos.first == pos_origen.first && v_caballo[i].pos.second == pos_origen.second){
                             v_caballo[i].pos.first = coord.first;
@@ -838,7 +834,7 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_alfil.size(); i++){
+                for (unsigned int i = 0; i < v_alfil.size(); i++){
                     if (mov_realizado == 0){
                         if(v_alfil[i].pos.first == pos_origen.first && v_alfil[i].pos.second == pos_origen.second){
                             v_alfil[i].pos.first = coord.first;
@@ -847,7 +843,7 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_torre.size(); i++){
+                for (unsigned int i = 0; i < v_torre.size(); i++){
                     if (mov_realizado == 0){
                         if(v_torre[i].pos.first == pos_origen.first && v_torre[i].pos.second == pos_origen.second){
                             v_torre[i].pos.first = coord.first;
@@ -856,7 +852,7 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_dama.size(); i++){
+                for (unsigned int i = 0; i < v_dama.size(); i++){
                     if (mov_realizado == 0){
                         if(v_dama[i].pos.first == pos_origen.first && v_dama[i].pos.second == pos_origen.second){
                             v_dama[i].pos.first = coord.first;
@@ -865,7 +861,7 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_rey.size(); i++){
+                for (unsigned int i = 0; i < v_rey.size(); i++){
                     if (mov_realizado == 0){
                         if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
                             v_rey[i].pos.first = coord.first;
@@ -1006,10 +1002,10 @@ void MainWindow::boton_pulsado(){
                 else if (pos == 63) ui -> h7 -> setIcon(icono_o);
                 else if (pos == 64) ui -> h8 -> setIcon(icono_o);
             }
-        }*/
+        }
 
         // Cambiar iconos
-        int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
+        /*int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
         QString icono_path = nuevo_icono(ind);
         QIcon icono_o = QIcon(icono_path);
         icono_path = nuevo_icono(0);
@@ -1205,7 +1201,7 @@ void MainWindow::boton_pulsado(){
         else if (pos == 61) ui -> h5 -> setIcon(icono_o);
         else if (pos == 62) ui -> h6 -> setIcon(icono_o);
         else if (pos == 63) ui -> h7 -> setIcon(icono_o);
-        else if (pos == 64) ui -> h8 -> setIcon(icono_o);
+        else if (pos == 64) ui -> h8 -> setIcon(icono_o);*/
         flagmov = 0;
         limpia_tablero();
     }
