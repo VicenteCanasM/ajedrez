@@ -24,6 +24,7 @@ public:
     pair <int, int> escaque_origen;
     vector < QIcon > iconos;
     QPushButton *boton_origen;
+    vector < vector < QPushButton *>> botones;//(8, vector < QPushButton*>(8));
 
 private slots:
     void on_a1_clicked();
