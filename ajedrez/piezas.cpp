@@ -158,10 +158,10 @@ void caballo::movs(tablero mi_tab){
     jaque_rey = 0;
     pair<int,int> casilla;
     vector<pair<int,int>> escaques_ady;
-    escaques_ady[0].first = 2;  escaques_ady[0].second = 1;   escaques_ady[1].first = 1;  escaques_ady[1].second = 2;
-    escaques_ady[2].first = -1;  escaques_ady[2].second = 2;  escaques_ady[3].first = -2;  escaques_ady[3].second = 1;
-    escaques_ady[4].first = -2;  escaques_ady[4].second = -1;  escaques_ady[5].first = -1;  escaques_ady[5].second = -2;
-    escaques_ady[6].first = 1;  escaques_ady[6].second = -2;   escaques_ady[7].first = 2;  escaques_ady[7].second = -1;
+    escaques_ady.push_back(pair<int,int>(2,1));     escaques_ady.push_back(pair<int,int>(1,2));
+    escaques_ady.push_back(pair<int,int>(-1,2));     escaques_ady.push_back(pair<int,int>(-2,1));
+    escaques_ady.push_back(pair<int,int>(-2,-1));     escaques_ady.push_back(pair<int,int>(-1,-2));
+    escaques_ady.push_back(pair<int,int>(1,-2));     escaques_ady.push_back(pair<int,int>(2,-1));
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         if (comprobar_limites(col_act+escaques_ady[i].first, fil_act+escaques_ady[i].second)){
             casilla.first = col_act+escaques_ady[i].first;
@@ -202,8 +202,8 @@ void alfil::movs(tablero mi_tab){
     int c = 1;
     bool n = 1;
     vector<pair<int,int>> escaques_ady;
-    escaques_ady[0].first = 1;  escaques_ady[0].second = 1;    escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
-    escaques_ady[2].first = -1;  escaques_ady[2].second = -1;  escaques_ady[3].first = 1;  escaques_ady[3].second = -1;
+    escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
+    escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         while (n==1){
             if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
@@ -258,8 +258,8 @@ void torre::movs(tablero mi_tab){
     int c = 1;
     bool n = 1;
     vector<pair<int,int>> escaques_ady;
-    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = 0;  escaques_ady[1].second = -1;
-    escaques_ady[2].first = 1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = 0;
+    escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
+    escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         while (n==1){
             if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
@@ -315,10 +315,10 @@ void dama::movs(tablero mi_tab){
     int c = 1;
     bool n = 1;
     vector<pair<int,int>> escaques_ady;
-    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = 0;  escaques_ady[1].second = -1;
-    escaques_ady[2].first = 1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = 0;
-    escaques_ady[4].first = 1;  escaques_ady[4].second = 1;   escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
-    escaques_ady[6].first = -1;  escaques_ady[6].second = -1;  escaques_ady[7].first = -1;  escaques_ady[7].second = 1;
+    escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
+    escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
+    escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
+    escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         while (n==1){
             if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
@@ -434,10 +434,10 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
     atq_set.clear();
     pair<int,int> casilla;
     vector<pair<int,int>> escaques_ady;
-    escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
-    escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
-    escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
-    escaques_ady[6].first = 1;  escaques_ady[6].second = 0;   escaques_ady[7].first = 1;  escaques_ady[7].second = 1;
+    escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
+    escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
+    escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
+    escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
     vector<vector<bool>> escaques_libres = this->comprobar_mov_rey(mi_tab, this->jugador, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         if (comprobar_limites(col_act+escaques_ady[i].first, fil_act+escaques_ady[i].second)){  //Comprobar escaque superior
