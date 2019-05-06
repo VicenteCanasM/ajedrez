@@ -625,10 +625,12 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     if (mate && pos_piezas_jaque.size()==1){ // Si sigue el rey en mate (hipotetico) y solo una pieza le hace jaque
         for(unsigned long i = 0; i < v_alfil.size(); i++){ // Se buscan todos los alfiles enemigos
             if (v_alfil[i].jaque_rey && v_alfil[i].jugador != jugador){ // Se comprueba que el alfil sea enemigo y hace jaque
+                v_alfil[i].movs(mi_tab);
                 for(unsigned long j = 0; j < v_peon.size(); j++){ // Se comprueba cual de las piezas (peon) aliadas puede defender
+                    v_peon[j].movs(mi_tab);
                     if (v_peon[j].jugador == jugador){ // Se comprueba que la pieza (peon) sea aliada
                         for(unsigned long k = 0; k < v_peon[j].mov_set.size(); k++){ // Se recorre todo el set de movimientos de la pieza aliada
-                            for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){ // Y el la trayectoria de la pieza enemiga para hacer jaque
+                            for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){ // Y el la trayectoria de la pieza enemiga para hacer jaque
                                 if (v_peon[j].mov_set[k].first == v_alfil[i].atq_rey[h].first && v_peon[j].mov_set[k].second == v_alfil[i].atq_rey[h].second){
                                     mate = 0; // Si en algun punto coinciden, se supone que la pieza aliada puede defender al rey
                                 }
@@ -638,8 +640,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 };
                 for(unsigned long j = 0; j < v_caballo.size(); j++){
                     if (v_caballo[j].jugador == jugador){
+                        v_caballo[j].movs(mi_tab);
                         for(unsigned long k = 0; k < v_caballo[j].mov_set.size(); k++){
-                            for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                            for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                                 if (v_caballo[j].mov_set[k].first == v_alfil[i].atq_rey[h].first && v_caballo[j].mov_set[k].second == v_alfil[i].atq_rey[h].second){
                                     mate = 0;
                                 }
@@ -649,8 +652,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 };
                 for(unsigned long j = 0; j < v_alfil.size(); j++){
                     if (v_alfil[j].jugador == jugador){
+                        v_alfil[j].movs(mi_tab);
                         for(unsigned long k = 0; k < v_alfil[j].mov_set.size(); k++){
-                            for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                            for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                                 if (v_alfil[j].mov_set[k].first == v_alfil[i].atq_rey[h].first && v_alfil[j].mov_set[k].second == v_alfil[i].atq_rey[h].second){
                                     mate = 0;
                                 }
@@ -660,8 +664,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 };
                 for(unsigned long j = 0; j < v_torre.size(); j++){
                     if (v_torre[j].jugador == jugador){
+                        v_torre[j].movs(mi_tab);
                         for(unsigned long k = 0; k < v_torre[j].mov_set.size(); k++){
-                            for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                            for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                                 if (v_torre[j].mov_set[k].first == v_alfil[i].atq_rey[h].first && v_torre[j].mov_set[k].second == v_alfil[i].atq_rey[h].second){
                                     mate = 0;
                                 }
@@ -671,8 +676,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 };
                 for(unsigned long j = 0; j < v_dama.size(); j++){
                     if (v_dama[j].jugador == jugador){
+                        v_dama[j].movs(mi_tab);
                         for(unsigned long k = 0; k < v_dama[j].mov_set.size(); k++){
-                            for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                            for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                                 if (v_dama[j].mov_set[k].first == v_alfil[i].atq_rey[h].first && v_dama[j].mov_set[k].second == v_alfil[i].atq_rey[h].second){
                                     mate = 0;
                                 }
@@ -685,10 +691,12 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     };
     for(unsigned long i = 0; i < v_torre.size(); i++){
         if (v_torre[i].jaque_rey && v_torre[i].jugador != jugador){
+            v_torre[i].movs(mi_tab);
             for(unsigned long j = 0; j < v_peon.size(); j++){
                 if (v_peon[j].jugador == jugador){
+                    v_peon[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_peon[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_torre[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_torre[i].atq_rey.size(); h++){
                             if (v_peon[j].mov_set[k].first == v_torre[i].atq_rey[h].first && v_peon[j].mov_set[k].second == v_torre[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -698,8 +706,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_caballo.size(); j++){
                 if (v_caballo[j].jugador == jugador){
+                    v_caballo[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_caballo[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_torre[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_torre[i].atq_rey.size(); h++){
                             if (v_caballo[j].mov_set[k].first == v_torre[i].atq_rey[h].first && v_caballo[j].mov_set[k].second == v_torre[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -708,9 +717,10 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 }
             };
             for(unsigned long j = 0; j < v_alfil.size(); j++){
+                v_alfil[j].movs(mi_tab);
                 if (v_alfil[j].jugador == jugador){
                     for(unsigned long k = 0; k < v_alfil[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_torre[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_torre[i].atq_rey.size(); h++){
                             if (v_alfil[j].mov_set[k].first == v_torre[i].atq_rey[h].first && v_alfil[j].mov_set[k].second == v_torre[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -720,8 +730,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_torre.size(); j++){
                 if (v_torre[j].jugador == jugador){
+                    v_torre[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_torre[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_torre[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_torre[i].atq_rey.size(); h++){
                             if (v_torre[j].mov_set[k].first == v_torre[i].atq_rey[h].first && v_torre[j].mov_set[k].second == v_torre[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -731,8 +742,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_dama.size(); j++){
                 if (v_dama[j].jugador == jugador){
+                    v_dama[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_dama[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                             if (v_dama[j].mov_set[k].first == v_torre[i].atq_rey[h].first && v_dama[j].mov_set[k].second == v_torre[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -744,10 +756,12 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     };
     for(unsigned long i = 0; i < v_dama.size(); i++){
         if (v_dama[i].jaque_rey && v_dama[i].jugador != jugador){
+            v_dama[i].movs(mi_tab);
             for(unsigned long j = 0; j < v_peon.size(); j++){
                 if (v_peon[j].jugador == jugador){
+                    v_peon[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_peon[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_dama[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_dama[i].atq_rey.size(); h++){
                             if (v_peon[j].mov_set[k].first == v_dama[i].atq_rey[h].first && v_peon[j].mov_set[k].second == v_dama[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -757,8 +771,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_caballo.size(); j++){
                 if (v_caballo[j].jugador == jugador){
+                    v_caballo[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_caballo[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                             if (v_caballo[j].mov_set[k].first == v_dama[i].atq_rey[h].first && v_caballo[j].mov_set[k].second == v_dama[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -768,8 +783,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_alfil.size(); j++){
                 if (v_alfil[j].jugador == jugador){
+                    v_alfil[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_alfil[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_dama[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_dama[i].atq_rey.size(); h++){
                             if (v_alfil[j].mov_set[k].first == v_dama[i].atq_rey[h].first && v_alfil[j].mov_set[k].second == v_dama[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -779,8 +795,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_torre.size(); j++){
                 if (v_torre[j].jugador == jugador){
+                    v_torre[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_torre[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_dama[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_dama[i].atq_rey.size(); h++){
                             if (v_torre[j].mov_set[k].first == v_dama[i].atq_rey[h].first && v_torre[j].mov_set[k].second == v_dama[i].atq_rey[h].second){
                                 mate = 0;
                             }
@@ -790,8 +807,9 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
             };
             for(unsigned long j = 0; j < v_dama.size(); j++){
                 if (v_dama[j].jugador == jugador){
+                    v_dama[j].movs(mi_tab);
                     for(unsigned long k = 0; k < v_dama[j].mov_set.size(); k++){
-                        for(unsigned long h = 0; j < v_alfil[i].atq_rey.size(); h++){
+                        for(unsigned long h = 0; h < v_alfil[i].atq_rey.size(); h++){
                             if (v_dama[j].mov_set[k].first == v_dama[i].atq_rey[h].first && v_dama[j].mov_set[k].second == v_dama[i].atq_rey[h].second){
                                 mate = 0;
                             }
