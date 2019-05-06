@@ -268,8 +268,6 @@ void MainWindow::boton_pulsado(){
     QString name = boton->objectName();
     pair <int, int> pos = obten_pos(name);
 
-    qDebug("%d\n",echiquier.mat_escaque[pos.first][pos.second].ocupado);
-
     if (estado_movimiento){
         if (turno == echiquier.mat_escaque[pos.first][pos.second].ocupado){
             botones[pos.first][pos.second] -> autoFillBackground();

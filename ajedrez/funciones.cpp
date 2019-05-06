@@ -1,11 +1,12 @@
 #include "funciones.h"
 
-bool mueve_icono(tablero *echiquier, QPushButton *boton_destino, pair<int,int> origen,
-                  pair<int,int> destino,  bool estado, vector<QIcon> iconos){
+void mueve_icono(tablero *echiquier, QPushButton *boton_destino, pair<int,int> origen,
+                  pair<int,int> destino, vector<QIcon> iconos){
     echiquier->mat_escaque[destino.first][destino.second].t_icon = echiquier->mat_escaque[origen.first][origen.second].t_icon;
     echiquier->mat_escaque[origen.first][origen.second].t_icon = 0;
+    echiquier -> mat_escaque[destino.first][destino.second].ocupado = echiquier -> mat_escaque[origen.first][origen.second].ocupado;
+    echiquier -> mat_escaque[origen.first][origen.second].ocupado = 2;
     boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
-    return not estado;
 }
 
 void limpia_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco, QPalette negro){
@@ -26,4 +27,12 @@ void colorea_tablero(tablero echiquier, vector < vector < QPushButton*>> botones
         else botones[pos[i].first][pos[i].second] -> setPalette(negro);
         botones[pos[i].first][pos[i].second] -> update();
     }
+}
+
+pair <int, int> obten_pos(QString pos){
+    QChar a = 'a';
+    QChar uno = '1';
+    int i = pos[0].unicode() - a.unicode();
+    int j = pos[1].unicode() - uno.unicode();
+    return pair<int, int> (i,j);
 }
