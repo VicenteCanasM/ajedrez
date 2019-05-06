@@ -18,7 +18,7 @@ public:
 public:
     piezas(int, int, int); // (columna, fila, color[0 -> blancas; 1 -> negras])
     ~piezas();
-    void mover();
+    void mover(pair<int,int>);
 };
 
 // PEON //
@@ -54,7 +54,7 @@ public:
 public:
     alfil(int, int, int);
     ~alfil();
-    void movsA(tablero);
+    void movs(tablero);
 };
 
 // TORRE //
@@ -66,7 +66,18 @@ public:
 public:
     torre(int, int, int);
     ~torre();
-    void movsT(tablero);
+    void movs(tablero);
+};
+
+// DAMA //
+class dama : virtual public piezas {
+public:
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
+public:
+    dama(int, int, int);
+    ~dama();
+    void movs(tablero);
 };
 
 // REY //
@@ -78,16 +89,11 @@ public:
 public:
     rey(int, int, int);
     ~rey();
-    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
     void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
-    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
-    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
-    pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+    void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>, vector<rey>);
+    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
+    pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
 };
-
-// DAMA //
-class dama : public torre, public alfil {
-};
-
 
 #endif // PIEZAS_H
