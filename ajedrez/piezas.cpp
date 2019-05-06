@@ -170,7 +170,7 @@ void caballo::movs(tablero mi_tab){
             if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){
                 mov_set.push_back(casilla); // Posible movimiento
             }
-            else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){
+            else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == (jugador + 1)%2){
                 atq_set.push_back(casilla); // Posible ataque
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].hay_rey)
                     jaque_rey = 1; // Jaque al rey enemigo
@@ -204,9 +204,9 @@ void alfil::movs(tablero mi_tab){
     vector<pair<int,int>> escaques_ady;
     escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
     escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -215,12 +215,12 @@ void alfil::movs(tablero mi_tab){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){
                     atq_set.push_back(casilla); // Posible ataque
                     n = 0;
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
                         jaque_rey = 1; // Jaque al rey enemigo
-                        atq_set = atq_rey_aux;
+                        atq_rey = atq_rey_aux;
                     };
                 }
                 else {
@@ -260,9 +260,9 @@ void torre::movs(tablero mi_tab){
     vector<pair<int,int>> escaques_ady;
     escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
     escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -271,7 +271,7 @@ void torre::movs(tablero mi_tab){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){ // Posible ataque
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){ // Posible ataque
                     atq_set.push_back(casilla); // Posible ataque
                     n = 0;
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
@@ -319,9 +319,9 @@ void dama::movs(tablero mi_tab){
     escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
     escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
     escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -330,7 +330,7 @@ void dama::movs(tablero mi_tab){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){ // Posible ataque
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){ // Posible ataque
                     atq_set.push_back(casilla); // Posible ataque
                     n = 0;
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
@@ -448,7 +448,7 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){
                     mov_set.push_back(casilla);
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){ // Posible ataque
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == (jugador + 1)%2){ // Posible ataque
                     atq_set.push_back(casilla);
                 };
             };
