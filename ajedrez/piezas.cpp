@@ -446,7 +446,7 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
             };
         };
     };
-    pair<bool,bool> habilitar_enroque = comprobar_enroque(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama); // Enroques habilitados
+    pair<bool,bool> habilitar_enroque = comprobar_enroque(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama); // Enroques habilitados
     if (habilitar_enroque.first){ //Comprobar enroque a torre en ax
         casilla.first = col_act+2;
         casilla.second = fil_act;
@@ -542,7 +542,7 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     // Se comprueba si el rey se puede salver moviéndose
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         if (mate)
-            mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+            mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
     };
     // Se comprueba si la(s) pieza(s) que hace(n) jaque pueden ser capturadas
     vector<pair<int,int>> pos_piezas_jaque;
@@ -610,14 +610,6 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 if(v_dama[i].jugador == jugador && flag1 == 0){
                     for(unsigned long j = 0; j <= v_dama[i].atq_set.size(); j++){
                         if (v_dama[i].atq_set[j].first == pos_piezas_jaque[0].first && v_dama[i].atq_set[j].second == pos_piezas_jaque[0].second)
-                            flag1 = 1;
-                    }
-                }
-            }
-            for(unsigned long i = 0; i <= v_rey.size(); i++){
-                if(v_rey[i].jugador == jugador && flag1 == 0){
-                    for(unsigned long j = 0; j <= v_rey[i].atq_set.size(); j++){
-                        if (v_rey[i].atq_set[j].first == pos_piezas_jaque[0].first && v_rey[i].atq_set[j].second == pos_piezas_jaque[0].second)
                             flag1 = 1;
                     }
                 }
