@@ -6,6 +6,8 @@
 #include <vector>
 #include <QIcon>
 #include "funciones.h"
+#include <QMessageBox>
+
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +37,7 @@ public:
 
     vector<pair<int,int>> movs_posibles;
     vector <pair<int,int>> atq_posibles;
+    vector <int> puntuaciones;
 
 private slots:
     void boton_pulsado();

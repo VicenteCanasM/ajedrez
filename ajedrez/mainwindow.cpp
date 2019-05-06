@@ -257,6 +257,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->h6,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
     connect(ui->h7,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
     connect(ui->h8,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
+
+    puntuaciones.push_back(0);
+    puntuaciones.push_back(0);
 }
 
 MainWindow::~MainWindow()
@@ -371,6 +374,7 @@ void MainWindow::boton_pulsado(){
                                 v_peon[i].pos.first = -1;
                                 v_peon[i].pos.second = 20;
                                 mov_realizado = 1;
+                                puntuaciones[turno] += v_peon[i].valor;
                             }
                         }
                     }
@@ -380,6 +384,7 @@ void MainWindow::boton_pulsado(){
                                 v_caballo[i].pos.first = -1;
                                 v_caballo[i].pos.second = 20;
                                 mov_realizado = 1;
+                                puntuaciones[turno] += v_caballo[i].valor;
                             }
                         }
                     }
@@ -389,6 +394,7 @@ void MainWindow::boton_pulsado(){
                                 v_alfil[i].pos.first = -1;
                                 v_alfil[i].pos.second = 20;
                                 mov_realizado = 1;
+                                puntuaciones[turno] += v_alfil[i].valor;
                             }
                         }
                     }
@@ -398,15 +404,17 @@ void MainWindow::boton_pulsado(){
                                 v_torre[i].pos.first = -1;
                                 v_torre[i].pos.second = 20;
                                 mov_realizado = 1;
+                                puntuaciones[turno] += v_torre[i].valor;
                             }
                         }
                     }
                     for (unsigned int i = 0; i < v_dama.size(); i++){
                         if (mov_realizado == 0){
-                            if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
+                            if(v_dama[i].pos.first == escaque_destino.first && v_dama[i].pos.second == escaque_destino.second){
                                 v_dama[i].pos.first = -1;
                                 v_dama[i].pos.second = 20;
                                 mov_realizado = 1;
+                                puntuaciones[turno] += v_dama[i].valor;
                             }
                         }
                     }
@@ -418,6 +426,7 @@ void MainWindow::boton_pulsado(){
                         if(v_peon[i].pos.first == escaque_origen.first && v_peon[i].pos.second == escaque_origen.second){
                             v_peon[i].pos.first = escaque_destino.first;
                             v_peon[i].pos.second = escaque_destino.second;
+                            v_peon[i].first_mov = 0;
                             mov_realizado = 1;
                         }
                     }
@@ -472,8 +481,20 @@ void MainWindow::boton_pulsado(){
         }
 
         limpia_tablero(echiquier,botones,blanco,gris);
+        if (turno == 0) ui -> label -> setText("Es turno de las blancas");
+        else ui -> label -> setText("Es turno de las negras");
+        v_rey[turno].comprobar_jaque_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+        if(v_rey[turno].jaque){
+            v_rey[turno].comprobar_mate_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+            qDebug("%d",v_rey[turno].mate);
+            if(turno == 0) QMessageBox::information(this,"Jaque", "El rey blanco está en jaque.");
+            else QMessageBox::information(this,"Jaque","El rey negro está en jaque.");
+        }
         estado_movimiento = true;
     }
+
+    ui -> puntBlanca -> setText("Blancas: " + QString::number(puntuaciones[0]) + " puntos");
+    ui -> puntNegra -> setText("Negras: " + QString::number(puntuaciones[1]) + " puntos");
 
     botones[pos.first][pos.second] -> update();
     //echiquier.imprimir_tablero_jugador();
