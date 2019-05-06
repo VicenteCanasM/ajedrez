@@ -306,16 +306,16 @@ MainWindow::MainWindow(QWidget *parent) :
         alfil ak1(2, 7, 1);   v_alfil.push_back(ak1);
         alfil ak2(5, 7, 1);   v_alfil.push_back(ak2);
 
-        torre tw1(1, 0, 0);   v_torre.push_back(tw1);
-        torre tw2(6, 0, 0);   v_torre.push_back(tw2);
-        torre tk1(1, 7, 1);   v_torre.push_back(tk1);
-        torre tk2(6, 7, 1);   v_torre.push_back(tk2);
+        torre tw1(0, 0, 0);   v_torre.push_back(tw1);
+        torre tw2(7, 0, 0);   v_torre.push_back(tw2);
+        torre tk1(0, 7, 1);   v_torre.push_back(tk1);
+        torre tk2(7, 7, 1);   v_torre.push_back(tk2);
 
         dama dw1(3, 0, 0);   v_dama.push_back(dw1);
-        dama dk1(3, 0, 1);   v_dama.push_back(dk1);
+        dama dk1(3, 7, 1);   v_dama.push_back(dk1);
 
         rey rw1(4, 0, 0);   v_rey.push_back(rw1);
-        rey rk1(4, 0, 1);   v_rey.push_back(rk1);
+        rey rk1(4, 7, 1);   v_rey.push_back(rk1);
 
 
         // Prueba para connect
@@ -790,7 +790,7 @@ void MainWindow::boton_pulsado(){
             for (unsigned int i = 0; i < v_rey.size(); i++){
                 if (mov_realizado == 0){
                     if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
-                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
                         movs_pieza = v_rey[i].mov_set;
                         mov_realizado = 1;
                     }
@@ -1021,205 +1021,6 @@ void MainWindow::boton_pulsado(){
                 else if (pos == 64) ui -> h8 -> setIcon(icono_o);
             }
         }
-
-        // Cambiar iconos
-        /*int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
-        QString icono_path = nuevo_icono(ind);
-        QIcon icono_o = QIcon(icono_path);
-        icono_path = nuevo_icono(0);
-        QIcon icono_d = QIcon(icono_path);
-
-        // Cambiar atributo t_icon
-        echiquier.mat_escaque[coord.first][coord.second].t_icon = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
-        echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon = 0;
-
-        // Cambiar posicion de la pieza
-        mov_realizado = 0;
-        for (unsigned int i = 0; i < v_peon.size(); i++){
-            if (mov_realizado == 0){
-                if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
-                    v_peon[i].pos.first = coord.first;
-                    v_peon[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-        for (unsigned int i = 0; i < v_caballo.size(); i++){
-            if (mov_realizado == 0){
-                if(v_caballo[i].pos.first == pos_origen.first && v_caballo[i].pos.second == pos_origen.second){
-                    v_caballo[i].pos.first = coord.first;
-                    v_caballo[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-        for (unsigned int i = 0; i < v_alfil.size(); i++){
-            if (mov_realizado == 0){
-                if(v_alfil[i].pos.first == pos_origen.first && v_alfil[i].pos.second == pos_origen.second){
-                    v_alfil[i].pos.first = coord.first;
-                    v_alfil[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-        for (unsigned int i = 0; i < v_torre.size(); i++){
-            if (mov_realizado == 0){
-                if(v_torre[i].pos.first == pos_origen.first && v_torre[i].pos.second == pos_origen.second){
-                    v_torre[i].pos.first = coord.first;
-                    v_torre[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-        for (unsigned int i = 0; i < v_dama.size(); i++){
-            if (mov_realizado == 0){
-                if(v_dama[i].pos.first == pos_origen.first && v_dama[i].pos.second == pos_origen.second){
-                    v_dama[i].pos.first = coord.first;
-                    v_dama[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-        for (unsigned int i = 0; i < v_rey.size(); i++){
-            if (mov_realizado == 0){
-                if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
-                    v_rey[i].pos.first = coord.first;
-                    v_rey[i].pos.second = coord.second;
-                    mov_realizado = 1;
-                }
-            }
-        }
-
-        // Reasignacion de iconos
-        if (pos_o == 1) ui -> a1 -> setIcon(icono_d);
-        else if (pos_o == 2) ui -> a2 -> setIcon(icono_d);
-        else if (pos_o == 3) ui -> a3 -> setIcon(icono_d);
-        else if (pos_o == 4) ui -> a4 -> setIcon(icono_d);
-        else if (pos_o == 5) ui -> a5 -> setIcon(icono_d);
-        else if (pos_o == 6) ui -> a6 -> setIcon(icono_d);
-        else if (pos_o == 7) ui -> a7 -> setIcon(icono_d);
-        else if (pos_o == 8) ui -> a8 -> setIcon(icono_d);
-        else if (pos_o == 9) ui -> b1 -> setIcon(icono_d);
-        else if (pos_o == 10) ui -> b2 -> setIcon(icono_d);
-        else if (pos_o == 11) ui -> b3 -> setIcon(icono_d);
-        else if (pos_o == 12) ui -> b4 -> setIcon(icono_d);
-        else if (pos_o == 13) ui -> b5 -> setIcon(icono_d);
-        else if (pos_o == 14) ui -> b6 -> setIcon(icono_d);
-        else if (pos_o == 15) ui -> b7 -> setIcon(icono_d);
-        else if (pos_o == 16) ui -> b8 -> setIcon(icono_d);
-        else if (pos_o == 17) ui -> c1 -> setIcon(icono_d);
-        else if (pos_o == 18) ui -> c2 -> setIcon(icono_d);
-        else if (pos_o == 19) ui -> c3 -> setIcon(icono_d);
-        else if (pos_o == 20) ui -> c4 -> setIcon(icono_d);
-        else if (pos_o == 21) ui -> c5 -> setIcon(icono_d);
-        else if (pos_o == 22) ui -> c6 -> setIcon(icono_d);
-        else if (pos_o == 23) ui -> c7 -> setIcon(icono_d);
-        else if (pos_o == 24) ui -> c8 -> setIcon(icono_d);
-        else if (pos_o == 25) ui -> d1 -> setIcon(icono_d);
-        else if (pos_o == 26) ui -> d2 -> setIcon(icono_d);
-        else if (pos_o == 27) ui -> d3 -> setIcon(icono_d);
-        else if (pos_o == 28) ui -> d4 -> setIcon(icono_d);
-        else if (pos_o == 29) ui -> d5 -> setIcon(icono_d);
-        else if (pos_o == 30) ui -> d6 -> setIcon(icono_d);
-        else if (pos_o == 31) ui -> d7 -> setIcon(icono_d);
-        else if (pos_o == 32) ui -> d8 -> setIcon(icono_d);
-        else if (pos_o == 33) ui -> e1 -> setIcon(icono_d);
-        else if (pos_o == 34) ui -> e2 -> setIcon(icono_d);
-        else if (pos_o == 35) ui -> e3 -> setIcon(icono_d);
-        else if (pos_o == 36) ui -> e4 -> setIcon(icono_d);
-        else if (pos_o == 37) ui -> e5 -> setIcon(icono_d);
-        else if (pos_o == 38) ui -> e6 -> setIcon(icono_d);
-        else if (pos_o == 39) ui -> e7 -> setIcon(icono_d);
-        else if (pos_o == 40) ui -> e8 -> setIcon(icono_d);
-        else if (pos_o == 41) ui -> f1 -> setIcon(icono_d);
-        else if (pos_o == 42) ui -> f2 -> setIcon(icono_d);
-        else if (pos_o == 43) ui -> f3 -> setIcon(icono_d);
-        else if (pos_o == 44) ui -> f4 -> setIcon(icono_d);
-        else if (pos_o == 45) ui -> f5 -> setIcon(icono_d);
-        else if (pos_o == 46) ui -> f6 -> setIcon(icono_d);
-        else if (pos_o == 47) ui -> f7 -> setIcon(icono_d);
-        else if (pos_o == 48) ui -> f8 -> setIcon(icono_d);
-        else if (pos_o == 49) ui -> g1 -> setIcon(icono_d);
-        else if (pos_o == 50) ui -> g2 -> setIcon(icono_d);
-        else if (pos_o == 51) ui -> g3 -> setIcon(icono_d);
-        else if (pos_o == 52) ui -> g4 -> setIcon(icono_d);
-        else if (pos_o == 53) ui -> g5 -> setIcon(icono_d);
-        else if (pos_o == 54) ui -> g6 -> setIcon(icono_d);
-        else if (pos_o == 55) ui -> g7 -> setIcon(icono_d);
-        else if (pos_o == 56) ui -> g8 -> setIcon(icono_d);
-        else if (pos_o == 57) ui -> h1 -> setIcon(icono_d);
-        else if (pos_o == 58) ui -> h2 -> setIcon(icono_d);
-        else if (pos_o == 59) ui -> h3 -> setIcon(icono_d);
-        else if (pos_o == 60) ui -> h4 -> setIcon(icono_d);
-        else if (pos_o == 61) ui -> h5 -> setIcon(icono_d);
-        else if (pos_o == 62) ui -> h6 -> setIcon(icono_d);
-        else if (pos_o == 63) ui -> h7 -> setIcon(icono_d);
-        else if (pos_o == 64) ui -> h8 -> setIcon(icono_d);
-        //---
-        if (pos == 1) ui -> a1 -> setIcon(icono_o);
-        else if (pos == 2) ui -> a2 -> setIcon(icono_o);
-        else if (pos == 3) ui -> a3 -> setIcon(icono_o);
-        else if (pos == 4) ui -> a4 -> setIcon(icono_o);
-        else if (pos == 5) ui -> a5 -> setIcon(icono_o);
-        else if (pos == 6) ui -> a6 -> setIcon(icono_o);
-        else if (pos == 7) ui -> a7 -> setIcon(icono_o);
-        else if (pos == 8) ui -> a8 -> setIcon(icono_o);
-        else if (pos == 9) ui -> b1 -> setIcon(icono_o);
-        else if (pos == 10) ui -> b2 -> setIcon(icono_o);
-        else if (pos == 11) ui -> b3 -> setIcon(icono_o);
-        else if (pos == 12) ui -> b4 -> setIcon(icono_o);
-        else if (pos == 13) ui -> b5 -> setIcon(icono_o);
-        else if (pos == 14) ui -> b6 -> setIcon(icono_o);
-        else if (pos == 15) ui -> b7 -> setIcon(icono_o);
-        else if (pos == 16) ui -> b8 -> setIcon(icono_o);
-        else if (pos == 17) ui -> c1 -> setIcon(icono_o);
-        else if (pos == 18) ui -> c2 -> setIcon(icono_o);
-        else if (pos == 19) ui -> c3 -> setIcon(icono_o);
-        else if (pos == 20) ui -> c4 -> setIcon(icono_o);
-        else if (pos == 21) ui -> c5 -> setIcon(icono_o);
-        else if (pos == 22) ui -> c6 -> setIcon(icono_o);
-        else if (pos == 23) ui -> c7 -> setIcon(icono_o);
-        else if (pos == 24) ui -> c8 -> setIcon(icono_o);
-        else if (pos == 25) ui -> d1 -> setIcon(icono_o);
-        else if (pos == 26) ui -> d2 -> setIcon(icono_o);
-        else if (pos == 27) ui -> d3 -> setIcon(icono_o);
-        else if (pos == 28) ui -> d4 -> setIcon(icono_o);
-        else if (pos == 29) ui -> d5 -> setIcon(icono_o);
-        else if (pos == 30) ui -> d6 -> setIcon(icono_o);
-        else if (pos == 31) ui -> d7 -> setIcon(icono_o);
-        else if (pos == 32) ui -> d8 -> setIcon(icono_o);
-        else if (pos == 33) ui -> e1 -> setIcon(icono_o);
-        else if (pos == 34) ui -> e2 -> setIcon(icono_o);
-        else if (pos == 35) ui -> e3 -> setIcon(icono_o);
-        else if (pos == 36) ui -> e4 -> setIcon(icono_o);
-        else if (pos == 37) ui -> e5 -> setIcon(icono_o);
-        else if (pos == 38) ui -> e6 -> setIcon(icono_o);
-        else if (pos == 39) ui -> e7 -> setIcon(icono_o);
-        else if (pos == 40) ui -> e8 -> setIcon(icono_o);
-        else if (pos == 41) ui -> f1 -> setIcon(icono_o);
-        else if (pos == 42) ui -> f2 -> setIcon(icono_o);
-        else if (pos == 43) ui -> f3 -> setIcon(icono_o);
-        else if (pos == 44) ui -> f4 -> setIcon(icono_o);
-        else if (pos == 45) ui -> f5 -> setIcon(icono_o);
-        else if (pos == 46) ui -> f6 -> setIcon(icono_o);
-        else if (pos == 47) ui -> f7 -> setIcon(icono_o);
-        else if (pos == 48) ui -> f8 -> setIcon(icono_o);
-        else if (pos == 49) ui -> g1 -> setIcon(icono_o);
-        else if (pos == 50) ui -> g2 -> setIcon(icono_o);
-        else if (pos == 51) ui -> g3 -> setIcon(icono_o);
-        else if (pos == 52) ui -> g4 -> setIcon(icono_o);
-        else if (pos == 53) ui -> g5 -> setIcon(icono_o);
-        else if (pos == 54) ui -> g6 -> setIcon(icono_o);
-        else if (pos == 55) ui -> g7 -> setIcon(icono_o);
-        else if (pos == 56) ui -> g8 -> setIcon(icono_o);
-        else if (pos == 57) ui -> h1 -> setIcon(icono_o);
-        else if (pos == 58) ui -> h2 -> setIcon(icono_o);
-        else if (pos == 59) ui -> h3 -> setIcon(icono_o);
-        else if (pos == 60) ui -> h4 -> setIcon(icono_o);
-        else if (pos == 61) ui -> h5 -> setIcon(icono_o);
-        else if (pos == 62) ui -> h6 -> setIcon(icono_o);
-        else if (pos == 63) ui -> h7 -> setIcon(icono_o);
-        else if (pos == 64) ui -> h8 -> setIcon(icono_o);*/
         flagmov = 0;
         limpia_tablero();
     }
