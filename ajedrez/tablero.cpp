@@ -39,9 +39,20 @@ tablero::tablero(vector < vector <int>> jugadores){
 }
 
 void tablero::imprimir_tablero(){
+    cout << endl;
     for (int  i = 7; i >= 0; i--){
         for (int j = 0; j < 8; j++){
-            cout << mat_escaque[i][j].color << ' ';
+            cout << mat_escaque[j][i].color << ' ';
+        }
+        cout << endl;
+    }
+}
+
+void tablero::imprimir_tablero_jugador(){
+    cout << endl;
+    for (int  i = 7; i >= 0; i--){
+        for (int j = 0; j < 8; j++){
+            cout << mat_escaque[j][i].ocupado << ' ';
         }
         cout << endl;
     }

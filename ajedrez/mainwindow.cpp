@@ -5,10 +5,6 @@
 
 using namespace std;
 
-static bool flagmov;
-static pair<int,int> pos_origen;
-static int pos_o;
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -18,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     vector < vector < int >> pos_inicial(8, vector <int>(8,2));
     for (unsigned long i = 0; i < 8; i++){
         for (unsigned long j = 0; j < 8; j++){
-            if (i < 2) pos_inicial[i][j] = 0;
-            else if (i > 5) pos_inicial[i][j] = 1;
+            if (i < 2) pos_inicial[j][i] = 0;
+            else if (i > 5) pos_inicial[j][i] = 1;
         }
     }
     vector < vector < bool >> reyes(8, vector <bool>(8, false));
@@ -740,73 +736,73 @@ void MainWindow::boton_pulsado(){
 
     // Identificar pieza elegida y su mov_set (movs_posibles)
     bool mov_realizado = 0;
-    vector<pair<int,int>> movs_posibles;
-    /*for (unsigned int i = 0; i < v_peon.size(); i++){
-        if (mov_realizado == 0){
-            if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
-                v_peon[i].movs(echiquier);
-                movs_posibles = v_peon[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }
-    for (unsigned int i = 0; i < v_caballo.size(); i++){
-        if (mov_realizado == 0){
-            if(v_caballo[i].pos.first == pos_origen.first && v_caballo[i].pos.second == pos_origen.second){
-                v_caballo[i].movs(echiquier);
-                movs_posibles = v_caballo[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }
-    for (unsigned int i = 0; i < v_alfil.size(); i++){
-        if (mov_realizado == 0){
-            if(v_alfil[i].pos.first == pos_origen.first && v_alfil[i].pos.second == pos_origen.second){
-                v_alfil[i].movs(echiquier);
-                movs_posibles = v_alfil[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }
-    for (unsigned int i = 0; i < v_torre.size(); i++){
-        if (mov_realizado == 0){
-            if(v_torre[i].pos.first == pos_origen.first && v_torre[i].pos.second == pos_origen.second){
-                v_torre[i].movs(echiquier);
-                movs_posibles = v_torre[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }
-    for (unsigned int i = 0; i < v_dama.size(); i++){
-        if (mov_realizado == 0){
-            if(v_dama[i].pos.first == pos_origen.first && v_dama[i].pos.second == pos_origen.second){
-                v_dama[i].movs(echiquier);
-                movs_posibles = v_dama[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }
-    for (unsigned int i = 0; i < v_rey.size(); i++){
-        if (mov_realizado == 0){
-            if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
-                v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
-                movs_posibles = v_rey[i].mov_set;
-                mov_realizado = 1;
-            }
-        }
-    }*/
-
 
     if (flagmov == 0){
         pos_o = pos;
         pos_origen.first = coord.first;
         pos_origen.second = coord.second;
-        if (echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon != 0) flagmov = 1;
+        if (echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon != 0){
+            for (unsigned int i = 0; i < v_peon.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
+                        v_peon[i].movs(echiquier);
+                        movs_pieza = v_peon[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_caballo.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_caballo[i].pos.first == pos_origen.first && v_caballo[i].pos.second == pos_origen.second){
+                        v_caballo[i].movs(echiquier);
+                        movs_pieza = v_caballo[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_alfil.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_alfil[i].pos.first == pos_origen.first && v_alfil[i].pos.second == pos_origen.second){
+                        v_alfil[i].movs(echiquier);
+                        movs_pieza = v_alfil[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_torre.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_torre[i].pos.first == pos_origen.first && v_torre[i].pos.second == pos_origen.second){
+                        v_torre[i].movs(echiquier);
+                        movs_pieza = v_torre[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_dama.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_dama[i].pos.first == pos_origen.first && v_dama[i].pos.second == pos_origen.second){
+                        v_dama[i].movs(echiquier);
+                        movs_pieza = v_dama[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_rey.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
+                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                        movs_pieza = v_rey[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            flagmov = 1;
+        }
         else limpia_tablero();
     }
     else {
-       /* for (unsigned int k = 0; k <= movs_posibles.size(); k++){
-            if (movs_posibles[k].first == coord.first && movs_posibles[k].second == coord.second){
+        for (unsigned int k = 0; k < movs_pieza.size(); k++){
+            if (movs_pieza[k].first == coord.first && movs_pieza[k].second == coord.second){
                 // Cambiar iconos
                 int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
                 QString icono_path = nuevo_icono(ind);
@@ -820,56 +816,74 @@ void MainWindow::boton_pulsado(){
 
                 // Cambiar posicion de la pieza
                 mov_realizado = 0;
-                for (unsigned int i = 0; i <= v_peon.size(); i++){
+                for (unsigned int i = 0; i < v_peon.size(); i++){
                     if (mov_realizado == 0){
                         if(v_peon[i].pos.first == pos_origen.first && v_peon[i].pos.second == pos_origen.second){
                             v_peon[i].pos.first = coord.first;
                             v_peon[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_peon[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_caballo.size(); i++){
+                for (unsigned int i = 0; i < v_caballo.size(); i++){
                     if (mov_realizado == 0){
                         if(v_caballo[i].pos.first == pos_origen.first && v_caballo[i].pos.second == pos_origen.second){
                             v_caballo[i].pos.first = coord.first;
                             v_caballo[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_caballo[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_alfil.size(); i++){
+                for (unsigned int i = 0; i < v_alfil.size(); i++){
                     if (mov_realizado == 0){
                         if(v_alfil[i].pos.first == pos_origen.first && v_alfil[i].pos.second == pos_origen.second){
                             v_alfil[i].pos.first = coord.first;
                             v_alfil[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_alfil[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_torre.size(); i++){
+                for (unsigned int i = 0; i < v_torre.size(); i++){
                     if (mov_realizado == 0){
                         if(v_torre[i].pos.first == pos_origen.first && v_torre[i].pos.second == pos_origen.second){
                             v_torre[i].pos.first = coord.first;
                             v_torre[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_torre[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_dama.size(); i++){
+                for (unsigned int i = 0; i < v_dama.size(); i++){
                     if (mov_realizado == 0){
                         if(v_dama[i].pos.first == pos_origen.first && v_dama[i].pos.second == pos_origen.second){
                             v_dama[i].pos.first = coord.first;
                             v_dama[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_dama[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
                 }
-                for (unsigned int i = 0; i <= v_rey.size(); i++){
+                for (unsigned int i = 0; i < v_rey.size(); i++){
                     if (mov_realizado == 0){
                         if(v_rey[i].pos.first == pos_origen.first && v_rey[i].pos.second == pos_origen.second){
                             v_rey[i].pos.first = coord.first;
                             v_rey[i].pos.second = coord.second;
+                            echiquier.mat_escaque[pos_origen.first][pos_origen.second].ocupado = 2;
+                            if (v_rey[i].jugador == 0) echiquier.mat_escaque[coord.first][coord.second].ocupado = 0;
+                            else echiquier.mat_escaque[coord.first][coord.second].ocupado = 1;
                             mov_realizado = 1;
                         }
                     }
@@ -1006,10 +1020,10 @@ void MainWindow::boton_pulsado(){
                 else if (pos == 63) ui -> h7 -> setIcon(icono_o);
                 else if (pos == 64) ui -> h8 -> setIcon(icono_o);
             }
-        }*/
+        }
 
         // Cambiar iconos
-        int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
+        /*int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
         QString icono_path = nuevo_icono(ind);
         QIcon icono_o = QIcon(icono_path);
         icono_path = nuevo_icono(0);
@@ -1205,10 +1219,11 @@ void MainWindow::boton_pulsado(){
         else if (pos == 61) ui -> h5 -> setIcon(icono_o);
         else if (pos == 62) ui -> h6 -> setIcon(icono_o);
         else if (pos == 63) ui -> h7 -> setIcon(icono_o);
-        else if (pos == 64) ui -> h8 -> setIcon(icono_o);
+        else if (pos == 64) ui -> h8 -> setIcon(icono_o);*/
         flagmov = 0;
         limpia_tablero();
     }
+    echiquier.imprimir_tablero_jugador();
 
 }
 
@@ -1343,965 +1358,3 @@ void MainWindow::limpia_tablero(){
     ui -> h8 -> setAutoFillBackground(true);
     ui -> h8 -> setPalette(gris);
 }
-
-/*
-void MainWindow::on_a1_clicked()
-{
-    ui -> a1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][0].pulsado == 0){
-        ui -> a1 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[0][0].pulsado = 1;
-    }else{
-        ui -> a1 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[0][0].pulsado = 0;
-    }
-
-    ui -> a1 -> update();
-
-    // Prueba
-    if (flagmov == 0){
-        pos_origen.first = 0;
-        pos_origen.second = 0;
-        flagmov = 1;
-    }
-    else {
-        int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
-        QString icono_path = nuevo_icono(ind);
-        QIcon icono = QIcon(icono_path);
-        ui -> a2 ->setIcon(icono);
-        icono = QIcon("");
-        ui -> a1 -> setIcon(icono);
-        flagmov = 0;
-    }
-}
-
-
-void MainWindow::on_a2_clicked()
-{
-    ui -> a2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][1].pulsado == 0){
-        ui -> a2 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[0][1].pulsado = 1;
-    }else{
-        ui -> a2 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[0][1].pulsado = 0;
-    }
-
-    ui -> a2 -> update();
-
-    // Prueba
-    if (flagmov == 0){
-        pos_origen.first = 0;
-        pos_origen.second = 1;
-        flagmov = 1;
-    }
-    else {
-        int ind = echiquier.mat_escaque[pos_origen.first][pos_origen.second].t_icon;
-        QString icono_path = nuevo_icono(ind);
-        QIcon icono = QIcon(icono_path);
-        ui -> a1 ->setIcon(icono);
-        icono = QIcon("");
-        ui -> a2 -> setIcon(icono);
-        flagmov = 0;
-    }
-
-}
-
-void MainWindow::on_a3_clicked()
-{
-    ui -> a3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][2].pulsado == 0){
-        ui -> a3 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[0][2].pulsado = 1;
-    }else{
-        ui -> a3 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[0][2].pulsado = 0;
-    }
-
-    ui -> a3 -> update();
-}
-
-
-void MainWindow::on_a4_clicked()
-{
-    ui -> a4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][3].pulsado == 0){
-        ui -> a4 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[0][3].pulsado = 1;
-    }else{
-        ui -> a4 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[0][3].pulsado = 0;
-    }
-
-    ui -> a4 -> update();
-}
-
-void MainWindow::on_a5_clicked()
-{
-    ui -> a5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][4].pulsado == 0){
-        ui -> a5 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[0][4].pulsado = 1;
-    }else{
-        ui -> a5 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[0][4].pulsado = 0;
-    }
-
-    ui -> a5 -> update();
-}
-
-
-void MainWindow::on_a6_clicked()
-{
-    ui -> a6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][5].pulsado == 0){
-        ui -> a6 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[0][5].pulsado = 1;
-    }else{
-        ui -> a6 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[0][5].pulsado = 0;
-    }
-
-    ui -> a6 -> update();
-}
-
-void MainWindow::on_a7_clicked()
-{
-    ui -> a7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][6].pulsado == 0){
-        ui -> a7 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[0][6].pulsado = 1;
-    }else{
-        ui -> a7 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[0][6].pulsado = 0;
-    }
-
-    ui -> a7 -> update();
-}
-
-
-void MainWindow::on_a8_clicked()
-{
-    ui -> a8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[0][7].pulsado == 0){
-        ui -> a8 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[0][7].pulsado = 1;
-    }else{
-        ui -> a8 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[0][7].pulsado = 0;
-    }
-
-    ui -> a8 -> update();
-}
-
-void MainWindow::on_b1_clicked()
-{
-    ui -> b1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][0].pulsado == 0){
-        ui -> b1 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[1][0].pulsado = 1;
-    }else{
-        ui -> b1 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[1][0].pulsado = 0;
-    }
-
-    ui -> b1 -> update();
-}
-
-
-void MainWindow::on_b2_clicked()
-{
-    ui -> b2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][1].pulsado == 0){
-        ui -> b2 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[1][1].pulsado = 1;
-    }else{
-        ui -> b2 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[1][1].pulsado = 0;
-    }
-
-    ui -> b2 -> update();
-}
-
-void MainWindow::on_b3_clicked()
-{
-    ui -> b3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][2].pulsado == 0){
-        ui -> b3 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[1][2].pulsado = 1;
-    }else{
-        ui -> b3 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[1][2].pulsado = 0;
-    }
-
-    ui -> b3 -> update();
-}
-
-
-void MainWindow::on_b4_clicked()
-{
-    ui -> b4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][3].pulsado == 0){
-        ui -> b4 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[1][3].pulsado = 1;
-    }else{
-        ui -> b4 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[1][3].pulsado = 0;
-    }
-
-    ui -> b4 -> update();
-}
-
-void MainWindow::on_b5_clicked()
-{
-    ui -> b5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][4].pulsado == 0){
-        ui -> b5 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[1][4].pulsado = 1;
-    }else{
-        ui -> b5 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[1][4].pulsado = 0;
-    }
-
-    ui -> b5 -> update();
-}
-
-
-void MainWindow::on_b6_clicked()
-{
-    ui -> b6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][5].pulsado == 0){
-        ui -> b6 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[1][5].pulsado = 1;
-    }else{
-        ui -> b6 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[1][5].pulsado = 0;
-    }
-
-    ui -> b6 -> update();
-}
-
-void MainWindow::on_b7_clicked()
-{
-    ui -> b7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][6].pulsado == 0){
-        ui -> b7 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[1][6].pulsado = 1;
-    }else{
-        ui -> b7 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[1][6].pulsado = 0;
-    }
-
-    ui -> b7 -> update();
-}
-
-
-void MainWindow::on_b8_clicked()
-{
-    ui -> b8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[1][7].pulsado == 0){
-        ui -> b8 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[1][7].pulsado = 1;
-    }else{
-        ui -> b8 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[1][7].pulsado = 0;
-    }
-
-    ui -> b8 -> update();
-}
-
-void MainWindow::on_c1_clicked()
-{
-    ui -> c1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][0].pulsado == 0){
-        ui -> c1 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[2][0].pulsado = 1;
-    }else{
-        ui -> c1 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[2][0].pulsado = 0;
-    }
-
-    ui -> c1 -> update();
-}
-
-
-void MainWindow::on_c2_clicked()
-{
-    ui -> c2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][1].pulsado == 0){
-        ui -> c2 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[2][1].pulsado = 1;
-    }else{
-        ui -> c2 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[2][1].pulsado = 0;
-    }
-
-    ui -> c2 -> update();
-}
-
-void MainWindow::on_c3_clicked()
-{
-    ui -> c3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][2].pulsado == 0){
-        ui -> c3 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[2][2].pulsado = 1;
-    }else{
-        ui -> c3 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[2][2].pulsado = 0;
-    }
-
-    ui -> c3 -> update();
-}
-
-
-void MainWindow::on_c4_clicked()
-{
-    ui -> c4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][3].pulsado == 0){
-        ui -> c4 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[2][3].pulsado = 1;
-    }else{
-        ui -> c4 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[2][3].pulsado = 0;
-    }
-
-    ui -> c4 -> update();
-}
-
-void MainWindow::on_c5_clicked()
-{
-    ui -> c5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][4].pulsado == 0){
-        ui -> c5 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[2][4].pulsado = 1;
-    }else{
-        ui -> c5 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[2][4].pulsado = 0;
-    }
-
-    ui -> c5 -> update();
-}
-
-
-void MainWindow::on_c6_clicked()
-{
-    ui -> c6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][5].pulsado == 0){
-        ui -> c6 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[2][5].pulsado = 1;
-    }else{
-        ui -> c6 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[2][5].pulsado = 0;
-    }
-
-    ui -> c6 -> update();
-}
-
-void MainWindow::on_c7_clicked()
-{
-    ui -> c7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][6].pulsado == 0){
-        ui -> c7 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[2][6].pulsado = 1;
-    }else{
-        ui -> c7 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[2][6].pulsado = 0;
-    }
-
-    ui -> c7 -> update();
-}
-
-
-void MainWindow::on_c8_clicked()
-{
-    ui -> c8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[2][7].pulsado == 0){
-        ui -> c8 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[2][7].pulsado = 1;
-    }else{
-        ui -> c8 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[2][7].pulsado = 0;
-    }
-
-    ui -> c8 -> update();
-}
-
-void MainWindow::on_d1_clicked()
-{
-    ui -> d1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][0].pulsado == 0){
-        ui -> d1 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[3][0].pulsado = 1;
-    }else{
-        ui -> d1 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[3][0].pulsado = 0;
-    }
-
-    ui -> d1 -> update();
-}
-
-
-void MainWindow::on_d2_clicked()
-{
-    ui -> d2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][1].pulsado == 0){
-        ui -> d2 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[3][1].pulsado = 1;
-    }else{
-        ui -> d2 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[3][1].pulsado = 0;
-    }
-
-    ui -> d2 -> update();
-}
-
-void MainWindow::on_d3_clicked()
-{
-    ui -> d3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][2].pulsado == 0){
-        ui -> d3 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[3][2].pulsado = 1;
-    }else{
-        ui -> d3 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[3][2].pulsado = 0;
-    }
-
-    ui -> d3 -> update();
-}
-
-
-void MainWindow::on_d4_clicked()
-{
-    ui -> d4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][3].pulsado == 0){
-        ui -> d4 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[3][3].pulsado = 1;
-    }else{
-        ui -> d4 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[3][3].pulsado = 0;
-    }
-
-    ui -> d4 -> update();
-}
-
-void MainWindow::on_d5_clicked()
-{
-    ui -> d5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][4].pulsado == 0){
-        ui -> d5 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[3][4].pulsado = 1;
-    }else{
-        ui -> d5 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[3][4].pulsado = 0;
-    }
-
-    ui -> d5 -> update();
-}
-
-
-void MainWindow::on_d6_clicked()
-{
-    ui -> d6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][5].pulsado == 0){
-        ui -> d6 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[3][5].pulsado = 1;
-    }else{
-        ui -> d6 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[3][5].pulsado = 0;
-    }
-
-    ui -> d6 -> update();
-}
-
-void MainWindow::on_d7_clicked()
-{
-    ui -> d7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][6].pulsado == 0){
-        ui -> d7 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[3][6].pulsado = 1;
-    }else{
-        ui -> d7 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[3][6].pulsado = 0;
-    }
-
-    ui -> d7 -> update();
-}
-
-
-void MainWindow::on_d8_clicked()
-{
-    ui -> d8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[3][7].pulsado == 0){
-        ui -> d8 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[3][7].pulsado = 1;
-    }else{
-        ui -> d8 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[3][7].pulsado = 0;
-    }
-
-    ui -> d8 -> update();
-}
-
-void MainWindow::on_e1_clicked()
-{
-    ui -> e1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][0].pulsado == 0){
-        ui -> e1 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[4][0].pulsado = 1;
-    }else{
-        ui -> e1 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[4][0].pulsado = 0;
-    }
-
-    ui -> e1 -> update();
-}
-
-
-void MainWindow::on_e2_clicked()
-{
-    ui -> e2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][1].pulsado == 0){
-        ui -> e2 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[4][1].pulsado = 1;
-    }else{
-        ui -> e2 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[4][1].pulsado = 0;
-    }
-
-    ui -> e2 -> update();
-}
-
-void MainWindow::on_e3_clicked()
-{
-    ui -> e3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][2].pulsado == 0){
-        ui -> e3 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[4][2].pulsado = 1;
-    }else{
-        ui -> e3 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[4][2].pulsado = 0;
-    }
-
-    ui -> e3 -> update();
-}
-
-
-void MainWindow::on_e4_clicked()
-{
-    ui -> e4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][3].pulsado == 0){
-        ui -> e4 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[4][3].pulsado = 1;
-    }else{
-        ui -> e4 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[4][3].pulsado = 0;
-    }
-
-    ui -> e4 -> update();
-}
-
-void MainWindow::on_e5_clicked()
-{
-    ui -> e5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][4].pulsado == 0){
-        ui -> e5 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[4][4].pulsado = 1;
-    }else{
-        ui -> e5 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[4][4].pulsado = 0;
-    }
-
-    ui -> e5 -> update();
-}
-
-
-void MainWindow::on_e6_clicked()
-{
-    ui -> e6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][5].pulsado == 0){
-        ui -> e6 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[4][5].pulsado = 1;
-    }else{
-        ui -> e6 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[4][5].pulsado = 0;
-    }
-
-    ui -> e6 -> update();
-}
-
-void MainWindow::on_e7_clicked()
-{
-    ui -> e7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][6].pulsado == 0){
-        ui -> e7 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[4][6].pulsado = 1;
-    }else{
-        ui -> e7 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[4][6].pulsado = 0;
-    }
-
-    ui -> e7 -> update();
-}
-
-
-void MainWindow::on_e8_clicked()
-{
-    ui -> e8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[4][7].pulsado == 0){
-        ui -> e8 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[4][7].pulsado = 1;
-    }else{
-        ui -> e8 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[4][7].pulsado = 0;
-    }
-
-    ui -> e8 -> update();
-}
-
-void MainWindow::on_f1_clicked()
-{
-    ui -> f1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][0].pulsado == 0){
-        ui -> f1 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[5][0].pulsado = 1;
-    }else{
-        ui -> f1 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[5][0].pulsado = 0;
-    }
-
-    ui -> f1 -> update();
-}
-
-
-void MainWindow::on_f2_clicked()
-{
-    ui -> f2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][1].pulsado == 0){
-        ui -> f2 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[5][1].pulsado = 1;
-    }else{
-        ui -> f2 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[5][1].pulsado = 0;
-    }
-
-    ui -> f2 -> update();
-}
-
-void MainWindow::on_f3_clicked()
-{
-    ui -> f3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][2].pulsado == 0){
-        ui -> f3 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[5][2].pulsado = 1;
-    }else{
-        ui -> f3 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[5][2].pulsado = 0;
-    }
-
-    ui -> f3 -> update();
-}
-
-
-void MainWindow::on_f4_clicked()
-{
-    ui -> f4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][3].pulsado == 0){
-        ui -> f4 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[5][3].pulsado = 1;
-    }else{
-        ui -> f4 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[5][3].pulsado = 0;
-    }
-
-    ui -> f4 -> update();
-}
-
-void MainWindow::on_f5_clicked()
-{
-    ui -> f5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][4].pulsado == 0){
-        ui -> f5 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[5][4].pulsado = 1;
-    }else{
-        ui -> f5 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[5][4].pulsado = 0;
-    }
-
-    ui -> f5 -> update();
-}
-
-
-void MainWindow::on_f6_clicked()
-{
-    ui -> f6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][5].pulsado == 0){
-        ui -> f6 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[5][5].pulsado = 1;
-    }else{
-        ui -> f6 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[5][5].pulsado = 0;
-    }
-
-    ui -> f6 -> update();
-}
-
-void MainWindow::on_f7_clicked()
-{
-    ui -> f7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][6].pulsado == 0){
-        ui -> f7 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[5][6].pulsado = 1;
-    }else{
-        ui -> f7 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[5][6].pulsado = 0;
-    }
-
-    ui -> f7 -> update();
-}
-
-
-void MainWindow::on_f8_clicked()
-{
-    ui -> f8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[5][7].pulsado == 0){
-        ui -> f8 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[5][7].pulsado = 1;
-    }else{
-        ui -> f8 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[5][7].pulsado = 0;
-    }
-
-    ui -> f8 -> update();
-}
-
-void MainWindow::on_g1_clicked()
-{
-    ui -> g1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][0].pulsado == 0){
-        ui -> g1 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[6][0].pulsado = 1;
-    }else{
-        ui -> g1 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[6][0].pulsado = 0;
-    }
-
-    ui -> g1 -> update();
-}
-
-
-void MainWindow::on_g2_clicked()
-{
-    ui -> g2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][1].pulsado == 0){
-        ui -> g2 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[6][1].pulsado = 1;
-    }else{
-        ui -> g2 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[6][1].pulsado = 0;
-    }
-
-    ui -> g2 -> update();
-}
-
-void MainWindow::on_g3_clicked()
-{
-    ui -> g3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][2].pulsado == 0){
-        ui -> g3 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[6][2].pulsado = 1;
-    }else{
-        ui -> g3 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[6][2].pulsado = 0;
-    }
-
-    ui -> g3 -> update();
-}
-
-
-void MainWindow::on_g4_clicked()
-{
-    ui -> g4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][3].pulsado == 0){
-        ui -> g4 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[6][3].pulsado = 1;
-    }else{
-        ui -> g4 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[6][3].pulsado = 0;
-    }
-
-    ui -> g4 -> update();
-}
-
-void MainWindow::on_g5_clicked()
-{
-    ui -> g5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][4].pulsado == 0){
-        ui -> g5 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[6][4].pulsado = 1;
-    }else{
-        ui -> g5 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[6][4].pulsado = 0;
-    }
-
-    ui -> g5 -> update();
-}
-
-
-void MainWindow::on_g6_clicked()
-{
-    ui -> g6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][5].pulsado == 0){
-        ui -> g6 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[6][5].pulsado = 1;
-    }else{
-        ui -> g6 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[6][5].pulsado = 0;
-    }
-
-    ui -> g6 -> update();
-}
-
-void MainWindow::on_g7_clicked()
-{
-    ui -> g7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][6].pulsado == 0){
-        ui -> g7 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[6][6].pulsado = 1;
-    }else{
-        ui -> g7 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[6][6].pulsado = 0;
-    }
-
-    ui -> g7 -> update();
-}
-
-
-void MainWindow::on_g8_clicked()
-{
-    ui -> g8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[6][7].pulsado == 0){
-        ui -> g8 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[6][7].pulsado = 1;
-    }else{
-        ui -> g8 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[6][7].pulsado = 0;
-    }
-
-    ui -> g8 -> update();
-}
-
-void MainWindow::on_h1_clicked()
-{
-    ui -> h1 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][0].pulsado == 0){
-        ui -> h1 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[7][0].pulsado = 1;
-    }else{
-        ui -> h1 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[7][0].pulsado = 0;
-    }
-
-    ui -> h1 -> update();
-}
-
-
-void MainWindow::on_h2_clicked()
-{
-    ui -> h2 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][1].pulsado == 0){
-        ui -> h2 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[7][1].pulsado = 1;
-    }else{
-        ui -> h2 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[7][1].pulsado = 0;
-    }
-
-    ui -> h2 -> update();
-}
-
-void MainWindow::on_h3_clicked()
-{
-    ui -> h3 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][2].pulsado == 0){
-        ui -> h3 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[7][2].pulsado = 1;
-    }else{
-        ui -> h3 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[7][2].pulsado = 0;
-    }
-
-    ui -> h3 -> update();
-}
-
-
-void MainWindow::on_h4_clicked()
-{
-    ui -> h4 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][3].pulsado == 0){
-        ui -> h4 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[7][3].pulsado = 1;
-    }else{
-        ui -> h4 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[7][3].pulsado = 0;
-    }
-
-    ui -> h4 -> update();
-}
-
-void MainWindow::on_h5_clicked()
-{
-    ui -> h5 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][4].pulsado == 0){
-        ui -> h5 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[7][4].pulsado = 1;
-    }else{
-        ui -> h5 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[7][4].pulsado = 0;
-    }
-
-    ui -> h5 -> update();
-}
-
-
-void MainWindow::on_h6_clicked()
-{
-    ui -> h6 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][5].pulsado == 0){
-        ui -> h6 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[7][5].pulsado = 1;
-    }else{
-        ui -> h6 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[7][5].pulsado = 0;
-    }
-
-    ui -> h6 -> update();
-}
-
-void MainWindow::on_h7_clicked()
-{
-    ui -> h7 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][6].pulsado == 0){
-        ui -> h7 -> setPalette(MainWindow::cian);
-        MainWindow::echiquier.mat_escaque[7][6].pulsado = 1;
-    }else{
-        ui -> h7 -> setPalette(MainWindow::blanco);
-        MainWindow::echiquier.mat_escaque[7][6].pulsado = 0;
-    }
-
-    ui -> h7 -> update();
-}
-
-
-void MainWindow::on_h8_clicked()
-{
-    ui -> h8 -> setAutoFillBackground(true);
-    if (MainWindow::echiquier.mat_escaque[7][7].pulsado == 0){
-        ui -> h8 -> setPalette(MainWindow::azul);
-        MainWindow::echiquier.mat_escaque[7][7].pulsado = 1;
-    }else{
-        ui -> h8 -> setPalette(MainWindow::gris);
-        MainWindow::echiquier.mat_escaque[7][7].pulsado = 0;
-    }
-
-    ui -> h8 -> update();
-}*/

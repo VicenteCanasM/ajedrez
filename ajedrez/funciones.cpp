@@ -6,8 +6,8 @@
 // ===================== Funciones adicionales ========================== //
 // Comprobar si el escaque referenciado está dentro de los límites del tablero
 bool comprobar_limites(int col, int fil){
-    bool flag = 0;
-    if (col<1 || col>8 || fil<1 || fil>8) flag = 1;
+    bool flag = 1;
+    if (col<0 || col>7 || fil<0 || fil>7) flag = 0;
     return flag;
 };
 

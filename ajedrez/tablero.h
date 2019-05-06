@@ -26,6 +26,7 @@ public:
     tablero();
     tablero(vector <vector <int>>);
     void imprimir_tablero();
+    void imprimir_tablero_jugador();
 };
 
 

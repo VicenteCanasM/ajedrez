@@ -107,7 +107,7 @@ void peon::movs(tablero mi_tab){
                 /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
                     atq_set.push_back(casilla); // Capturar al paso derecha
                 }*/
-                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal derecha
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal derecha
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
@@ -120,7 +120,7 @@ void peon::movs(tablero mi_tab){
                 /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
                     atq_set.push_back(casilla); // Capturar al paso izquierda
                 }*/
-                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal izquierda
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal izquierda
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
