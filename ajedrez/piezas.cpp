@@ -834,4 +834,3 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
         }
     };
 };
-

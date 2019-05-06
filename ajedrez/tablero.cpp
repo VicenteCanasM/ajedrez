@@ -4,6 +4,7 @@
 #include "tablero.h"
 #include <iostream>
 #include "mainwindow.h"
+
 using namespace std;
 
 escaque::escaque(bool col, int jugador, int icono){

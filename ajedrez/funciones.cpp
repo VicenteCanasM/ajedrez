@@ -96,5 +96,3 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     return flag;
 };
-
-
