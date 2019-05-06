@@ -25,19 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    funciones.cpp \
         main.cpp \
         mainwindow.cpp \
-    tablero.cpp \
     piezas.cpp \
-    funciones.cpp \
-    partida.cpp
+    tablero.cpp
 
 HEADERS += \
-        mainwindow.h \
-    tablero.h \
-    piezas.h \
     funciones.h \
-    partida.h
+        mainwindow.h \
+    piezas.h \
+    tablero.h
 
 FORMS += \
         mainwindow.ui

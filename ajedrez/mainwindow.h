@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "tablero.h"
+#include "piezas.h"
+#include <vector>
+#include <QIcon>
 
 namespace Ui {
 class MainWindow;
@@ -14,11 +18,23 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void limpia_tablero();
+    tablero echiquier;//(vector <vector <int>>);
+    QPalette blanco, gris, azul, cian;
+    //vector < QIcon > iconos;
+    vector <peon> v_peon;
+    vector <caballo> v_caballo;
+    vector <alfil> v_alfil;
+    vector <torre> v_torre;
+    vector <dama> v_dama;
+    vector <rey> v_rey;
+
 
 private slots:
-    void on_a1_clicked();
+    void boton_pulsado(); // Prueba para el connect
+    /*void on_a1_clicked();
     void on_a2_clicked();
-    /*void on_a3_clicked();
+    void on_a3_clicked();
     void on_a4_clicked();
     void on_a5_clicked();
     void on_a6_clicked();
