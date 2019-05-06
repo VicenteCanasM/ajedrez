@@ -485,7 +485,7 @@ void MainWindow::boton_pulsado(){
         else ui -> label -> setText("Es turno de las negras");
         v_rey[turno].comprobar_jaque_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
         if(v_rey[turno].jaque){
-            v_rey[turno].comprobar_mate_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+            v_rey[turno].comprobar_mate_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
             qDebug("%d",v_rey[turno].mate);
             if(turno == 0) QMessageBox::information(this,"Jaque", "El rey blanco está en jaque.");
             else QMessageBox::information(this,"Jaque","El rey negro está en jaque.");
