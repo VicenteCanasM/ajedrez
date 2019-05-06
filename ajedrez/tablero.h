@@ -9,7 +9,7 @@ using namespace std;
 class escaque{
 public:
     bool color; // Color del escaque
-    //bool hay_rey;
+    bool hay_rey;
     bool pulsado;
     int ocupado;  // Color de la pieza que esté encima: 0 -> blanco, 1 -> negro, 2 -> vacio
     int t_icon;
@@ -26,6 +26,7 @@ public:
     tablero();
     tablero(vector <vector <int>>);
     void imprimir_tablero();
+    void imprimir_tablero_jugador();
 };
 
 

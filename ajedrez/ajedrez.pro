@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     tablero.cpp \
-    funciones.cpp
+    funciones.cpp \
+    piezas.cpp
 
 HEADERS += \
         mainwindow.h \
     tablero.h \
-    funciones.h
+    funciones.h \
+    piezas.h
 
 FORMS += \
         mainwindow.ui

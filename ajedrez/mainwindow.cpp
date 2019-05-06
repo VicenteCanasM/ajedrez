@@ -152,7 +152,7 @@ MainWindow::MainWindow(QWidget *parent) :
     turno = 0;
     //echiquier.imprimir_tablero();
     // Vectores de almacenado de las piezas
-    /*peon pw1(0, 1, 0);  v_peon.push_back(pw1);
+    peon pw1(0, 1, 0);  v_peon.push_back(pw1);
     peon pw2(1, 1, 0);  v_peon.push_back(pw2);
     peon pw3(2, 1, 0);  v_peon.push_back(pw3);
     peon pw4(3, 1, 0);  v_peon.push_back(pw4);
@@ -179,17 +179,16 @@ MainWindow::MainWindow(QWidget *parent) :
     alfil ak1(2, 7, 1);   v_alfil.push_back(ak1);
     alfil ak2(5, 7, 1);   v_alfil.push_back(ak2);
 
-    torre tw1(1, 0, 0);   v_torre.push_back(tw1);
-    torre tw2(6, 0, 0);   v_torre.push_back(tw2);
-    torre tk1(1, 7, 1);   v_torre.push_back(tk1);
-    torre tk2(6, 7, 1);   v_torre.push_back(tk2);
+    torre tw1(0, 0, 0);   v_torre.push_back(tw1);
+    torre tw2(7, 0, 0);   v_torre.push_back(tw2);
+    torre tk1(0, 7, 1);   v_torre.push_back(tk1);
+    torre tk2(7, 7, 1);   v_torre.push_back(tk2);
 
     dama dw1(3, 0, 0);   v_dama.push_back(dw1);
-    dama dk1(3, 0, 1);   v_dama.push_back(dk1);
+    dama dk1(3, 7, 1);   v_dama.push_back(dk1);
 
     rey rw1(4, 0, 0);   v_rey.push_back(rw1);
-    rey rk1(4, 0, 1);   v_rey.push_back(rk1);
-    */
+    rey rk1(4, 7, 1);   v_rey.push_back(rk1);
 
     // Prueba para connect
     connect(ui->a1,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
@@ -268,8 +267,6 @@ void MainWindow::boton_pulsado(){
     QString name = boton->objectName();
     pair <int, int> pos = obten_pos(name);
 
-    qDebug("%d\n",echiquier.mat_escaque[pos.first][pos.second].ocupado);
-
     if (estado_movimiento){
         if (turno == echiquier.mat_escaque[pos.first][pos.second].ocupado){
             botones[pos.first][pos.second] -> autoFillBackground();
@@ -278,22 +275,144 @@ void MainWindow::boton_pulsado(){
             else botones[pos.first][pos.second] -> setPalette(azul);
             escaque_origen = pos;
             estado_movimiento = false;
+            bool mov_realizado = 0;
+            movs_posibles.clear();
+            for (unsigned int i = 0; i < v_peon.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_peon[i].pos.first == escaque_origen.first && v_peon[i].pos.second == escaque_origen.second){
+                        v_peon[i].movs(echiquier);
+                        movs_posibles = v_peon[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_caballo.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_caballo[i].pos.first == escaque_origen.first && v_caballo[i].pos.second == escaque_origen.second){
+                        v_caballo[i].movs(echiquier);
+                        movs_posibles = v_caballo[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_alfil.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_alfil[i].pos.first == escaque_origen.first && v_alfil[i].pos.second == escaque_origen.second){
+                        v_alfil[i].movs(echiquier);
+                        movs_posibles = v_alfil[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_torre.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_torre[i].pos.first == escaque_origen.first && v_torre[i].pos.second == escaque_origen.second){
+                        v_torre[i].movs(echiquier);
+                        movs_posibles = v_torre[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_dama.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
+                        v_dama[i].movs(echiquier);
+                        movs_posibles = v_dama[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < v_rey.size(); i++){
+                if (mov_realizado == 0){
+                    if(v_rey[i].pos.first == escaque_origen.first && v_rey[i].pos.second == escaque_origen.second){
+                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                        movs_posibles = v_rey[i].mov_set;
+                        mov_realizado = 1;
+                    }
+                }
+            }
+
+            colorea_tablero(echiquier,botones,cian,azul,movs_posibles);
         }
     }else{
-
         pair<int,int> escaque_destino = pos;
-        boton_origen = botones[escaque_origen.first][escaque_origen.second];
-        QPushButton *boton_destino = botones[escaque_destino.first][escaque_destino.second];
-
-        if (escaque_destino.first != escaque_origen.first || escaque_destino.second!= escaque_origen.second){
-            mueve_icono(&echiquier, boton_destino, escaque_origen,escaque_destino,iconos);
-            boton_origen->setIcon(iconos[0]);
+        bool casilla_correcta = false;
+        for (unsigned int i = 0; i < movs_posibles.size(); i++){
+            if (movs_posibles[i] == escaque_destino) casilla_correcta = true;
         }
-        turno = ++turno%2;
+        if (casilla_correcta){
+            boton_origen = botones[escaque_origen.first][escaque_origen.second];
+            QPushButton *boton_destino = botones[escaque_destino.first][escaque_destino.second];
+
+            if (escaque_destino.first != escaque_origen.first || escaque_destino.second!= escaque_origen.second){
+                mueve_icono(&echiquier, boton_destino, escaque_origen,escaque_destino,iconos);
+                boton_origen->setIcon(iconos[0]);
+
+                // Cambiar posicion de la pieza
+                bool mov_realizado = 0;
+                for (unsigned int i = 0; i < v_peon.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_peon[i].pos.first == escaque_origen.first && v_peon[i].pos.second == escaque_origen.second){
+                            v_peon[i].pos.first = escaque_destino.first;
+                            v_peon[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+                }
+                for (unsigned int i = 0; i < v_caballo.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_caballo[i].pos.first == escaque_origen.first && v_caballo[i].pos.second == escaque_origen.second){
+                            v_caballo[i].pos.first = escaque_destino.first;
+                            v_caballo[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+                }
+                for (unsigned int i = 0; i < v_alfil.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_alfil[i].pos.first == escaque_origen.first && v_alfil[i].pos.second == escaque_origen.second){
+                            v_alfil[i].pos.first = escaque_destino.first;
+                            v_alfil[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+                }
+                for (unsigned int i = 0; i < v_torre.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_torre[i].pos.first == escaque_origen.first && v_torre[i].pos.second == escaque_origen.second){
+                            v_torre[i].pos.first = escaque_destino.first;
+                            v_torre[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+                }
+                for (unsigned int i = 0; i < v_dama.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
+                            v_dama[i].pos.first = escaque_destino.first;
+                            v_dama[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+                }
+                for (unsigned int i = 0; i < v_rey.size(); i++){
+                    if (mov_realizado == 0){
+                        if(v_rey[i].pos.first == escaque_origen.first && v_rey[i].pos.second == escaque_origen.second){
+                            v_rey[i].pos.first = escaque_destino.first;
+                            v_rey[i].pos.second = escaque_destino.second;
+                            mov_realizado = 1;
+                        }
+                    }
+}
+            }
+            turno = ++turno%2;
+        }
+
         limpia_tablero(echiquier,botones,blanco,gris);
         estado_movimiento = true;
     }
 
     botones[pos.first][pos.second] -> update();
+    echiquier.imprimir_tablero_jugador();
 }
 
