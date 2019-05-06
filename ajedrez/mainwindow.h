@@ -19,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     tablero echiquier;//(vector <vector <int>>);
-    QPalette blanco, gris, azul, cian;
+    QPalette blanco, gris, azul, cian, rojo, rojo_oscuro;
     bool estado_movimiento;
     pair <int, int> escaque_origen;
     vector < QIcon > iconos;
@@ -34,6 +34,7 @@ public:
     vector <rey> v_rey;
 
     vector<pair<int,int>> movs_posibles;
+    vector <pair<int,int>> atq_posibles;
 
 private slots:
     void boton_pulsado();

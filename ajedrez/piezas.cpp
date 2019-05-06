@@ -107,7 +107,7 @@ void peon::movs(tablero mi_tab){
                 /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
                     atq_set.push_back(casilla); // Capturar al paso derecha
                 }*/
-                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal derecha
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal derecha
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
@@ -120,7 +120,7 @@ void peon::movs(tablero mi_tab){
                 /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
                     atq_set.push_back(casilla); // Capturar al paso izquierda
                 }*/
-                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 1){ // Ataque a diagonal izquierda
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal izquierda
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
@@ -170,7 +170,7 @@ void caballo::movs(tablero mi_tab){
             if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){
                 mov_set.push_back(casilla); // Posible movimiento
             }
-            else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){
+            else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == (jugador + 1)%2){
                 atq_set.push_back(casilla); // Posible ataque
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].hay_rey)
                     jaque_rey = 1; // Jaque al rey enemigo
@@ -204,9 +204,9 @@ void alfil::movs(tablero mi_tab){
     vector<pair<int,int>> escaques_ady;
     escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
     escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -215,12 +215,12 @@ void alfil::movs(tablero mi_tab){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){
                     atq_set.push_back(casilla); // Posible ataque
                     n = 0;
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
                         jaque_rey = 1; // Jaque al rey enemigo
-                        atq_set = atq_rey_aux;
+                        atq_rey = atq_rey_aux;
                     };
                 }
                 else {
@@ -260,9 +260,9 @@ void torre::movs(tablero mi_tab){
     vector<pair<int,int>> escaques_ady;
     escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
     escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -319,9 +319,9 @@ void dama::movs(tablero mi_tab){
     escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
     escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
     escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    for (unsigned long i = 0; i <= escaques_ady.size(); i++){
+    for (unsigned long i = 0; i < escaques_ady.size(); i++){
         while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].first*c)){
+            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
@@ -330,7 +330,7 @@ void dama::movs(tablero mi_tab){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado != jugador){ // Posible ataque
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){ // Posible ataque
                     atq_set.push_back(casilla); // Posible ataque
                     n = 0;
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
@@ -363,7 +363,7 @@ rey::rey(int col, int fil, int jug) : piezas(col, fil, jug){
 rey::~rey(){
 };
 // Comprobar casillas fuera de peligro
-vector<vector<bool>> rey::comprobar_mov_rey(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
+vector<vector<bool>> rey::comprobar_mov_rey(tablero mi_tab, int jug, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama){
     vector<vector<bool>> tablero_libre(8);
     for(unsigned long i = 0; i < 8; i++) tablero_libre[i].resize(8, 1);
     for (unsigned long  i = 0; i <= v_peon.size() ; i++){
@@ -408,14 +408,6 @@ vector<vector<bool>> rey::comprobar_mov_rey(tablero mi_tab, int jug, vector<peon
             };
         };
     };
-    for (unsigned long  i = 0; i <= v_rey.size() ; i++){
-        if (v_rey[i].jugador != jug){
-            v_rey[i].movs(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
-            for (unsigned long j = 0; j < v_rey[i].escaque_def.size(); j++){
-                tablero_libre[v_rey[i].mov_set[j].first][v_rey[i].mov_set[j].second] = 0;
-            };
-        };
-    };
     for (unsigned long  i = 0; i <= v_dama.size() ; i++){
         if (v_dama[i].jugador != jug){
             v_dama[i].movs(mi_tab);
@@ -427,7 +419,7 @@ vector<vector<bool>> rey::comprobar_mov_rey(tablero mi_tab, int jug, vector<peon
     return tablero_libre;
 };
 // Comprobar movimientos posibles
-void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
+void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama){
     int col_act = pos.first;
     int fil_act = pos.second;
     mov_set.clear();
@@ -438,7 +430,7 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
     escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
     escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
     escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    vector<vector<bool>> escaques_libres = this->comprobar_mov_rey(mi_tab, this->jugador, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+    vector<vector<bool>> escaques_libres = this->comprobar_mov_rey(mi_tab, this->jugador, v_peon, v_caballo, v_alfil, v_torre, v_dama);
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         if (comprobar_limites(col_act+escaques_ady[i].first, fil_act+escaques_ady[i].second)){  //Comprobar escaque superior
             if (escaques_libres[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second]){
@@ -448,13 +440,13 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == 2){
                     mov_set.push_back(casilla);
                 }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado != jugador){ // Posible ataque
+                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].ocupado == (jugador + 1)%2){ // Posible ataque
                     atq_set.push_back(casilla);
                 };
             };
         };
     };
-    pair<bool,bool> habilitar_enroque = comprobar_enroque(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama); // Enroques habilitados
+    pair<bool,bool> habilitar_enroque = comprobar_enroque(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama); // Enroques habilitados
     if (habilitar_enroque.first){ //Comprobar enroque a torre en ax
         casilla.first = col_act+2;
         casilla.second = fil_act;
@@ -516,21 +508,21 @@ void rey::comprobar_jaque_rey(tablero mi_tab, vector<peon> v_peon, vector<caball
     };
 };
 // Comprobar enroque
-pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
+pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama){
     pair <bool,bool> habilitar_enroque(0,0);
     if (first_mov && jaque == 0){
         bool escaque1, escaque2;
         for (unsigned long i = 0; i <= v_torre.size(); i++){ // Busqueda de torres
             if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 8){
-                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first+1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
-                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first+2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first+1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first+2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
                 if (v_torre[i].first_mov == 1 && escaque1 && escaque2 && mi_tab.mat_escaque[pos.first+1][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first+2][pos.second].ocupado == 2){
                     habilitar_enroque.second = 1; // Torre en hx (derecha desde blancos)
                 };
             };
             if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 1){
-                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first-1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
-                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first-2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first-1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first-2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
                 if (v_torre[i].first_mov == 1 && !escaque1 && !escaque2 && mi_tab.mat_escaque[pos.first-1][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-2][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-3][pos.second].ocupado == 2){
                     habilitar_enroque.first = 1; // Torre en ax (izquierda desde blancos)
                 };
@@ -540,7 +532,7 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
     return habilitar_enroque;
 };
 // Comprobar mate
-void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
+void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama){
     mate = 1;
     vector<pair<int,int>> escaques_ady;
     escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
@@ -550,7 +542,7 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     // Se comprueba si el rey se puede salver moviéndose
     for (unsigned long i = 0; i <= escaques_ady.size(); i++){
         if (mate)
-            mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+            mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
     };
     // Se comprueba si la(s) pieza(s) que hace(n) jaque pueden ser capturadas
     vector<pair<int,int>> pos_piezas_jaque;
@@ -618,14 +610,6 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
                 if(v_dama[i].jugador == jugador && flag1 == 0){
                     for(unsigned long j = 0; j <= v_dama[i].atq_set.size(); j++){
                         if (v_dama[i].atq_set[j].first == pos_piezas_jaque[0].first && v_dama[i].atq_set[j].second == pos_piezas_jaque[0].second)
-                            flag1 = 1;
-                    }
-                }
-            }
-            for(unsigned long i = 0; i <= v_rey.size(); i++){
-                if(v_rey[i].jugador == jugador && flag1 == 0){
-                    for(unsigned long j = 0; j <= v_rey[i].atq_set.size(); j++){
-                        if (v_rey[i].atq_set[j].first == pos_piezas_jaque[0].first && v_rey[i].atq_set[j].second == pos_piezas_jaque[0].second)
                             flag1 = 1;
                     }
                 }

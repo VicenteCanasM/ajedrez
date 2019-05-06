@@ -13,11 +13,11 @@ void mueve_icono(tablero *echiquier,QPushButton *boton_destino, pair<int,int> or
 void limpia_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco, QPalette negro);
 void colorea_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco,
                      QPalette negro, vector <pair <int,int>> pos);
+
 pair <int, int> obten_pos(QString pos);
 bool comprobar_limites(int, int);
 
-bool comprobar_amenaza(tablero, int, int, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<rey>, vector<dama>);
+bool comprobar_amenaza(tablero, int, int, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
 
-void movimiento(tablero, QIcon, QIcon, QPushButton, QPushButton, bool, pair<int,int>, pair<int,int>);
 
 #endif // FUNCIONES_H

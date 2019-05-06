@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     blanco.setColor(QPalette::Button, QColor(Qt::white));
     azul.setColor(QPalette::Button,QColor(Qt::darkCyan));
     cian.setColor(QPalette::Button, QColor(Qt::cyan));
+    rojo.setColor(QPalette::Button, QColor(Qt::red));
+    rojo_oscuro.setColor(QPalette::Button, QColor(Qt::darkRed));
 
     iconos.resize(13);
     iconos[0] = QIcon("");
@@ -282,6 +284,7 @@ void MainWindow::boton_pulsado(){
                     if(v_peon[i].pos.first == escaque_origen.first && v_peon[i].pos.second == escaque_origen.second){
                         v_peon[i].movs(echiquier);
                         movs_posibles = v_peon[i].mov_set;
+                        atq_posibles = v_peon[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -291,6 +294,7 @@ void MainWindow::boton_pulsado(){
                     if(v_caballo[i].pos.first == escaque_origen.first && v_caballo[i].pos.second == escaque_origen.second){
                         v_caballo[i].movs(echiquier);
                         movs_posibles = v_caballo[i].mov_set;
+                        atq_posibles = v_caballo[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -300,6 +304,7 @@ void MainWindow::boton_pulsado(){
                     if(v_alfil[i].pos.first == escaque_origen.first && v_alfil[i].pos.second == escaque_origen.second){
                         v_alfil[i].movs(echiquier);
                         movs_posibles = v_alfil[i].mov_set;
+                        atq_posibles = v_alfil[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -309,6 +314,7 @@ void MainWindow::boton_pulsado(){
                     if(v_torre[i].pos.first == escaque_origen.first && v_torre[i].pos.second == escaque_origen.second){
                         v_torre[i].movs(echiquier);
                         movs_posibles = v_torre[i].mov_set;
+                        atq_posibles = v_torre[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -318,6 +324,7 @@ void MainWindow::boton_pulsado(){
                     if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
                         v_dama[i].movs(echiquier);
                         movs_posibles = v_dama[i].mov_set;
+                        atq_posibles = v_dama[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -325,22 +332,29 @@ void MainWindow::boton_pulsado(){
             for (unsigned int i = 0; i < v_rey.size(); i++){
                 if (mov_realizado == 0){
                     if(v_rey[i].pos.first == escaque_origen.first && v_rey[i].pos.second == escaque_origen.second){
-                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
+                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
                         movs_posibles = v_rey[i].mov_set;
+                        atq_posibles = v_rey[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
             }
 
             colorea_tablero(echiquier,botones,cian,azul,movs_posibles);
+            colorea_tablero(echiquier,botones,rojo,rojo_oscuro,atq_posibles);
+
         }
     }else{
         pair<int,int> escaque_destino = pos;
         bool casilla_correcta = false;
+        bool ataca = false;
         for (unsigned int i = 0; i < movs_posibles.size(); i++){
             if (movs_posibles[i] == escaque_destino) casilla_correcta = true;
         }
-        if (casilla_correcta){
+        for (unsigned int i = 0; i < atq_posibles.size(); i++){
+            if (atq_posibles[i] == escaque_destino) ataca = true;
+        }
+        if (casilla_correcta || ataca){
             boton_origen = botones[escaque_origen.first][escaque_origen.second];
             QPushButton *boton_destino = botones[escaque_destino.first][escaque_destino.second];
 
@@ -348,6 +362,55 @@ void MainWindow::boton_pulsado(){
                 mueve_icono(&echiquier, boton_destino, escaque_origen,escaque_destino,iconos);
                 boton_origen->setIcon(iconos[0]);
 
+                // Eliminar pieza
+                if (ataca){
+                    bool mov_realizado = 0;
+                    for (unsigned int i = 0; i < v_peon.size(); i++){
+                        if (mov_realizado == 0){
+                            if(v_peon[i].pos.first == escaque_destino.first && v_peon[i].pos.second == escaque_destino.second){
+                                v_peon[i].pos.first = -1;
+                                v_peon[i].pos.second = 20;
+                                mov_realizado = 1;
+                            }
+                        }
+                    }
+                    for (unsigned int i = 0; i < v_caballo.size(); i++){
+                        if (mov_realizado == 0){
+                            if(v_caballo[i].pos.first == escaque_destino.first && v_caballo[i].pos.second == escaque_destino.second){
+                                v_caballo[i].pos.first = -1;
+                                v_caballo[i].pos.second = 20;
+                                mov_realizado = 1;
+                            }
+                        }
+                    }
+                    for (unsigned int i = 0; i < v_alfil.size(); i++){
+                        if (mov_realizado == 0){
+                            if(v_alfil[i].pos.first == escaque_destino.first && v_alfil[i].pos.second == escaque_destino.second){
+                                v_alfil[i].pos.first = -1;
+                                v_alfil[i].pos.second = 20;
+                                mov_realizado = 1;
+                            }
+                        }
+                    }
+                    for (unsigned int i = 0; i < v_torre.size(); i++){
+                        if (mov_realizado == 0){
+                            if(v_torre[i].pos.first == escaque_destino.first && v_torre[i].pos.second == escaque_destino.second){
+                                v_torre[i].pos.first = -1;
+                                v_torre[i].pos.second = 20;
+                                mov_realizado = 1;
+                            }
+                        }
+                    }
+                    for (unsigned int i = 0; i < v_dama.size(); i++){
+                        if (mov_realizado == 0){
+                            if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
+                                v_dama[i].pos.first = -1;
+                                v_dama[i].pos.second = 20;
+                                mov_realizado = 1;
+                            }
+                        }
+                    }
+                }
                 // Cambiar posicion de la pieza
                 bool mov_realizado = 0;
                 for (unsigned int i = 0; i < v_peon.size(); i++){
@@ -403,7 +466,7 @@ void MainWindow::boton_pulsado(){
                             mov_realizado = 1;
                         }
                     }
-}
+                }
             }
             turno = ++turno%2;
         }
@@ -413,6 +476,6 @@ void MainWindow::boton_pulsado(){
     }
 
     botones[pos.first][pos.second] -> update();
-    echiquier.imprimir_tablero_jugador();
+    //echiquier.imprimir_tablero_jugador();
 }
 

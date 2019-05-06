@@ -29,6 +29,7 @@ void colorea_tablero(tablero echiquier, vector < vector < QPushButton*>> botones
     }
 }
 
+
 pair <int, int> obten_pos(QString pos){
     QChar a = 'a';
     QChar uno = '1';
@@ -46,7 +47,7 @@ bool comprobar_limites(int col, int fil){
 };
 
 // Comprobar si la casilla elegida está amenazada
-bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<rey> v_rey, vector<dama> v_dama){
+bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama){
     bool flag = 0;
     for (unsigned long  i = 0; i <= v_peon.size() ; i++){
         if (v_peon[i].jugador != jug){
@@ -93,26 +94,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
             };
         };
     };
-    for (unsigned long  i = 0; i <= v_rey.size() ; i++){
-        if (v_rey[i].jugador != jug){
-            v_rey[i].movs(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_rey, v_dama);
-            for (unsigned long j = 0; j < v_rey[i].atq_set.size(); j++){
-                if (columna == v_rey[i].atq_set[j].first && fila == v_rey[i].atq_set[j].second)
-                    flag = 1;
-            };
-        };
-    };
     return flag;
 };
 
-// Realización del movimiento
-void movimiento(tablero mi_tab, QIcon icono, QIcon nada, QPushButton b_origen, QPushButton b_destino, pair<int,int> pos_o, pair<int,int> pos_d){
-    // Modificación de iconos
-    b_destino.setIcon(icono);
-    b_origen.setIcon(nada);
-    mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado;
-    mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
 
-    // Modificación de piezas
-
-};
