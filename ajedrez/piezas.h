@@ -15,6 +15,8 @@ public:
     vector<pair<int,int>> mov_set; // Posiciones libres a las que puede acceder la pieza
     vector<pair<int,int>> atq_set; // Posiciones a las que puede atacar la pieza (hay una pieza rival)
     vector<pair<int,int>> escaque_def; // Posiciones defendidas por la pieza (incluye posiciones en las que hay una pieza aliada, pero no enemiga)
+    bool jaque_rey;
+    vector<pair<int,int>> atq_rey;
 public:
     piezas(int, int, int); // (columna, fila, color[0 -> blancas; 1 -> negras])
     ~piezas();
@@ -25,9 +27,7 @@ public:
 class peon : public piezas {
 public:
     bool first_mov; // 1 -> si el peón aún no se ha movido; 0 -> caso contrario
-    bool jaque_rey; // 1 -> si la pieza hace jaque al rey; 0 -> caso contrario
     bool dos_pasos; // 1 -> si el peón acaba de avanzar dos casillas; 0 -> caso contrario ((HAY QUE HACER UN METODO PARA COMPROBARLO))
-    vector<pair<int,int>> atq_rey; // Trayectoria a tapar en caso de que esta pieza haga jaque al rey rival
 public:
     peon(int, int, int);
     ~peon();
@@ -38,9 +38,6 @@ public:
 // CABALLO //
 class caballo : public piezas {
 public:
-    bool jaque_rey;
-    vector<pair<int,int>> atq_rey;
-public:
     caballo(int, int, int);
     ~caballo();
     void movs(tablero);
@@ -49,31 +46,23 @@ public:
 // ALFIL //
 class alfil : virtual public piezas {
 public:
-    bool jaque_rey;
-    vector<pair<int,int>> atq_rey;
-public:
     alfil(int, int, int);
     ~alfil();
-    void movs(tablero);
+    void movsA(tablero);
 };
 
 // TORRE //
 class torre : virtual public piezas {
 public:
     bool first_mov;
-    bool jaque_rey;
-    vector<pair<int,int>> atq_rey;
 public:
     torre(int, int, int);
     ~torre();
-    void movs(tablero);
+    void movsT(tablero);
 };
 
 // DAMA //
-class dama : virtual public piezas {
-public:
-    bool jaque_rey;
-    vector<pair<int,int>> atq_rey;
+class dama : virtual public torre, virtual public alfil {
 public:
     dama(int, int, int);
     ~dama();

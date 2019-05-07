@@ -69,7 +69,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     for (unsigned long  i = 0; i < v_alfil.size() ; i++){
         if (v_alfil[i].jugador != jug){
-            v_alfil[i].movs(mi_tab);
+            v_alfil[i].movsA(mi_tab);
             for (unsigned long j = 0; j < v_alfil[i].atq_set.size(); j++){
                 if (columna == v_alfil[i].atq_set[j].first && fila == v_alfil[i].atq_set[j].second)
                     flag = 1;
@@ -78,7 +78,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     for (unsigned long  i = 0; i < v_torre.size() ; i++){
         if (v_torre[i].jugador != jug){
-            v_torre[i].movs(mi_tab);
+            v_torre[i].movsT(mi_tab);
             for (unsigned long j = 0; j < v_torre[i].atq_set.size(); j++){
                 if (columna == v_torre[i].atq_set[j].first && fila == v_torre[i].atq_set[j].second)
                     flag = 1;
@@ -96,3 +96,5 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     };
     return flag;
 };
+
+
