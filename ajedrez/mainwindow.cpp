@@ -460,7 +460,7 @@ void MainWindow::boton_pulsado(){
                             v_peon[i].first_mov = 0;
                             mov_realizado = 1;
                             // -----
-                            if (v_peon[i].coronar(v_dama)){
+                            if (v_peon[i].coronar(&v_dama)){
                                 if(v_peon[i].jugador == 0){
                                     echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 5;
                                 }
@@ -523,11 +523,9 @@ void MainWindow::boton_pulsado(){
                             if(escaque_destino.first-escaque_origen.first == 2){ // Enroca hacia hx
                                 for (unsigned int j = 0; j < v_torre.size(); j++){
                                     if (v_torre[j].jugador == v_rey[i].jugador && v_torre[j].pos.first == 7){
-                                        v_torre[i].pos.first = escaque_destino.first-1;
-                                        v_torre[i].pos.second = escaque_destino.second;
-                                        v_torre[i].first_mov = 0;
-                                        echiquier.mat_escaque[escaque_destino.first-1][escaque_destino.second].ocupado = v_torre[j].jugador;
-                                        echiquier.mat_escaque[7][escaque_destino.second].ocupado = 2;
+                                        v_torre[j].pos.first = escaque_destino.first-1;
+                                        v_torre[j].pos.second = escaque_destino.second;
+                                        v_torre[j].first_mov = 0;
                                         QPushButton *boton_destino2 = botones[escaque_destino.first-1][escaque_destino.second];
                                         QPushButton *boton_origen2 = botones[7][escaque_destino.second];
                                         pair<int,int> escaque_origen2(7,escaque_destino.second);
@@ -540,11 +538,9 @@ void MainWindow::boton_pulsado(){
                             else if(escaque_destino.first-escaque_origen.first == -2){ // Enroca hacia ax
                                 for (unsigned int j = 0; j < v_torre.size(); j++){
                                     if (v_torre[j].jugador == v_rey[i].jugador && v_torre[j].pos.first == 0){
-                                        v_torre[i].pos.first = escaque_destino.first+1;
-                                        v_torre[i].pos.second = escaque_destino.second;
-                                        v_torre[i].first_mov = 0;
-                                        echiquier.mat_escaque[escaque_destino.first+1][escaque_destino.second].ocupado = v_torre[j].jugador;
-                                        echiquier.mat_escaque[0][escaque_destino.second].ocupado = 2;
+                                        v_torre[j].pos.first = escaque_destino.first+1;
+                                        v_torre[j].pos.second = escaque_destino.second;
+                                        v_torre[j].first_mov = 0;
                                         QPushButton *boton_destino2 = botones[escaque_destino.first+1][escaque_destino.second];
                                         QPushButton *boton_origen2 = botones[0][escaque_destino.second];
                                         pair<int,int> escaque_origen2(0,escaque_destino.second);

@@ -67,7 +67,7 @@ public:
 public:
     peon(int, int, int);
     ~peon();
-    bool coronar(vector<dama>); // Coronar el peón cuando llegue al extremo contrario
+    bool coronar(vector<dama>*); // Coronar el peón cuando llegue al extremo contrario
     void movs(tablero); // Genera los movimientos posibles de la pieza
 };
 
