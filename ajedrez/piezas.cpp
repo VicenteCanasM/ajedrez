@@ -221,6 +221,11 @@ void alfil::movsA(tablero mi_tab){
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
                         jaque_rey = 1; // Jaque al rey enemigo
                         atq_rey = atq_rey_aux;
+                        c++;
+                        casilla.first = col_act+escaques_ady[i].first*c;
+                        casilla.second = fil_act+escaques_ady[i].second*c;
+                        if (comprobar_limites(casilla.first, casilla.second) && mi_tab.mat_escaque[casilla.first][casilla.second].ocupado == 2)
+                            escaque_def.push_back(casilla);
                     };
                 }
                 else {
@@ -278,6 +283,11 @@ void torre::movsT(tablero mi_tab){
                     if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
                         jaque_rey = 1; // Jaque al rey enemigo
                         atq_rey = atq_rey_aux;
+                        c++;
+                        casilla.first = col_act+escaques_ady[i].first*c;
+                        casilla.second = fil_act+escaques_ady[i].second*c;
+                        if (comprobar_limites(casilla.first, casilla.second) && mi_tab.mat_escaque[casilla.first][casilla.second].ocupado == 2)
+                            escaque_def.push_back(casilla);
                     };
                 }
                 else {
@@ -548,7 +558,7 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
 void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama, vector<rey> v_rey){
     mate = 1;
     vector<pair<int,int>> escaques_ady(8);
-    mi_tab.imprimir_tablero_reyes();
+    //mi_tab.imprimir_tablero_reyes();
     escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
     escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
     escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
