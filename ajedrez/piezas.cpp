@@ -210,7 +210,7 @@ void alfil::movsA(tablero mi_tab){
                 casilla.first = col_act+escaques_ady[i].first*c;
                 casilla.second = fil_act+escaques_ady[i].second*c;
                 escaque_def.push_back(casilla); // Zona de influencia
-                vector<pair<int,int>> atq_rey_aux; // Posible zona a tapar durante el jaque
+                atq_rey_aux.push_back(casilla); // Posible zona a tapar durante el jaque
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == 2){
                     mov_set.push_back(casilla); // Posible movimiento
                     c++;
@@ -232,6 +232,7 @@ void alfil::movsA(tablero mi_tab){
             };
         };
         n = 1;  c = 1;
+        atq_rey_aux.clear();
     };
 };
 
@@ -311,7 +312,7 @@ void dama::movs(tablero mi_tab){
     vector<pair<int,int>> escaque_def_aux;
     vector<pair<int,int>> atq_rey_aux;
     bool jaque_rey_1;
-    jaque_rey = 0;
+    //jaque_rey = 0;
     movsA(mi_tab);
     mov_set_aux = mov_set;
     atq_set_aux = atq_set;
@@ -547,6 +548,7 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
 void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama, vector<rey> v_rey){
     mate = 1;
     vector<pair<int,int>> escaques_ady(8);
+    mi_tab.imprimir_tablero_reyes();
     escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
     escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
     escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
@@ -564,22 +566,27 @@ void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo
     if (mate){
         // Buscar la(s) pieza(s) que hace(n) jaque
         for(unsigned long i = 0; i < v_peon.size(); i++){
+            v_peon[i].movs(mi_tab);
             if (v_peon[i].jaque_rey == 1 && v_peon[i].jugador != jugador)
                 pos_piezas_jaque.push_back(v_peon[i].pos);
         }
         for(unsigned long i = 0; i < v_caballo.size(); i++){
+            v_caballo[i].movs(mi_tab);
             if (v_caballo[i].jaque_rey == 1 && v_caballo[i].jugador != jugador)
                 pos_piezas_jaque.push_back(v_caballo[i].pos);
         }
         for(unsigned long i = 0; i < v_alfil.size(); i++){
+            v_alfil[i].movsA(mi_tab);
             if (v_alfil[i].jaque_rey == 1 && v_alfil[i].jugador != jugador)
                 pos_piezas_jaque.push_back(v_alfil[i].pos);
         }
         for(unsigned long i = 0; i < v_torre.size(); i++){
+            v_torre[i].movsT(mi_tab);
             if (v_torre[i].jaque_rey == 1 && v_torre[i].jugador != jugador)
                 pos_piezas_jaque.push_back(v_torre[i].pos);
         }
         for(unsigned long i = 0; i < v_dama.size(); i++){
+            v_dama[i].movs(mi_tab);
             if (v_dama[i].jaque_rey == 1 && v_dama[i].jugador != jugador)
                 pos_piezas_jaque.push_back(v_dama[i].pos);
         }

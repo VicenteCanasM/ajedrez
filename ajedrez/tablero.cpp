@@ -6,12 +6,12 @@
 #include "mainwindow.h"
 using namespace std;
 
-escaque::escaque(bool col, int jugador, int icono){
+escaque::escaque(bool col, int jugador, int icono, bool rey){
     color = col;
     ocupado = jugador;
     pulsado = false;
     t_icon = icono;
-    //hay_rey =
+    hay_rey = rey;
 }
 
 escaque::escaque(){
@@ -19,18 +19,19 @@ escaque::escaque(){
     ocupado = 2;
     pulsado = false;
     t_icon = 0;
+    hay_rey = false;
 }
 
 tablero::tablero(){
 }
 
-tablero::tablero(vector < vector <int>> jugadores){
+tablero::tablero(vector < vector <int>> jugadores, vector <vector <bool> > reyes){
     bool color = true;
     mat_escaque.resize(8);
     for(unsigned long i = 0; i < 8; i++) mat_escaque[i].resize(8);
     for(unsigned long i = 0; i < static_cast<unsigned long>(filas); i++){
         for (unsigned long j = 0; j < static_cast<unsigned long>(columnas); j++){
-            escaque mi_escaque(color, jugadores[i][j], 0);
+            escaque mi_escaque(color, jugadores[i][j], 0, reyes[i][j]);
             mat_escaque[i][j] = mi_escaque;
             color = not color;
         }
@@ -58,3 +59,12 @@ void tablero::imprimir_tablero_jugador(){
     }
 }
 
+void tablero::imprimir_tablero_reyes(){
+    cout << endl;
+    for (int  i = 7; i >= 0; i--){
+        for (int j = 0; j < 8; j++){
+            cout << mat_escaque[j][i].hay_rey << ' ';
+        }
+        cout << endl;
+    }
+}

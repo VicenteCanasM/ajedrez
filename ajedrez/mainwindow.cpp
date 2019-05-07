@@ -10,8 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Se inicializa estado movimiento, que indica si la acción está en el primer paso o en el segundo:
+    // true -> en el primer click;   false -> en el segundo click
     estado_movimiento = true;
 
+    // Se inicializa la matriz de posiciones iniciales de las piezas en el tablero:
+    // 0 -> blancas;    1 -> negras;    2 -> vacía;
     vector < vector < int >> pos_inicial(8, vector <int>(8,2));
     for (unsigned long i = 0; i < 8; i++){
         for (unsigned long j = 0; j < 8; j++){
@@ -19,10 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
             else if (i > 5) pos_inicial[j][i] = 1;
         }
     }
+
+    // Se inicializa una matriz booleana que indica si en cada escaque hay algún rey
     vector < vector < bool >> reyes(8, vector <bool>(8, false));
     reyes[4][0] = true;
     reyes[4][7] = true;
 
+    // Se inicializan los colores
     gris.setColor(QPalette::Button,QColor(Qt::gray));
     blanco.setColor(QPalette::Button, QColor(Qt::white));
     azul.setColor(QPalette::Button,QColor(Qt::darkCyan));
@@ -30,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     rojo.setColor(QPalette::Button, QColor(Qt::red));
     rojo_oscuro.setColor(QPalette::Button, QColor(Qt::darkRed));
 
+    // Se cargan los iconos en el vector de iconos
     iconos.resize(13);
     iconos[0] = QIcon("");
     iconos[1] = QIcon("pieces/merida_new/wp.svg");
@@ -45,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     iconos[11] = QIcon("pieces/merida_new/bq.svg");
     iconos[12] = QIcon("pieces/merida_new/bk.svg");
 
+    // Se crea una matriz auxiliar de punteros de botones
     vector < vector < QPushButton *>> aux(8, vector < QPushButton*>(8));
 
     aux[0][0] = ui -> a1;
@@ -112,10 +121,14 @@ MainWindow::MainWindow(QWidget *parent) :
     aux[7][6] = ui -> h7;
     aux[7][7] = ui -> h8;
 
+    // Se asigna a la matriz de botones la matriz auxiliar
     botones = aux;
 
-    tablero aux2(pos_inicial);
+    // Se crea un tablero auxiliar y se inicializa
+    tablero aux2(pos_inicial, reyes);
     echiquier = aux2;
+
+    // Se asigna a cada escaque su icono correspondiente
     echiquier.mat_escaque[0][0].t_icon = 4;
     echiquier.mat_escaque[1][0].t_icon = 2;
     echiquier.mat_escaque[2][0].t_icon = 3;
@@ -149,10 +162,12 @@ MainWindow::MainWindow(QWidget *parent) :
     echiquier.mat_escaque[6][6].t_icon = 7;
     echiquier.mat_escaque[7][6].t_icon = 7;
 
+    // Se limpia el tablero para colorear los escaques de blanco y gris
     limpia_tablero(echiquier,botones,blanco,gris);
 
+    // Es turno de las blancas
     turno = 0;
-    //echiquier.imprimir_tablero();
+
     // Vectores de almacenado de las piezas
     peon pw1(0, 1, 0);  v_peon.push_back(pw1);
     peon pw2(1, 1, 0);  v_peon.push_back(pw2);
@@ -192,7 +207,7 @@ MainWindow::MainWindow(QWidget *parent) :
     rey rw1(4, 0, 0);   v_rey.push_back(rw1);
     rey rk1(4, 7, 1);   v_rey.push_back(rk1);
 
-    // Prueba para connect
+    // Se asignan con connect cada señal de clicked de los botones a la función "botón_pulsado"
     connect(ui->a1,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
     connect(ui->a2,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
     connect(ui->a3,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
@@ -258,6 +273,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->h7,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
     connect(ui->h8,SIGNAL(clicked()),this,SLOT(boton_pulsado()));
 
+    // Se asignan las puntuaciones iniciales a sendos jugadores
     puntuaciones.push_back(0);
     puntuaciones.push_back(0);
 }
@@ -268,11 +284,16 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::boton_pulsado(){
+    // A partir del sender de la señal obtenemos el botón que ha sido pulsado
     QPushButton *boton = (QPushButton*)sender();
+
+    // Obtenemos su nombre, y, a partir de su nombre, la posición en filas y columnas
     QString name = boton->objectName();
     pair <int, int> pos = obten_pos(name);
 
+    // En función del estado del movimiento, accedemos a un miembro u otro del if
     if (estado_movimiento){
+        // Si se ha pulsado en un escaque que no esté vacío, se coloreará el fondo
         if (turno == echiquier.mat_escaque[pos.first][pos.second].ocupado){
             botones[pos.first][pos.second] -> autoFillBackground();
             if (echiquier.mat_escaque[pos.first][pos.second].color == 0)
@@ -280,6 +301,8 @@ void MainWindow::boton_pulsado(){
             else botones[pos.first][pos.second] -> setPalette(azul);
             escaque_origen = pos;
             estado_movimiento = false;
+
+            // Se busca la pieza que se ha pulsado
             bool mov_realizado = 0;
             movs_posibles.clear();
             for (unsigned int i = 0; i < v_peon.size(); i++){
@@ -343,12 +366,17 @@ void MainWindow::boton_pulsado(){
                 }
             }
 
+            // Se colorea el tablero con los posibles movimientos de la pieza y las posibles piezas enemigas
+            // que pueden ser capturadas
             colorea_tablero(echiquier,botones,cian,azul,movs_posibles);
             colorea_tablero(echiquier,botones,rojo,rojo_oscuro,atq_posibles);
 
         }
     }else{
         pair<int,int> escaque_destino = pos;
+
+        // Se busca si el escaque destino es correcto, por lo que se trata de encontrar el escaque en el set
+        // de movimientos o de ataque de la pieza que había sido seleccionada en el paso anterior
         bool casilla_correcta = false;
         bool ataca = false;
         for (unsigned int i = 0; i < movs_posibles.size(); i++){
@@ -357,6 +385,8 @@ void MainWindow::boton_pulsado(){
         for (unsigned int i = 0; i < atq_posibles.size(); i++){
             if (atq_posibles[i] == escaque_destino) ataca = true;
         }
+
+        // Si es correcta la posición se accede al bucle
         if (casilla_correcta || ataca){
             boton_origen = botones[escaque_origen.first][escaque_origen.second];
             QPushButton *boton_destino = botones[escaque_destino.first][escaque_destino.second];
@@ -365,7 +395,7 @@ void MainWindow::boton_pulsado(){
                 mueve_icono(&echiquier, boton_destino, escaque_origen,escaque_destino,iconos);
                 boton_origen->setIcon(iconos[0]);
 
-                // Eliminar pieza
+                // Se elimina la pieza capturada
                 if (ataca){
                     bool mov_realizado = 0;
                     for (unsigned int i = 0; i < v_peon.size(); i++){
@@ -419,7 +449,8 @@ void MainWindow::boton_pulsado(){
                         }
                     }
                 }
-                // Cambiar posicion de la pieza
+
+                // Se cambia la posición de la pieza
                 bool mov_realizado = 0;
                 for (unsigned int i = 0; i < v_peon.size(); i++){
                     if (mov_realizado == 0){
@@ -454,6 +485,7 @@ void MainWindow::boton_pulsado(){
                         if(v_torre[i].pos.first == escaque_origen.first && v_torre[i].pos.second == escaque_origen.second){
                             v_torre[i].pos.first = escaque_destino.first;
                             v_torre[i].pos.second = escaque_destino.second;
+                            v_torre[i].first_mov = 0;
                             mov_realizado = 1;
                         }
                     }
@@ -472,20 +504,30 @@ void MainWindow::boton_pulsado(){
                         if(v_rey[i].pos.first == escaque_origen.first && v_rey[i].pos.second == escaque_origen.second){
                             v_rey[i].pos.first = escaque_destino.first;
                             v_rey[i].pos.second = escaque_destino.second;
-                            echiquier.mat_escaque[escaque_origen.first][escaque_origen.second].hay_rey = 0;
-                            echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].hay_rey = 1;
+                            v_rey[i].first_mov = 0;
                             mov_realizado = 1;
+                            echiquier.mat_escaque[escaque_origen.first][escaque_origen.second].hay_rey = false;
+                            echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].hay_rey = true;
                         }
                     }
                 }
             }
+
+            // Se cambia el turno al siguiente jugador
             turno = ++turno%2;
         }
 
+        // Se limpia el tablero
         limpia_tablero(echiquier,botones,blanco,gris);
+
+        // Se modifica el label que indica el turno del jugador
         if (turno == 0) ui -> label -> setText("Es turno de las blancas");
         else ui -> label -> setText("Es turno de las negras");
+
+        // Se comprueba si el rey rival ha acabado en jaque
         v_rey[turno].comprobar_jaque_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+
+        // Se comprueba si el rey está en jaque mate y se envía un mensaje si está en jaque o en jaque mate
         if(v_rey[turno].jaque){
             v_rey[turno].comprobar_mate_rey(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
             if (v_rey[turno].mate){
@@ -500,10 +542,10 @@ void MainWindow::boton_pulsado(){
         estado_movimiento = true;
     }
 
+    // Se actualizan los marcadores de puntos
     ui -> puntBlanca -> setText("Blancas: " + QString::number(puntuaciones[0]) + " puntos");
     ui -> puntNegra -> setText("Negras: " + QString::number(puntuaciones[1]) + " puntos");
 
     botones[pos.first][pos.second] -> update();
-    //echiquier.imprimir_tablero_jugador();
 }
 

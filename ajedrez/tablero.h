@@ -13,7 +13,7 @@ public:
     bool pulsado;
     int ocupado;  // Color de la pieza que esté encima: 0 -> blanco, 1 -> negro, 2 -> vacio
     int t_icon;
-    escaque(bool, int, int);
+    escaque(bool, int, int, bool);
     escaque();
 };
 
@@ -24,9 +24,10 @@ public:
     vector <vector <int>> colores_select;
     vector <vector <escaque>> mat_escaque;
     tablero();
-    tablero(vector <vector <int>>);
+    tablero(vector <vector <int>>, vector <vector< bool>>);
     void imprimir_tablero();
     void imprimir_tablero_jugador();
+    void imprimir_tablero_reyes();
 };
 
 
