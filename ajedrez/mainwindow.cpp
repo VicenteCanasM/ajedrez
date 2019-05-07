@@ -459,6 +459,18 @@ void MainWindow::boton_pulsado(){
                             v_peon[i].pos.second = escaque_destino.second;
                             v_peon[i].first_mov = 0;
                             mov_realizado = 1;
+                            // -----
+                            if (v_peon[i].coronar(v_dama)){
+                                if(v_peon[i].jugador == 0){
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 5;
+                                }
+                                else if(v_peon[i].jugador == 1){
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 11;
+                                }
+                                botones[escaque_destino.first][escaque_destino.second]->setIcon(iconos[echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon]);
+                                botones[escaque_destino.first][escaque_destino.second]->update();
+                            }
+                            // ----
                         }
                     }
                 }
@@ -508,7 +520,6 @@ void MainWindow::boton_pulsado(){
                             mov_realizado = 1;
                             echiquier.mat_escaque[escaque_origen.first][escaque_origen.second].hay_rey = false;
                             echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].hay_rey = true;
-                            // ------
                             if(escaque_destino.first-escaque_origen.first == 2){ // Enroca hacia hx
                                 for (unsigned int j = 0; j < v_torre.size(); j++){
                                     if (v_torre[j].jugador == v_rey[i].jugador && v_torre[j].pos.first == 7){
@@ -543,7 +554,6 @@ void MainWindow::boton_pulsado(){
                                     }
                                 }
                             }
-                            // ----
                         }
                     }
                 }

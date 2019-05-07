@@ -23,17 +23,7 @@ public:
     void mover(pair<int,int>);
 };
 
-// PEON //
-class peon : public piezas {
-public:
-    bool first_mov; // 1 -> si el peón aún no se ha movido; 0 -> caso contrario
-    bool dos_pasos; // 1 -> si el peón acaba de avanzar dos casillas; 0 -> caso contrario ((HAY QUE HACER UN METODO PARA COMPROBARLO))
-public:
-    peon(int, int, int);
-    ~peon();
-    void coronar(); // Coronar el peón cuando llegue al extremo contrario
-    void movs(tablero); // Genera los movimientos posibles de la pieza
-};
+
 
 // CABALLO //
 class caballo : public piezas {
@@ -67,6 +57,18 @@ public:
     dama(int, int, int);
     ~dama();
     void movs(tablero);
+};
+
+// PEON //
+class peon : public piezas {
+public:
+    bool first_mov; // 1 -> si el peón aún no se ha movido; 0 -> caso contrario
+    bool dos_pasos; // 1 -> si el peón acaba de avanzar dos casillas; 0 -> caso contrario ((HAY QUE HACER UN METODO PARA COMPROBARLO))
+public:
+    peon(int, int, int);
+    ~peon();
+    bool coronar(vector<dama>); // Coronar el peón cuando llegue al extremo contrario
+    void movs(tablero); // Genera los movimientos posibles de la pieza
 };
 
 // REY //

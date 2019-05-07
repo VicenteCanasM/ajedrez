@@ -130,13 +130,23 @@ void peon::movs(tablero mi_tab){
     };
 };
 // Coronar
-void peon::coronar(){
-    if (jugador == 0 && pos.second == 8){
-
+bool peon::coronar(vector<dama> v_dama){
+    bool flag = 0;
+    if (jugador == 0 && pos.second == 7){
+        dama nueva_dama(pos.first, pos.second, jugador);
+        v_dama.push_back(nueva_dama);
+        pos.first = -1;
+        pos.second = 20;
+        flag = 1;
     };
-    if (jugador == 1 && pos.second == 1){
-
+    if (jugador == 1 && pos.second == 0){
+        dama nueva_dama(pos.first, pos.second, jugador);
+        v_dama.push_back(nueva_dama);
+        pos.first = -1;
+        pos.second = 20;
+        flag = 1;
     };
+    return flag;
 };
 
 /* ============================== CABALLO ============================== */
