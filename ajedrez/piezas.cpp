@@ -246,6 +246,7 @@ void alfil::movsA(tablero mi_tab){
 torre::torre(int col, int fil, int jug) : piezas(col, fil, jug){
     valor = 5;
     jaque_rey = 0;
+    first_mov = 1;
 };
 // Destructor
 torre::~torre(){
@@ -381,6 +382,7 @@ rey::rey(int col, int fil, int jug) : piezas(col, fil, jug){
     valor = 0;
     jaque = 0;
     mate = 0;
+    first_mov = 1;
 };
 // Destructor
 rey::~rey(){
@@ -482,12 +484,12 @@ void rey::movs(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, v
     };
     pair<bool,bool> habilitar_enroque = comprobar_enroque(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama); // Enroques habilitados
     if (habilitar_enroque.first){ //Comprobar enroque a torre en ax
-        casilla.first = col_act+2;
+        casilla.first = col_act-2;
         casilla.second = fil_act;
         mov_set.push_back(casilla);
     };
     if (habilitar_enroque.second){ //Comprobar enroque a torre en hx
-        casilla.first = col_act-2;
+        casilla.first = col_act+2;
         casilla.second = fil_act;
         mov_set.push_back(casilla);
     };
@@ -547,17 +549,17 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
     if (first_mov && jaque == 0){
         bool escaque1, escaque2;
         for (unsigned long i = 0; i < v_torre.size(); i++){ // Busqueda de torres
-            if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 8){
-                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first+1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
-                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first+2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+            if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 7){
+                escaque1 = not comprobar_amenaza(mi_tab, jugador, pos.first+1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                escaque2 = not comprobar_amenaza(mi_tab, jugador, pos.first+2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
                 if (v_torre[i].first_mov == 1 && escaque1 && escaque2 && mi_tab.mat_escaque[pos.first+1][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first+2][pos.second].ocupado == 2){
                     habilitar_enroque.second = 1; // Torre en hx (derecha desde blancos)
                 };
             };
-            if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 1){
-                escaque1 = comprobar_amenaza(mi_tab, jugador, pos.first-1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
-                escaque2 = comprobar_amenaza(mi_tab, jugador, pos.first-2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
-                if (v_torre[i].first_mov == 1 && !escaque1 && !escaque2 && mi_tab.mat_escaque[pos.first-1][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-2][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-3][pos.second].ocupado == 2){
+            if (v_torre[i].jugador == jugador && v_torre[i].pos.first == 0){
+                escaque1 = not comprobar_amenaza(mi_tab, jugador, pos.first-1, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                escaque2 = not comprobar_amenaza(mi_tab, jugador, pos.first-2, pos.second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                if (v_torre[i].first_mov == 1 && escaque1 && escaque2 && mi_tab.mat_escaque[pos.first-1][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-2][pos.second].ocupado == 2 && mi_tab.mat_escaque[pos.first-3][pos.second].ocupado == 2){
                     habilitar_enroque.first = 1; // Torre en ax (izquierda desde blancos)
                 };
             };

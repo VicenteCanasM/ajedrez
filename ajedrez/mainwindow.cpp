@@ -508,6 +508,42 @@ void MainWindow::boton_pulsado(){
                             mov_realizado = 1;
                             echiquier.mat_escaque[escaque_origen.first][escaque_origen.second].hay_rey = false;
                             echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].hay_rey = true;
+                            // ------
+                            if(escaque_destino.first-escaque_origen.first == 2){ // Enroca hacia hx
+                                for (unsigned int j = 0; j < v_torre.size(); j++){
+                                    if (v_torre[j].jugador == v_rey[i].jugador && v_torre[j].pos.first == 7){
+                                        v_torre[i].pos.first = escaque_destino.first-1;
+                                        v_torre[i].pos.second = escaque_destino.second;
+                                        v_torre[i].first_mov = 0;
+                                        echiquier.mat_escaque[escaque_destino.first-1][escaque_destino.second].ocupado = v_torre[j].jugador;
+                                        echiquier.mat_escaque[7][escaque_destino.second].ocupado = 2;
+                                        QPushButton *boton_destino2 = botones[escaque_destino.first-1][escaque_destino.second];
+                                        QPushButton *boton_origen2 = botones[7][escaque_destino.second];
+                                        pair<int,int> escaque_origen2(7,escaque_destino.second);
+                                        pair<int,int> escaque_destino2(escaque_destino.first-1,escaque_destino.second);
+                                        mueve_icono(&echiquier, boton_destino2, escaque_origen2,escaque_destino2,iconos);
+                                        boton_origen2->setIcon(iconos[0]);
+                                    }
+                                }
+                            }
+                            else if(escaque_destino.first-escaque_origen.first == -2){ // Enroca hacia ax
+                                for (unsigned int j = 0; j < v_torre.size(); j++){
+                                    if (v_torre[j].jugador == v_rey[i].jugador && v_torre[j].pos.first == 0){
+                                        v_torre[i].pos.first = escaque_destino.first+1;
+                                        v_torre[i].pos.second = escaque_destino.second;
+                                        v_torre[i].first_mov = 0;
+                                        echiquier.mat_escaque[escaque_destino.first+1][escaque_destino.second].ocupado = v_torre[j].jugador;
+                                        echiquier.mat_escaque[0][escaque_destino.second].ocupado = 2;
+                                        QPushButton *boton_destino2 = botones[escaque_destino.first+1][escaque_destino.second];
+                                        QPushButton *boton_origen2 = botones[0][escaque_destino.second];
+                                        pair<int,int> escaque_origen2(0,escaque_destino.second);
+                                        pair<int,int> escaque_destino2(escaque_destino.first+1,escaque_destino.second);
+                                        mueve_icono(&echiquier, boton_destino2, escaque_origen2,escaque_destino2,iconos);
+                                        boton_origen2->setIcon(iconos[0]);
+                                    }
+                                }
+                            }
+                            // ----
                         }
                     }
                 }
