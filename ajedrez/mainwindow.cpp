@@ -358,7 +358,7 @@ void MainWindow::boton_pulsado(){
             for (unsigned int i = 0; i < v_rey.size(); i++){
                 if (mov_realizado == 0){
                     if(v_rey[i].pos.first == escaque_origen.first && v_rey[i].pos.second == escaque_origen.second){
-                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+                        v_rey[i].movs(echiquier, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
                         movs_posibles = v_rey[i].mov_set;
                         atq_posibles = v_rey[i].atq_set;
                         mov_realizado = 1;

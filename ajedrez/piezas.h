@@ -78,10 +78,10 @@ public:
 public:
     rey(int, int, int);
     ~rey();
-    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
+    vector<vector<bool>> comprobar_mov_rey(tablero, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>, vector<rey>);
     void comprobar_jaque_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
     void comprobar_mate_rey(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>, vector<rey>);
-    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
+    void movs(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>, vector<rey>);
     pair<bool,bool> comprobar_enroque(tablero, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
 };
 
