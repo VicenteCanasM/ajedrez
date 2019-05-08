@@ -459,7 +459,6 @@ void MainWindow::boton_pulsado(){
                             v_peon[i].pos.second = escaque_destino.second;
                             v_peon[i].first_mov = 0;
                             mov_realizado = 1;
-                            // -----
                             if (v_peon[i].coronar(&v_dama)){
                                 if(v_peon[i].jugador == 0){
                                     echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 5;
@@ -470,7 +469,6 @@ void MainWindow::boton_pulsado(){
                                 botones[escaque_destino.first][escaque_destino.second]->setIcon(iconos[echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon]);
                                 botones[escaque_destino.first][escaque_destino.second]->update();
                             }
-                            // ----
                         }
                     }
                 }
