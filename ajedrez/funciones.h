@@ -19,5 +19,6 @@ bool comprobar_limites(int, int);
 
 bool comprobar_amenaza(tablero, int, int, int, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>);
 
+bool movimiento_jaque(tablero, pair<int,int>, pair<int,int>, vector<peon>, vector<caballo>, vector<alfil>, vector<torre>, vector<dama>, vector<rey>);
 
 #endif // FUNCIONES_H

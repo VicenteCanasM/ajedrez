@@ -23,6 +23,7 @@ void limpia_tablero(tablero echiquier, vector < vector < QPushButton*>> botones,
     }
 }
 
+// Colorear tablero
 void colorea_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco,
                      QPalette negro, vector <pair <int,int>> pos){
     for (unsigned int i = 0; i < pos.size(); i++){
@@ -32,7 +33,7 @@ void colorea_tablero(tablero echiquier, vector < vector < QPushButton*>> botones
     }
 }
 
-
+// Obtiene la posición del botón según su nombre
 pair <int, int> obten_pos(QString pos){
     QChar a = 'a';
     QChar uno = '1';
@@ -112,4 +113,96 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
     return flag; // 1 -> escaque amenazado; 0 -> escaque no amenazado
 };
 
+// Comprueba si la pieza está clavada o si puede para el jaque a su rey
+bool movimiento_jaque(tablero mi_tab, pair<int,int> pos_o, pair<int,int> pos_d, vector<peon> v_peon, vector<caballo> v_caballo,
+                      vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama, vector<rey> v_rey){
+    // Esta funcion ya sabe que en la casilla origen hay una pieza aliada, y que la casilla destino puede estar vacia (mov_set)
+    // u ocupada por una pieza enemiga (atq_set). Permite comprobar ambos vectores de movimientos
+    bool flag = 1;
+    int jugador_turno = 2;
+    // Se busca la pieza que se quiere mover y se comprueba si la posición destino es posible en caso de que el rey esté en jaque
+    for (unsigned int i = 0; i < v_peon.size(); i++){
+        // Se situa la pieza en la casilla hipotetica donde va a ir
+        if (v_peon[i].pos.first == pos_o.first && v_peon[i].pos.second == pos_o.second){
+            v_peon[i].pos.first = pos_d.first;
+            v_peon[i].pos.second = pos_d.second;
+            mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
+            mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = v_peon[i].jugador;
+            jugador_turno = v_peon[i].jugador;
+        }
+        // Si esa casilla destino esta ocupada por una enemiga, este se elimina y deja de hacer jaque
+        if (v_peon[i].pos.first == pos_d.first && v_peon[i].pos.second == pos_d.second){
+            v_peon[i].pos.first = -1;
+            v_peon[i].pos.second = 20;
+            v_peon[i].jaque_rey = 0;
+        }
+    }
+    for (unsigned int i = 0; i < v_alfil.size(); i++){
+        if (v_alfil[i].pos.first == pos_o.first && v_alfil[i].pos.second == pos_o.second){
+            v_alfil[i].pos.first = pos_d.first;
+            v_alfil[i].pos.second = pos_d.second;
+            mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
+            mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = v_alfil[i].jugador;
+            jugador_turno = v_alfil[i].jugador;
+        }
+        if (v_alfil[i].pos.first == pos_d.first && v_alfil[i].pos.second == pos_d.second){
+            v_alfil[i].pos.first = -1;
+            v_alfil[i].pos.second = 20;
+            v_alfil[i].jaque_rey = 0;
+        }
+    }
+    for (unsigned int i = 0; i < v_caballo.size(); i++){
+        if (v_caballo[i].pos.first == pos_o.first && v_caballo[i].pos.second == pos_o.second){
+            v_caballo[i].pos.first = pos_d.first;
+            v_caballo[i].pos.second = pos_d.second;
+            mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
+            mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = v_caballo[i].jugador;
+            jugador_turno = v_caballo[i].jugador;
+        }
+        if (v_caballo[i].pos.first == pos_d.first && v_caballo[i].pos.second == pos_d.second){
+            v_caballo[i].pos.first = -1;
+            v_caballo[i].pos.second = 20;
+            v_caballo[i].jaque_rey = 0;
+        }
+    }
+    for (unsigned int i = 0; i < v_torre.size(); i++){
+        if (v_torre[i].pos.first == pos_o.first && v_torre[i].pos.second == pos_o.second){
+            v_torre[i].pos.first = pos_d.first;
+            v_torre[i].pos.second = pos_d.second;
+            mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
+            mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = v_torre[i].jugador;
+            jugador_turno = v_torre[i].jugador;
+        }
+        if (v_torre[i].pos.first == pos_d.first && v_torre[i].pos.second == pos_d.second){
+            v_torre[i].pos.first = -1;
+            v_torre[i].pos.second = 20;
+            v_torre[i].jaque_rey = 0;
+        }
+    }
+    for (unsigned int i = 0; i < v_dama.size(); i++){
+        if (v_dama[i].pos.first == pos_o.first && v_dama[i].pos.second == pos_o.second){
+            v_dama[i].pos.first = pos_d.first;
+            v_dama[i].pos.second = pos_d.second;
+            mi_tab.mat_escaque[pos_o.first][pos_o.second].ocupado = 2;
+            mi_tab.mat_escaque[pos_d.first][pos_d.second].ocupado = v_dama[i].jugador;
+            jugador_turno = v_dama[i].jugador;
+        }
+        if (v_dama[i].pos.first == pos_d.first && v_dama[i].pos.second == pos_d.second){
+            v_dama[i].pos.first = -1;
+            v_dama[i].pos.second = 20;
+            v_dama[i].jaque_rey = 0;
+        }
+    }
+    // Se comprueba si al mover la pieza el rey ya no está en jaque
+    for (unsigned int i = 0; i < v_rey.size(); i++){
+        if (v_rey[i].jugador == jugador_turno){
+            v_rey[i].comprobar_jaque_rey(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama);
+            if (v_rey[i].jaque == 1){
+                flag = 0;
+            }
+        }
+    }
+    // flag = 1 -> movimiento posible;  flag = 0 -> movimiento rechazado (bien pieza clavada, bien no se defiende al rey)
+    return flag;
+}
 

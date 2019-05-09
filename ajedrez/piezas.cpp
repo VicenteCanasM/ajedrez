@@ -184,10 +184,10 @@ void caballo::movs(tablero mi_tab){
                 atq_set.push_back(casilla); // Posible ataque
                 if (mi_tab.mat_escaque[col_act+escaques_ady[i].first][fil_act+escaques_ady[i].second].hay_rey)
                     jaque_rey = 1; // Jaque al rey enemigo
-            };
-        };
-    };
-};
+            }
+        }
+    }
+}
 
 /* ============================== ALFIL ============================== */
 // Constructor

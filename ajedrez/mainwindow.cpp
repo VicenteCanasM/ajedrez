@@ -305,12 +305,35 @@ void MainWindow::boton_pulsado(){
             // Se busca la pieza que se ha pulsado
             bool mov_realizado = 0;
             movs_posibles.clear();
+            atq_posibles.clear();
             for (unsigned int i = 0; i < v_peon.size(); i++){
                 if (mov_realizado == 0){
                     if(v_peon[i].pos.first == escaque_origen.first && v_peon[i].pos.second == escaque_origen.second){
-                        v_peon[i].movs(echiquier);
-                        movs_posibles = v_peon[i].mov_set;
-                        atq_posibles = v_peon[i].atq_set;
+                        v_peon[i].movs(echiquier); // Calculo de movimientos posibles
+                        // -------------------
+                        // Se comprueba que estos movimientos no dejen en jaque al rey propio
+                        bool flag_jaque;
+                        pair<int,int> pos_o = v_peon[i].pos;
+                        pair<int,int> pos_d;
+                        // Se comprueba el mov_set
+                        for (unsigned int j = 0; j < v_peon[i].mov_set.size(); j++){
+                            pos_d = v_peon[i].mov_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                movs_posibles.push_back(v_peon[i].mov_set[j]);
+                            }
+                        }
+                        // Se comprueba el atq_set
+                        for (unsigned int j = 0; j < v_peon[i].atq_set.size(); j++){
+                            pos_d = v_peon[i].atq_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                atq_posibles.push_back(v_peon[i].atq_set[j]);
+                            }
+                        }
+                        // ------------------
+                        //movs_posibles = v_peon[i].mov_set;
+                        //atq_posibles = v_peon[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -319,8 +342,27 @@ void MainWindow::boton_pulsado(){
                 if (mov_realizado == 0){
                     if(v_caballo[i].pos.first == escaque_origen.first && v_caballo[i].pos.second == escaque_origen.second){
                         v_caballo[i].movs(echiquier);
-                        movs_posibles = v_caballo[i].mov_set;
-                        atq_posibles = v_caballo[i].atq_set;
+                        // -------------------
+                        bool flag_jaque;
+                        pair<int,int> pos_o = v_caballo[i].pos;
+                        pair<int,int> pos_d;
+                        for (unsigned int j = 0; j < v_caballo[i].mov_set.size(); j++){
+                            pos_d = v_caballo[i].mov_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                movs_posibles.push_back(v_caballo[i].mov_set[j]);
+                            }
+                        }
+                        for (unsigned int j = 0; j < v_caballo[i].atq_set.size(); j++){
+                            pos_d = v_caballo[i].atq_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                atq_posibles.push_back(v_caballo[i].atq_set[j]);
+                            }
+                        }
+                        // ------------------
+                        //movs_posibles = v_caballo[i].mov_set;
+                        //atq_posibles = v_caballo[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -329,8 +371,27 @@ void MainWindow::boton_pulsado(){
                 if (mov_realizado == 0){
                     if(v_alfil[i].pos.first == escaque_origen.first && v_alfil[i].pos.second == escaque_origen.second){
                         v_alfil[i].movsA(echiquier);
-                        movs_posibles = v_alfil[i].mov_set;
-                        atq_posibles = v_alfil[i].atq_set;
+                        // -------------------
+                        bool flag_jaque;
+                        pair<int,int> pos_o = v_alfil[i].pos;
+                        pair<int,int> pos_d;
+                        for (unsigned int j = 0; j < v_alfil[i].mov_set.size(); j++){
+                            pos_d = v_alfil[i].mov_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                movs_posibles.push_back(v_alfil[i].mov_set[j]);
+                            }
+                        }
+                        for (unsigned int j = 0; j < v_alfil[i].atq_set.size(); j++){
+                            pos_d = v_alfil[i].atq_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                atq_posibles.push_back(v_alfil[i].atq_set[j]);
+                            }
+                        }
+                        // ------------------
+                        //movs_posibles = v_alfil[i].mov_set;
+                        //atq_posibles = v_alfil[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -339,8 +400,27 @@ void MainWindow::boton_pulsado(){
                 if (mov_realizado == 0){
                     if(v_torre[i].pos.first == escaque_origen.first && v_torre[i].pos.second == escaque_origen.second){
                         v_torre[i].movsT(echiquier);
-                        movs_posibles = v_torre[i].mov_set;
-                        atq_posibles = v_torre[i].atq_set;
+                        // -------------------
+                        bool flag_jaque;
+                        pair<int,int> pos_o = v_torre[i].pos;
+                        pair<int,int> pos_d;
+                        for (unsigned int j = 0; j < v_torre[i].mov_set.size(); j++){
+                            pos_d = v_torre[i].mov_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                movs_posibles.push_back(v_torre[i].mov_set[j]);
+                            }
+                        }
+                        for (unsigned int j = 0; j < v_torre[i].atq_set.size(); j++){
+                            pos_d = v_torre[i].atq_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                atq_posibles.push_back(v_torre[i].atq_set[j]);
+                            }
+                        }
+                        // ------------------
+                        //movs_posibles = v_torre[i].mov_set;
+                        //atq_posibles = v_torre[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
@@ -349,8 +429,27 @@ void MainWindow::boton_pulsado(){
                 if (mov_realizado == 0){
                     if(v_dama[i].pos.first == escaque_origen.first && v_dama[i].pos.second == escaque_origen.second){
                         v_dama[i].movs(echiquier);
-                        movs_posibles = v_dama[i].mov_set;
-                        atq_posibles = v_dama[i].atq_set;
+                        // -------------------
+                        bool flag_jaque;
+                        pair<int,int> pos_o = v_dama[i].pos;
+                        pair<int,int> pos_d;
+                        for (unsigned int j = 0; j < v_dama[i].mov_set.size(); j++){
+                            pos_d = v_dama[i].mov_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                movs_posibles.push_back(v_dama[i].mov_set[j]);
+                            }
+                        }
+                        for (unsigned int j = 0; j < v_dama[i].atq_set.size(); j++){
+                            pos_d = v_dama[i].atq_set[j];
+                            flag_jaque = movimiento_jaque(echiquier, pos_o, pos_d, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+                            if (flag_jaque){
+                                atq_posibles.push_back(v_dama[i].atq_set[j]);
+                            }
+                        }
+                        // ------------------
+                        //movs_posibles = v_dama[i].mov_set;
+                        //atq_posibles = v_dama[i].atq_set;
                         mov_realizado = 1;
                     }
                 }
