@@ -12,6 +12,7 @@ escaque::escaque(bool col, int jugador, int icono, bool rey){
     pulsado = false;
     t_icon = icono;
     hay_rey = rey;
+    hay_peon_paso = false;
 }
 
 escaque::escaque(){
@@ -20,6 +21,7 @@ escaque::escaque(){
     pulsado = false;
     t_icon = 0;
     hay_rey = false;
+    hay_peon_paso = false;
 }
 
 tablero::tablero(){

@@ -13,6 +13,7 @@ public:
     bool pulsado;
     int ocupado;  // Color de la pieza que esté encima: 0 -> blanco, 1 -> negro, 2 -> vacio
     int t_icon;
+    bool hay_peon_paso; // Indica si hay un peón adelantado
     escaque(bool, int, int, bool);
     escaque();
 };

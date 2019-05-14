@@ -20,7 +20,6 @@ public:
 public:
     piezas(int, int, int); // (columna, fila, color[0 -> blancas; 1 -> negras])
     ~piezas();
-    void mover(pair<int,int>);
 };
 
 

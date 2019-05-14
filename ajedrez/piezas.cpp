@@ -11,16 +11,6 @@ piezas::piezas(int col, int fil, int jug){
 piezas::~piezas(){
 }
 
-void piezas::mover(pair<int,int> nueva_pos){
-    for(unsigned long i = 0; i <= mov_set.size(); i++){
-        if(nueva_pos.first == mov_set[i].first && nueva_pos.second == mov_set[i].second){
-            pos.first = nueva_pos.first;
-            pos.second = nueva_pos.second;
-        }
-    }
-};
-
-
 /* ============================== PEON ============================== */
 // Constructor
 peon::peon(int col, int fil, int jug) : piezas(col, fil, jug){
@@ -44,6 +34,7 @@ void peon::movs(tablero mi_tab){
     pair<int,int> casilla;
     if (jugador == 0){ // Si juegan blancas
         if (comprobar_limites(pos.first, pos.second+1)){
+            // Movimiento peón blanco
             if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+1)].ocupado == 2){ // Comprobar escaque inmediato
                 casilla.first = col_act;
                 casilla.second = fil_act+1;
@@ -54,39 +45,40 @@ void peon::movs(tablero mi_tab){
                         casilla.second = fil_act+2;
                         dos_pasos = 1;
                         mov_set.push_back(casilla); // Movimiento inicial doble
-                    };
-                };
-            };
+                    }
+                }
+            }
+            // Ataque a derecha peón blanco
             if (comprobar_limites(pos.first+1, pos.second+1)){
                 casilla.first = col_act+1;
                 casilla.second = fil_act+1;
                 escaque_def.push_back(casilla); // Zona de influencia
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
-                    atq_set.push_back(casilla); // Capturar al paso derecha
-                }*/
                 if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal derecha
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].hay_rey)
-                        jaque_rey = 1;
-                };
-            };
+                        jaque_rey = 1;      
+                }
+                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla);*/
+            }
+            // Ataque a izquierda peón blanco
             if (comprobar_limites(pos.first-1, pos.second+1)){
                 casilla.first = col_act-1;
                 casilla.second = fil_act+1;
                 escaque_def.push_back(casilla); // Zona de influencia
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
-                    atq_set.push_back(casilla); // Capturar al paso izquierda
-                }*/
                 if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].ocupado == 1){ // Ataque a diagonal izquierda
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].hay_rey)
                         jaque_rey = 1;
-                };
-            };
-        };
+                }
+                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla);*/
+            }
+        }
     }
     else if (jugador == 1){ // Si juegan negras
         if (comprobar_limites(pos.first, pos.second-1)){
+            // Movimiento peón negro
             if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-1)].ocupado == 2){ // Comprobar escaque inmediato
                 casilla.first = col_act;
                 casilla.second = fil_act-1;
@@ -97,38 +89,38 @@ void peon::movs(tablero mi_tab){
                         casilla.second = fil_act-2;
                         dos_pasos = 1;
                         mov_set.push_back(casilla); // Movimiento inicial doble
-                    };
-                };
-            };
+                    }
+                }
+            }
+            // Ataque a derecha peón negro
             if (comprobar_limites(pos.first+1, pos.second-1)){
                 casilla.first = col_act+1;
                 casilla.second = fil_act-1;
                 escaque_def.push_back(casilla); // Zona de influencia
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
-                    atq_set.push_back(casilla); // Capturar al paso derecha
-                }*/
                 if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal derecha
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
-                };
-            };
+                }
+                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla);*/
+            }
+            // Ataque a izquierda peón negro
             if (comprobar_limites(pos.first-1, pos.second-1)){
                 casilla.first = col_act-1;
                 casilla.second = fil_act-1;
                 escaque_def.push_back(casilla); // Zona de influencia
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].peon_2_pasos == 1 ){
-                    atq_set.push_back(casilla); // Capturar al paso izquierda
-                }*/
                 if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].ocupado == 0){ // Ataque a diagonal izquierda
                     atq_set.push_back(casilla); // Ataque
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
-                };
-            };
-        };
-    };
-};
+                }
+                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla);*/
+            }
+        }
+    }
+}
 // Coronar
 bool peon::coronar(vector<dama> *v_dama){
     bool flag = 0;
@@ -332,57 +324,20 @@ void dama::movs(tablero mi_tab){
     vector<pair<int,int>> atq_set_aux;
     vector<pair<int,int>> escaque_def_aux;
     vector<pair<int,int>> atq_rey_aux;
-    bool jaque_rey_1;
-    //jaque_rey = 0;
+    bool jaque_rey_aux;
     movsA(mi_tab);
     mov_set_aux = mov_set;
     atq_set_aux = atq_set;
     escaque_def_aux = escaque_def;
     atq_rey_aux = atq_rey;
-    jaque_rey_1 = jaque_rey;
+    jaque_rey_aux = jaque_rey;
     jaque_rey = 0;
     movsT(mi_tab);
     mov_set.insert(mov_set.end(), mov_set_aux.begin(), mov_set_aux.end());
     atq_set.insert(atq_set.end(), atq_set_aux.begin(), atq_set_aux.end());
     escaque_def.insert(escaque_def.end(), escaque_def_aux.begin(), escaque_def_aux.end());
     atq_rey.insert(atq_rey.end(), atq_rey_aux.begin(), atq_rey_aux.end());
-    jaque_rey = jaque_rey || jaque_rey_1;
-
-    /*vector<pair<int,int>> escaques_ady;
-    escaques_ady.push_back(pair<int,int>(0,1));     escaques_ady.push_back(pair<int,int>(0,-1));
-    escaques_ady.push_back(pair<int,int>(1,0));     escaques_ady.push_back(pair<int,int>(-1,0));
-    escaques_ady.push_back(pair<int,int>(1,1));     escaques_ady.push_back(pair<int,int>(-1,1));
-    escaques_ady.push_back(pair<int,int>(-1,-1));     escaques_ady.push_back(pair<int,int>(1,-1));
-    for (unsigned long i = 0; i < escaques_ady.size(); i++){
-        while (n==1){
-            if (comprobar_limites(col_act+escaques_ady[i].first*c, fil_act+escaques_ady[i].second*c)){
-                casilla.first = col_act+escaques_ady[i].first*c;
-                casilla.second = fil_act+escaques_ady[i].second*c;
-                escaque_def.push_back(casilla); // Zona de influencia
-                atq_rey_aux.push_back(casilla); // Posible zona a tapar durante el jaque
-                if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == 2){ // Posible avance
-                    mov_set.push_back(casilla); // Posible movimiento
-                    c++;
-                }
-                else if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].ocupado == (jugador + 1)%2){ // Posible ataque
-                    atq_set.push_back(casilla); // Posible ataque
-                    n = 0;
-                    if (mi_tab.mat_escaque[col_act+escaques_ady[i].first*c][fil_act+escaques_ady[i].second*c].hay_rey){
-                        jaque_rey = 1; // Jaque al rey enemigo
-                        atq_rey = atq_rey_aux;
-                    };
-                }
-                else {
-                    n = 0;
-                };
-            }
-            else { // Ningún movimiento más
-                n = 0;
-            };
-        };
-        n = 1;  c = 1;
-        atq_rey_aux.clear();
-    };*/
+    jaque_rey = jaque_rey || jaque_rey_aux;
 }
 
 
@@ -580,21 +535,22 @@ pair<bool,bool> rey::comprobar_enroque(tablero mi_tab,  vector<peon> v_peon, vec
 // Comprobar mate
 void rey::comprobar_mate_rey(tablero mi_tab, vector<peon> v_peon, vector<caballo> v_caballo, vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama, vector<rey> v_rey){
     mate = 1;
-    vector<pair<int,int>> escaques_ady(8);
-    //mi_tab.imprimir_tablero_reyes();
+    /*vector<pair<int,int>> escaques_ady(8);
     escaques_ady[0].first = 0;  escaques_ady[0].second = 1;   escaques_ady[1].first = -1;  escaques_ady[1].second = 1;
     escaques_ady[2].first = -1;  escaques_ady[2].second = 0;  escaques_ady[3].first = -1;  escaques_ady[3].second = -1;
     escaques_ady[4].first = 0;  escaques_ady[4].second = -1;  escaques_ady[5].first = 1;  escaques_ady[5].second = -1;
-    escaques_ady[6].first = 1;  escaques_ady[6].second = 0;   escaques_ady[7].first = 1;  escaques_ady[7].second = 1;
+    escaques_ady[6].first = 1;  escaques_ady[6].second = 0;   escaques_ady[7].first = 1;  escaques_ady[7].second = 1;*/
     // Se comprueba si el rey se puede salver moviéndose
-    for (unsigned long i = 0; i < escaques_ady.size(); i++){
+    this -> movs(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
+    mate = mov_set.empty();
+    /*for (unsigned long i = 0; i < escaques_ady.size(); i++){
         if (mate){
             //mate = comprobar_amenaza(mi_tab, jugador, pos.first+escaques_ady[i].first, pos.second+escaques_ady[i].second, v_peon, v_caballo, v_alfil, v_torre, v_dama);
             this -> movs(mi_tab, v_peon, v_caballo, v_alfil, v_torre, v_dama, v_rey);
             mate = mov_set.empty();
         }
-    };
-    // Se comprueba si la(s) pieza(s) que hace(n) jaque pueden ser capturadas
+    };*/
+    // Se comprueba si la(s) pieza(s) que hace(n) jaque pueden ser interceptadasS
     vector<pair<int,int>> pos_piezas_jaque;
     if (mate){
         // Buscar la(s) pieza(s) que hace(n) jaque

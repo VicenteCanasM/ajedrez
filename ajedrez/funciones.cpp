@@ -11,6 +11,22 @@ void mueve_icono(tablero *echiquier, QPushButton *boton_destino, pair<int,int> o
     boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
 }
 
+// Modifica los iconos y escaques con el botón deshacer
+void mueve_icono_desh(tablero *echiquier, QPushButton *boton_origen, QPushButton *boton_destino, pair<int,int> origen,
+                  pair<int,int> destino, vector<QIcon> iconos, int id_icono_cap){
+    // Resitaución de iconos
+    echiquier->mat_escaque[origen.first][origen.second].t_icon = echiquier->mat_escaque[destino.first][destino.second].t_icon;
+    echiquier->mat_escaque[destino.first][destino.second].t_icon = id_icono_cap;
+    // Actualización de escaques
+    echiquier -> mat_escaque[origen.first][origen.second].ocupado = echiquier -> mat_escaque[destino.first][destino.second].ocupado;
+    if (id_icono_cap == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 2;
+    else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 1;
+    else echiquier -> mat_escaque[destino.first][destino.second].ocupado = 0;
+    // Actualización de iconos
+    boton_origen -> setIcon(iconos.at(echiquier->mat_escaque[origen.first][origen.second].t_icon));
+    boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
+}
+
 // Devuelve al tablero sus colores originales
 void limpia_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco, QPalette negro){
     for (unsigned int i = 0; i < 8 ; i++){
@@ -117,7 +133,7 @@ bool comprobar_amenaza(tablero mi_tab, int jug, int columna, int fila, vector<pe
 bool movimiento_jaque(tablero mi_tab, pair<int,int> pos_o, pair<int,int> pos_d, vector<peon> v_peon, vector<caballo> v_caballo,
                       vector<alfil> v_alfil, vector<torre> v_torre, vector<dama> v_dama, vector<rey> v_rey){
     // Esta funcion ya sabe que en la casilla origen hay una pieza aliada, y que la casilla destino puede estar vacia (mov_set)
-    // u ocupada por una pieza enemiga (atq_set). Permite comprobar ambos vectores de movimientos
+    // u ocupada por una pieza enemiga (atq_set). Permite comprobar ambos vectores de movimientos, pero por separado
     bool flag = 1;
     int jugador_turno = 2;
     // Se busca la pieza que se quiere mover y se comprueba si la posición destino es posible en caso de que el rey esté en jaque
@@ -206,3 +222,44 @@ bool movimiento_jaque(tablero mi_tab, pair<int,int> pos_o, pair<int,int> pos_d, 
     return flag;
 }
 
+// Generar string del movimiento realizado en notación algebraica
+QString notacion_algebraica(vector<pair<int,int>> registro, QString pieza, bool captura){
+    QString resultado = pieza;
+
+    if (captura) resultado = resultado + "x";
+
+    if  (registro[1].first == 0) resultado = resultado + "a";
+    else if (registro[1].first == 1) resultado = resultado + "b";
+    else if (registro[1].first == 2) resultado = resultado + "c";
+    else if (registro[1].first == 3) resultado = resultado + "d";
+    else if (registro[1].first == 4) resultado = resultado + "e";
+    else if (registro[1].first == 5) resultado = resultado + "f";
+    else if (registro[1].first == 6) resultado = resultado + "g";
+    else if (registro[1].first == 7) resultado = resultado + "h";
+
+    if  (registro[1].second == 0) resultado = resultado + "1";
+    else if (registro[1].second == 1) resultado = resultado + "2";
+    else if (registro[1].second == 2) resultado = resultado + "3";
+    else if (registro[1].second == 3) resultado = resultado + "4";
+    else if (registro[1].second == 4) resultado = resultado + "5";
+    else if (registro[1].second == 5) resultado = resultado + "6";
+    else if (registro[1].second == 6) resultado = resultado + "7";
+    else if (registro[1].second == 7) resultado = resultado + "8";
+
+    return resultado;
+}
+
+QString get_columna(int col){
+    QString resultado;
+
+    if  (col == 0) resultado = "a";
+    else if (col == 1) resultado = "b";
+    else if (col == 2) resultado = "c";
+    else if (col == 3) resultado = "d";
+    else if (col == 4) resultado = "e";
+    else if (col == 5) resultado = "f";
+    else if (col == 6) resultado = "g";
+    else if (col == 7) resultado = "h";
+
+    return resultado;
+}
