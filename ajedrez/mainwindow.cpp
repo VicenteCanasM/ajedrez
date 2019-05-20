@@ -495,10 +495,10 @@ void MainWindow::boton_pulsado(){
                 click_neutro = 1;
                 // Generación del registros de movimientos
                 vector<pair<int,int>> reg_turno;
-                reg_turno.push_back(escaque_origen);
-                reg_turno.push_back(escaque_destino);
-                reg_turno.push_back(pair<int,int>(-1,-1));
-                reg_turno.push_back(pair<int,int>(0,0));
+                reg_turno.push_back(escaque_origen); // Escaque origen de la pieza movida
+                reg_turno.push_back(escaque_destino); // Escaque destino de la pieza movida
+                reg_turno.push_back(pair<int,int>(-1,-1)); // Si el elemento second es distinto de -1, se ha capturado una pieza
+                reg_turno.push_back(pair<int,int>(0,0)); // first->icono de la pieza capturada; second-> 0 nada, 1 coronacion, 2 enroque, 3 captura al paso
                 registro.push_back(reg_turno);
                 if (peon_atq == 1 && ataca) peon_atq = 2;
                 else peon_atq = 0;
@@ -518,13 +518,45 @@ void MainWindow::boton_pulsado(){
                     bool mov_realizado = 0;
                     for (unsigned int i = 0; i < v_peon.size(); i++){
                         if (mov_realizado == 0){
-                            if(v_peon[i].pos.first == escaque_destino.first && v_peon[i].pos.second == escaque_destino.second){
+                            if(v_peon[i].pos.first == escaque_destino.first && v_peon[i].pos.second == escaque_destino.second){ // Captura normal
                                 v_peon[i].pos.first = -1;
                                 v_peon[i].pos.second = 20+n_reg;
                                 mov_realizado = 1;
                                 puntuaciones[turno] += v_peon[i].valor;
                                 if (v_peon[i].jugador == 0) registro[n_reg][3].first = 1;
                                 else registro[n_reg][3].first = 7;
+                            }
+                            if (v_peon[i].jugador == 0){ // Blanco capturado al paso
+                                if(v_peon[i].pos.first == escaque_destino.first && v_peon[i].pos.second == escaque_destino.second+1 && echiquier.mat_escaque[escaque_destino.first][escaque_destino.second+1].hay_peon_paso == 1){
+                                    v_peon[i].pos.first = -1;
+                                    v_peon[i].pos.second = 20+n_reg;
+                                    mov_realizado = 1;
+                                    puntuaciones[turno] += v_peon[i].valor;
+                                    registro[n_reg][3].first = 1;
+                                    registro[n_reg][3].second = 3;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second+1].ocupado = 2;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second+1].t_icon = 0;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second+1].hay_peon_paso = 0;
+                                    QPushButton *escaque_paso = botones[escaque_destino.first][escaque_destino.second+1];
+                                    v_peon[i].dos_pasos = 0;
+                                    escaque_paso -> setIcon(iconos.at(echiquier.mat_escaque[escaque_destino.first][escaque_destino.second+1].t_icon));
+                                }
+                            }
+                            else if (v_peon[i].jugador == 1){ // Negro capturado al paso
+                                if(v_peon[i].pos.first == escaque_destino.first && v_peon[i].pos.second == escaque_destino.second-1 && echiquier.mat_escaque[escaque_destino.first][escaque_destino.second-1].hay_peon_paso == 1){
+                                    v_peon[i].pos.first = -1;
+                                    v_peon[i].pos.second = 20+n_reg;
+                                    mov_realizado = 1;
+                                    puntuaciones[turno] += v_peon[i].valor;
+                                    registro[n_reg][3].first = 7;
+                                    registro[n_reg][3].second = 3;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second-1].ocupado = 2;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second-1].t_icon = 0;
+                                    echiquier.mat_escaque[escaque_destino.first][escaque_destino.second-1].hay_peon_paso = 0;
+                                    QPushButton *escaque_paso = botones[escaque_destino.first][escaque_destino.second-1];
+                                    v_peon[i].dos_pasos = 0;
+                                    escaque_paso -> setIcon(iconos.at(echiquier.mat_escaque[escaque_destino.first][escaque_destino.second-1].t_icon));
+                                }
                             }
                         }
                     }
@@ -600,7 +632,7 @@ void MainWindow::boton_pulsado(){
                                 }
                             }
                             mov_realizado = 1;
-                            if (v_peon[i].coronar(&v_dama)){
+                            if (v_peon[i].coronar(&v_dama, n_reg)){
                                 if(v_peon[i].jugador == 0){
                                     echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 5;
                                 }
@@ -608,6 +640,7 @@ void MainWindow::boton_pulsado(){
                                     echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon = 11;
                                 }
                                 aux_coronar = "D";
+                                registro[n_reg][3].second = 1;
                                 botones[escaque_destino.first][escaque_destino.second]->setIcon(iconos[echiquier.mat_escaque[escaque_destino.first][escaque_destino.second].t_icon]);
                                 botones[escaque_destino.first][escaque_destino.second]->update();
                             }
@@ -672,6 +705,7 @@ void MainWindow::boton_pulsado(){
                                         pair<int,int> escaque_destino2(escaque_destino.first-1,escaque_destino.second);
                                         mueve_icono(&echiquier, boton_destino2, escaque_origen2,escaque_destino2,iconos);
                                         boton_origen2->setIcon(iconos[0]);
+                                        registro[n_reg][3].second = 2;
                                     }
                                 }
                             }
@@ -687,6 +721,7 @@ void MainWindow::boton_pulsado(){
                                         pair<int,int> escaque_destino2(escaque_destino.first+1,escaque_destino.second);
                                         mueve_icono(&echiquier, boton_destino2, escaque_origen2,escaque_destino2,iconos);
                                         boton_origen2->setIcon(iconos[0]);
+                                        registro[n_reg][3].second = 2;
                                     }
                                 }
                             }
@@ -794,6 +829,12 @@ void MainWindow::boton_pulsado(){
             cout << "Escaque pieza capturada: (" << registro[n_reg-1][2].first << ", " << registro[n_reg-1][2].second << ")" << endl;
             cout << "Icono pieza capturada: (" << registro[n_reg-1][3].first << ", " << registro[n_reg-1][3].second << ")" << endl;
         }*/
+
+        /*cout << "Turno: " << n_reg << endl;
+        echiquier.imprimir_tablero_dos_pasos();
+        echiquier.imprimir_tablero_jugador();
+        echiquier.imprimir_tablero_reyes();
+        cout << "Peon: (" << v_peon[15].pos.first << ", " << v_peon[15].pos.second << ")" << endl;*/
     }
 
     // Se actualizan los marcadores de puntos
@@ -807,23 +848,34 @@ void MainWindow::boton_pulsado(){
 void MainWindow::on_boton_deshacer_clicked() {
     // Se busca la pieza que se va a desplazar
     if (estado_movimiento && n_reg > 0){
+        bool aux_atq = 1;
         n_reg--;
         turno = ++turno%2;
+        fin_de_partida = 0;
         QPushButton *boton_origen = botones[registro[n_reg][0].first][registro[n_reg][0].second];
         QPushButton *boton_destino = botones[registro[n_reg][1].first][registro[n_reg][1].second];
         for (unsigned int i = 0; i < v_peon.size(); i++){
-            if(v_peon[i].pos.first == registro[n_reg][1].first && v_peon[i].pos.second == registro[n_reg][1].second){
+            if(v_peon[i].pos.first == registro[n_reg][1].first && v_peon[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_peon[i].pos = registro[n_reg][0];
-                if (v_peon[i].jugador == 0){
-                    if (registro[n_reg][1].second-registro[n_reg][0].second == 2) v_peon[i].first_mov = 1;
-                }
-                if (v_peon[i].jugador == 1){
-                    if (registro[n_reg][1].second-registro[n_reg][0].second == -2) v_peon[i].first_mov = 1;
-                }
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
-                            v_peon[j].pos = registro[n_reg][1];
+                            if (registro[n_reg][3].second == 0){ // Captura normal
+                                v_peon[j].pos = registro[n_reg][1];
+                            }
+                            else if (registro[n_reg][3].second == 3) { // Captura al paso
+                                if (v_peon[j].jugador == 0){
+                                    v_peon[j].pos.first = registro[n_reg][1].first;
+                                    v_peon[j].pos.second = registro[n_reg][1].second-1;
+                                    v_peon[j].dos_pasos = 1;
+                                }
+                                else if (v_peon[j].jugador == 1){
+                                    v_peon[j].pos.first = registro[n_reg][1].first;
+                                    v_peon[j].pos.second = registro[n_reg][1].second+1;
+                                    v_peon[j].dos_pasos = 1;
+                                }
+                            }
                         }
                     }
                     for (unsigned int j = 0; j < v_caballo.size(); j++){
@@ -850,9 +902,10 @@ void MainWindow::on_boton_deshacer_clicked() {
             }
         }
         for (unsigned int i = 0; i < v_caballo.size(); i++){
-            if(v_caballo[i].pos.first == registro[n_reg][1].first && v_caballo[i].pos.second == registro[n_reg][1].second){
+            if(v_caballo[i].pos.first == registro[n_reg][1].first && v_caballo[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_caballo[i].pos = registro[n_reg][0];
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
                             v_peon[j].pos = registro[n_reg][1];
@@ -882,9 +935,10 @@ void MainWindow::on_boton_deshacer_clicked() {
             }
         }
         for (unsigned int i = 0; i < v_alfil.size(); i++){
-            if(v_alfil[i].pos.first == registro[n_reg][1].first && v_alfil[i].pos.second == registro[n_reg][1].second){
+            if(v_alfil[i].pos.first == registro[n_reg][1].first && v_alfil[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_alfil[i].pos = registro[n_reg][0];
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
                             v_peon[j].pos = registro[n_reg][1];
@@ -914,9 +968,10 @@ void MainWindow::on_boton_deshacer_clicked() {
             }
         }
         for (unsigned int i = 0; i < v_torre.size(); i++){
-            if(v_torre[i].pos.first == registro[n_reg][1].first && v_torre[i].pos.second == registro[n_reg][1].second){
+            if(v_torre[i].pos.first == registro[n_reg][1].first && v_torre[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_torre[i].pos = registro[n_reg][0];
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
                             v_peon[j].pos = registro[n_reg][1];
@@ -946,9 +1001,10 @@ void MainWindow::on_boton_deshacer_clicked() {
             }
         }
         for (unsigned int i = 0; i < v_dama.size(); i++){
-            if(v_dama[i].pos.first == registro[n_reg][1].first && v_dama[i].pos.second == registro[n_reg][1].second){
+            if(v_dama[i].pos.first == registro[n_reg][1].first && v_dama[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_dama[i].pos = registro[n_reg][0];
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
                             v_peon[j].pos = registro[n_reg][1];
@@ -972,15 +1028,27 @@ void MainWindow::on_boton_deshacer_clicked() {
                     for (unsigned int j = 0; j < v_dama.size(); j++){
                         if(v_dama[j].pos.first == registro[n_reg][2].first && v_dama[j].pos.second == registro[n_reg][2].second){
                             v_dama[j].pos = registro[n_reg][1];
+                        }
+                    }
+                }
+                if (registro[n_reg][3].second == 1){ // Devuelve el peon en caso de coronar
+                    for (unsigned int j = 0; j < v_peon.size(); j++){
+                        if (v_peon[j].pos.first == -2 && v_peon[j].pos.second == 20+n_reg){
+                            v_peon[j].pos = v_dama[i].pos;
+                            v_dama[i].pos = (pair<int,int> (-1,20));
+                            v_dama.pop_back();
                         }
                     }
                 }
             }
         }
         for (unsigned int i = 0; i < v_rey.size(); i++){
-            if(v_rey[i].pos.first == registro[n_reg][1].first && v_rey[i].pos.second == registro[n_reg][1].second){
+            if(v_rey[i].pos.first == registro[n_reg][1].first && v_rey[i].pos.second == registro[n_reg][1].second && aux_atq){
                 v_rey[i].pos = registro[n_reg][0];
+                echiquier.mat_escaque[registro[n_reg][1].first][registro[n_reg][1].second].hay_rey = 0;
+                echiquier.mat_escaque[registro[n_reg][0].first][registro[n_reg][0].second].hay_rey = 1;
                 if (registro[n_reg][2].second != -1){ // Se comprueba si se ha capturado una pieza en ese turno
+                    aux_atq = 0;
                     for (unsigned int j = 0; j < v_peon.size(); j++){
                         if(v_peon[j].pos.first == registro[n_reg][2].first && v_peon[j].pos.second == registro[n_reg][2].second){
                             v_peon[j].pos = registro[n_reg][1];
@@ -1007,10 +1075,32 @@ void MainWindow::on_boton_deshacer_clicked() {
                         }
                     }
                 }
+                if (registro[n_reg][3].second == 2){
+                    if (registro[n_reg][1].first == 6){ // Enroque corto
+                        for (unsigned int j = 0; j < v_torre.size(); j++){
+                            if (v_torre[j].pos.first == registro[n_reg][1].first-1 && v_torre[j].pos.second == registro[n_reg][1].second){
+                                v_torre[j].pos.first = 7;
+                                v_torre[j].pos.second = registro[n_reg][0].second;
+                                v_torre[j].first_mov = 1;
+                                v_rey[i].first_mov = 1;
+                            }
+                        }
+                    }
+                    if (registro[n_reg][1].first == 2){ // Enroque largo
+                        for (unsigned int j = 0; j < v_torre.size(); j++){
+                            if (v_torre[j].pos.first == registro[n_reg][1].first+1 && v_torre[j].pos.second == registro[n_reg][1].second){
+                                v_torre[j].pos.first = 0;
+                                v_torre[j].pos.second = registro[n_reg][0].second;
+                                v_torre[j].first_mov = 1;
+                                v_rey[i].first_mov = 1;
+                            }
+                        }
+                    }
+                }
             }
         }
         // Actualización de iconos y escaques
-        mueve_icono_desh(&echiquier, boton_origen, boton_destino, registro[n_reg][0], registro[n_reg][1], iconos, registro[n_reg][3].first);
+        mueve_icono_desh(&echiquier, boton_origen, boton_destino, botones, registro[n_reg][0], registro[n_reg][1], iconos, registro[n_reg][3].first, registro[n_reg][3].second);
         registro.pop_back();
         // Si es el turno de las negras, se borra el ultimo elemento de la ListWidget
         if (turno == 1){

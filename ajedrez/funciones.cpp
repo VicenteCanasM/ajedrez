@@ -12,19 +12,82 @@ void mueve_icono(tablero *echiquier, QPushButton *boton_destino, pair<int,int> o
 }
 
 // Modifica los iconos y escaques con el botón deshacer
-void mueve_icono_desh(tablero *echiquier, QPushButton *boton_origen, QPushButton *boton_destino, pair<int,int> origen,
-                  pair<int,int> destino, vector<QIcon> iconos, int id_icono_cap){
-    // Resitaución de iconos
+void mueve_icono_desh(tablero *echiquier, QPushButton *boton_origen, QPushButton *boton_destino, vector<vector<QPushButton*>> botones,
+                      pair<int,int> origen, pair<int,int> destino, vector<QIcon> iconos, int id_icono_cap, int inf_ad){
+    // Resituación de pieza que mueve, o casilla origen
     echiquier->mat_escaque[origen.first][origen.second].t_icon = echiquier->mat_escaque[destino.first][destino.second].t_icon;
-    echiquier->mat_escaque[destino.first][destino.second].t_icon = id_icono_cap;
-    // Actualización de escaques
-    echiquier -> mat_escaque[origen.first][origen.second].ocupado = echiquier -> mat_escaque[destino.first][destino.second].ocupado;
-    if (id_icono_cap == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 2;
-    else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 1;
-    else echiquier -> mat_escaque[destino.first][destino.second].ocupado = 0;
-    // Actualización de iconos
+    echiquier -> mat_escaque[origen.first][origen.second].ocupado = echiquier->mat_escaque[destino.first][destino.second].ocupado;
     boton_origen -> setIcon(iconos.at(echiquier->mat_escaque[origen.first][origen.second].t_icon));
-    boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
+
+    // Resituación de la pieza capturada, o casilla destino
+    if (inf_ad == 0){ // Caso normal
+        echiquier->mat_escaque[destino.first][destino.second].t_icon = id_icono_cap;
+        if (id_icono_cap == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 2;
+        else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 1;
+        else echiquier -> mat_escaque[destino.first][destino.second].ocupado = 0;
+        boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
+    }
+    else if (inf_ad == 1){ // Caso promocion
+        echiquier->mat_escaque[origen.first][origen.second].t_icon = echiquier->mat_escaque[destino.first][destino.second].t_icon-4;
+        boton_origen -> setIcon(iconos.at(echiquier->mat_escaque[origen.first][origen.second].t_icon));
+        echiquier->mat_escaque[destino.first][destino.second].t_icon = id_icono_cap;
+        if (id_icono_cap == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 2;
+        else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0) echiquier -> mat_escaque[destino.first][destino.second].ocupado = 1;
+        else echiquier -> mat_escaque[destino.first][destino.second].ocupado = 0;
+        boton_destino -> setIcon(iconos.at(echiquier->mat_escaque[destino.first][destino.second].t_icon));
+    }
+    else if (inf_ad == 2){ // Caso enroque
+        echiquier->mat_escaque[destino.first][destino.second].ocupado = 2;
+        echiquier->mat_escaque[destino.first][destino.second].t_icon = 0;
+        boton_destino->setIcon(iconos.at(0));
+        if (destino.first == 6){ // Enroque corto
+            echiquier->mat_escaque[destino.first-1][destino.second].ocupado = 2;
+            echiquier->mat_escaque[destino.first-1][destino.second].t_icon = 0;
+            botones[destino.first-1][destino.second]->setIcon(iconos.at(0));
+            if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0){
+                echiquier->mat_escaque[7][destino.second].ocupado = 0;
+                echiquier->mat_escaque[7][destino.second].t_icon = 4;
+                botones[7][destino.second]->setIcon(iconos.at(4));
+            }
+            else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 1){
+                echiquier->mat_escaque[7][destino.second].ocupado = 1;
+                echiquier->mat_escaque[7][destino.second].t_icon = 10;
+                botones[7][destino.second]->setIcon(iconos.at(10));
+            }
+        }
+        if (destino.first == 2){ // Enroque largo
+            echiquier->mat_escaque[destino.first+1][destino.second].ocupado = 2;
+            echiquier->mat_escaque[destino.first+1][destino.second].t_icon = 0;
+            botones[destino.first+1][destino.second]->setIcon(iconos.at(0));
+            if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0){
+                echiquier->mat_escaque[0][destino.second].ocupado = 0;
+                echiquier->mat_escaque[0][destino.second].t_icon = 4;
+                botones[0][destino.second]->setIcon(iconos.at(4));
+            }
+            else if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 1){
+                echiquier->mat_escaque[0][destino.second].ocupado = 1;
+                echiquier->mat_escaque[0][destino.second].t_icon = 10;
+                botones[0][destino.second]->setIcon(iconos.at(10));
+            }
+        }
+    }
+    else if (inf_ad == 3){ // Captura al paso
+        boton_destino -> setIcon(iconos.at(0));
+        if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 0){
+            echiquier->mat_escaque[destino.first][destino.second].ocupado = 2;
+            echiquier->mat_escaque[destino.first][destino.second].t_icon = 0;
+            echiquier->mat_escaque[destino.first][destino.second-1].ocupado = 1;
+            echiquier->mat_escaque[destino.first][destino.second-1].t_icon = id_icono_cap;
+            botones[destino.first][destino.second-1]->setIcon(iconos.at(id_icono_cap));
+        }
+        if (echiquier->mat_escaque[origen.first][origen.second].ocupado == 1){
+            echiquier->mat_escaque[destino.first][destino.second].ocupado = 2;
+            echiquier->mat_escaque[destino.first][destino.second].t_icon = 0;
+            echiquier->mat_escaque[destino.first][destino.second+1].ocupado = 0;
+            echiquier->mat_escaque[destino.first][destino.second+1].t_icon = id_icono_cap;
+            botones[destino.first][destino.second+1]->setIcon(iconos.at(id_icono_cap));
+        }
+    }
 }
 
 // Devuelve al tablero sus colores originales
@@ -249,6 +312,7 @@ QString notacion_algebraica(vector<pair<int,int>> registro, QString pieza, bool 
     return resultado;
 }
 
+// Obtiene la letra (QString) propia de cada columna
 QString get_columna(int col){
     QString resultado;
 

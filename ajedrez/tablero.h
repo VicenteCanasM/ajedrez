@@ -29,6 +29,7 @@ public:
     void imprimir_tablero();
     void imprimir_tablero_jugador();
     void imprimir_tablero_reyes();
+    void imprimir_tablero_dos_pasos();
 };
 
 

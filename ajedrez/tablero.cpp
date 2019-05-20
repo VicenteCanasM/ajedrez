@@ -70,3 +70,13 @@ void tablero::imprimir_tablero_reyes(){
         cout << endl;
     }
 }
+
+void tablero::imprimir_tablero_dos_pasos(){
+    cout << endl;
+    for (int  i = 7; i >= 0; i--){
+        for (int j = 0; j < 8; j++){
+            cout << mat_escaque[j][i].hay_peon_paso << ' ';
+        }
+        cout << endl;
+    }
+}

@@ -40,7 +40,8 @@ void peon::movs(tablero mi_tab){
                 casilla.second = fil_act+1;
                 mov_set.push_back(casilla); // Movimiento peón
                 if (comprobar_limites(pos.first, pos.second+2)){
-                    if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                    //if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act+2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                    if (pos.second == 1 && mi_tab.mat_escaque[col_act][fil_act+2].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
                         casilla.first = col_act;
                         casilla.second = fil_act+2;
                         dos_pasos = 1;
@@ -58,8 +59,8 @@ void peon::movs(tablero mi_tab){
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act+1)].hay_rey)
                         jaque_rey = 1;      
                 }
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
-                    atq_set.push_back(casilla);*/
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla); // Captura al paso
             }
             // Ataque a izquierda peón blanco
             if (comprobar_limites(pos.first-1, pos.second+1)){
@@ -71,8 +72,8 @@ void peon::movs(tablero mi_tab){
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act+1)].hay_rey)
                         jaque_rey = 1;
                 }
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
-                    atq_set.push_back(casilla);*/
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla); // Captura al paso
             }
         }
     }
@@ -84,7 +85,8 @@ void peon::movs(tablero mi_tab){
                 casilla.second = fil_act-1;
                 mov_set.push_back(casilla); // Movimiento peón
                 if (comprobar_limites(pos.first, pos.second-2)){
-                    if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                    //if (first_mov == 1 && mi_tab.mat_escaque[static_cast<unsigned long>(col_act)][static_cast<unsigned long>(fil_act-2)].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
+                    if (pos.second == 6 && mi_tab.mat_escaque[col_act][fil_act-2].ocupado == 2){ // Comprobar segundo escaque si es primer movimiento
                         casilla.first = col_act;
                         casilla.second = fil_act-2;
                         dos_pasos = 1;
@@ -102,8 +104,8 @@ void peon::movs(tablero mi_tab){
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
                 }
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
-                    atq_set.push_back(casilla);*/
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act+1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla); // Captura al paso
             }
             // Ataque a izquierda peón negro
             if (comprobar_limites(pos.first-1, pos.second-1)){
@@ -115,27 +117,27 @@ void peon::movs(tablero mi_tab){
                     if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act-1)].hay_rey)
                         jaque_rey = 1;
                 }
-                /*if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
-                    atq_set.push_back(casilla);*/
+                if (mi_tab.mat_escaque[static_cast<unsigned long>(col_act-1)][static_cast<unsigned long>(fil_act)].hay_peon_paso)
+                    atq_set.push_back(casilla); // Captura al paso
             }
         }
     }
 }
 // Coronar
-bool peon::coronar(vector<dama> *v_dama){
+bool peon::coronar(vector<dama> *v_dama, int n_reg){
     bool flag = 0;
     if (jugador == 0 && pos.second == 7){
         dama nueva_dama(pos.first, pos.second, jugador);
         v_dama->push_back(nueva_dama);
-        pos.first = -1;
-        pos.second = 20;
+        pos.first = -2;
+        pos.second = 20+n_reg;
         flag = 1;
     };
     if (jugador == 1 && pos.second == 0){
         dama nueva_dama(pos.first, pos.second, jugador);
         v_dama->push_back(nueva_dama);
-        pos.first = -1;
-        pos.second = 20;
+        pos.first = -2;
+        pos.second = 20+n_reg;
         flag = 1;
     };
     return flag;

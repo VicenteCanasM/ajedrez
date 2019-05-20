@@ -11,8 +11,8 @@
 void mueve_icono(tablero *echiquier,QPushButton *boton_destino, pair<int,int> origen,
                  pair<int,int> destino, vector<QIcon> iconos);
 
-void mueve_icono_desh(tablero *echiquier, QPushButton *boton_origen, QPushButton *boton_destino, pair<int,int> origen,
-                 pair<int,int> destino, vector<QIcon> iconos, int id_icono_cap);
+void mueve_icono_desh(tablero *echiquier, QPushButton *boton_origen, QPushButton *boton_destino, vector<vector<QPushButton*>> botones,
+                      pair<int,int> origen, pair<int,int> destino, vector<QIcon> iconos, int, int);
 
 void limpia_tablero(tablero echiquier, vector < vector < QPushButton*>> botones, QPalette blanco, QPalette negro);
 
